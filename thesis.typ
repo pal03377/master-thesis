@@ -229,8 +229,46 @@ Functional requirements are independent of implementation details. They solely d
 // 3. Semi-Automatic Suggestions for Programming Submissions
 
 *Assessment Modules*
+// - There should be multiple assessment modules in Athena, each of which can be turned on or off
+// - A user of the LMS can choose which assessment module(s) to use for a particular exercise
+// - An assessment module should be able to provide a suggested next submission to the LMS if requested
+// - The LMS should be able to send existing submissions and feedback to Athena for analysis.
+// - Athena should be able to provide feedback suggestions on a submission to the LMS.
 #fr[
-  *Bold text 1* Some paragraph text that never goes left of the number. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  *Select Assessment Module*
+  If automatic assessments are enabled in the LMS, // condition
+  an instructor // subject
+  can select // action
+  which assessment module // object
+  to use for a particular exercise.
+  Only assessment modules that are compatible with the exercise type can be selected. // constraint of action
+]
+#fr[
+  *Provide Suggested Submission*
+  Upon receiving a request from the LMS, // condition
+  an assessment module // subject
+  can generate // action
+  a suggested next submission // object
+  based on the previous submissions and their feedback.
+  The suggestion can only be provided if there are previous submissions and feedback data available. // constraint of action
+]
+#fr[
+  *Send Submissions and Feedback*
+  After the deadline of an exercise and each time a tutor submits feedback, // condition
+  the LMS // subject
+  can transmit // action
+  the submissions or associated feedback // object
+  to Athena for analysis.
+  The transmission should only occur if the chosen assessment module in Athena is active. // constraint of action
+]
+#fr[
+  *Provide Feedback Suggestions*
+  When a tutor starts grading a submission, // condition
+  Athena // subject
+  can deliver // action
+  feedback suggestions // object
+  to the LMS.
+  Feedback suggestions are generated based on the selected assessment module's capabilities and analysis parameters. // constraint of action
 ]
 
 *More Exercise Types*

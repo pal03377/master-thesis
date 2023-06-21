@@ -62,6 +62,15 @@
   submissionDate: submissionDate
 )
 
+// Custom functions
+#let fr_counter = counter("fr")
+#let fr(it) = block[
+  #fr_counter.step()
+  #enum(numbering: n => "FR " + fr_counter.display(), body-indent: 2em)[
+    #it
+  ]
+]
+
 = Introduction
 #rect(
   width: 100%,
@@ -185,25 +194,20 @@ Despite our intentions to plan and detail it meticulously, we anticipate that we
 
 // TODO: add more detail
 
-The current system under investigation is named Athena, but is occasionally referred to as Athene outside of this work. This system acts as a "reference implementation" for a distinctive approach to dispensing automatic feedback, known as CoFee (@cofee). Athena-CoFee is integrated into an existing Learning Management System (LMS), Artemis, functioning as a service dedicated to segmenting and clustering test exercise submissions.
+The current system under investigation is named Athena but is occasionally referred to as Athene outside of this work. This system acts as a "reference implementation" for a distinctive approach to dispensing automatic feedback, known as CoFee (@cofee). We will call this system Athena-CoFee to avoid confusion with the newly proposed Athena system.
+Athena-CoFee is integrated into the existing Learning Management System (LMS) Artemis, functioning as a service dedicated to segmenting and clustering test exercise submissions.
 
 When a predetermined exercise deadline arrives, a sequence of events unfolds. Artemis LMS sends a list of submissions to the Load Balancer within Athena-CoFee, including a callback URL for subsequent use (@atheneLoadBalancer). This Load Balancer distributes the tasks among several different services.
 
-The Segmentation Service first partitions each submission into a list of TextBlocks, which are characterized by start and end indexes. The Embedding Service then adopts deeply contextualized word representations, specifically the ElMO model (@elmo), to construct a linguistic embedding of these segments (@cofee). Following this, the Clustering Service applies the Hierarchical Density-Based Spatial Clustering (HDBSCAN, @hdbscan) algorithm to assemble clusters of the embedded segments.
+The Segmentation Service first partitions each submission into a list of TextBlocks and stores their start and end indexes. The Embedding Service then adopts deeply contextualized word representations, specifically the ElMO model (@elmo), to construct a linguistic embedding of these segments (@cofee). Following this, the Clustering Service applies the Hierarchical Density-Based Spatial Clustering (HDBSCAN, @hdbscan) algorithm to assemble clusters of the embedded segments.
 
 Upon completion of these processes, the Load Balancer transmits the segmented and clustered data back to Artemis via the initially supplied callback URL, and this data is then stored in the system's database.
 
-Within Artemis, the Athena-CoFee subsystem is activated when a tutor begins to assess a student's submission. This subsystem suggests feedback for segments closely associated with others in the same cluster, drawing on feedback given on other segments within the cluster. This mechanism supports the tutor in providing a consistent and thorough evaluation of student submissions.
+Artemis activates the Athena-CoFee subsystem when a tutor begins to assess a student's submission. This subsystem suggests feedback for segments closely associated with others in the same cluster, drawing on feedback given on other segments within the cluster. This mechanism supports the tutor in providing a consistent and thorough evaluation of student submissions.
 
 == Proposed System
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: If you leave out the section “Current system”, you can rename this section into “Requirements”.
-]
+// Note: Describe the proposed system in detail. Use the following subsections to structure your description.
+We propose a new system on top of Athena-CoFee called Athena. In the following, we will describe the functional and non-functional requirements of Athena in detail using the Requirements Analysis Document Template in @bruegge2004object.
 
 === Functional Requirements
 #rect(
@@ -218,6 +222,27 @@ Within Artemis, the Athena-CoFee subsystem is activated when a tutor begins to a
   - FR2 Short Title: Short Description. 
   - FR3 Short Title: Short Description.
 ]
+Functional requirements are independent of implementation details. They solely describe the interactions between the system and its environment @bruegge2004object. We use ISO/IEC/IEEE 29148:2018 to specify functional requirements in a structured way.
+// 3 parts:
+// 1. Generalization: Multiple modules
+// 2. Generalization: Multiple exercise types
+// 3. Semi-Automatic Suggestions for Programming Submissions
+
+*Assessment Modules*
+#fr[
+  *Bold text 1* Some paragraph text that never goes left of the number. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+]
+
+*More Exercise Types*
+#fr[
+  *Bold text 2* Some paragraph text that never goes left of the number. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+]
+
+*Programming Assessment Module*
+#fr[
+  *Bold text 3* Some paragraph text that never goes left of the number. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+]
+
 
 === Nonfunctional Requirements
 #rect(
@@ -233,6 +258,7 @@ Within Artemis, the Athena-CoFee subsystem is activated when a tutor begins to a
   - NFR3 Category: Short Description.
 
 ]
+// is documentation an nfr? essential
 
 == System Models
 #rect(

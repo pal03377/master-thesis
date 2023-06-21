@@ -272,8 +272,35 @@ Functional requirements are independent of implementation details. They solely d
 ]
 
 *More Exercise Types*
+// - Athena should be able to receive submissions and feedback for text exercises, programming exercises, file upload exercises, and modeling exercises.
+// - Artemis should send submissions and feedback for text exercises, programming exercises, file upload exercises, and modeling exercises to Athena.
+// - Artemis should provide UI for tutors to view feedback suggestions for text exercises, programming exercises, and file upload exercises.
 #fr[
-  *Bold text 2* Some paragraph text that never goes left of the number. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  *Receive Submissions and Feedback for Various Exercises*
+  When the LMS sends a new submission or feedback, // condition
+  Athena // subject
+  can receive // action
+  the submissions and feedback // object
+  for text exercises, programming exercises, and file upload exercises.
+  The data must be in a format compatible with Athena. // constraint of action
+]
+#fr[
+  *Send Submissions and Feedback for Various Exercises*
+  After the completion of any text, programming, or file upload exercise by a user, // condition
+  Artemis // subject
+  will automatically send // action
+  the corresponding submissions and feedback // object
+  to Athena.
+  The data transfer will only happen if Athena is enabled in Artemis and has an active corresponding assessment module. // constraint of action
+]
+#fr[
+  *View Feedback Suggestions UI*
+  Once Athena has finished processing all incoming data and can provide feedback suggestions, // condition
+  Artemis // subject
+  can display // action
+  a UI for tutors to view these feedback suggestions // object
+  for text exercises, programming exercises, and file upload exercises.
+  The UI should be accessible only to authorized tutors who are grading the exercise. // constraint of action
 ]
 
 *Programming Assessment Module*

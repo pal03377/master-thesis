@@ -4,3 +4,163 @@
 	year = {2009},
 	publisher = {Prentice Hall}
 }
+
+
+@inproceedings{cofee,
+  author    = {Bernius, Jan Philip and Krusche, Stephan and Bruegge, Bernd},
+  title     = {A Machine Learning Approach for Suggesting Feedback in Textual Exercises in Large Courses},
+  year      = {2021},
+  isbn      = {9781450382151},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3430895.3460135},
+  doi       = {10.1145/3430895.3460135},
+  abstract  = {Open-ended textual exercises facilitate the comprehension of problem-solving skills. Students can learn from their mistakes when teachers provide individual feedback. However, courses with hundreds of students cause a heavy workload for teachers: providing individual feedback is mostly a manual, repetitive, and time-consuming activity.This paper presents CoFee, a machine learning approach designed to suggest computer-aided feedback in open-ended textual exercises. The approach uses topic modeling to split student answers into text segments and language embeddings to transform these segments. It then applies clustering to group the text segments by similarity so that the same feedback can be applied to all segments within the same cluster.We implemented this approach in a reference implementation called Athene and integrated it into Artemis. We used Athene to review 17 textual exercises in two large courses at the Technical University of Munich with 2,300 registered students and 53 teachers. On average, Athene suggested feedback for 26% of the submissions. Accordingly, 85% of these suggestions were accepted by the teachers, 5% were extended with a comment and then accepted, and 10% were changed.},
+  booktitle = {Proceedings of the Eighth ACM Conference on Learning @ Scale},
+  pages     = {173–182},
+  numpages  = {10},
+  keywords  = {software engineering, grading, education, learning, interactive learning, feedback, assessment support system, automatic assessment},
+  location  = {Virtual Event, Germany},
+  series    = {L@S '21}
+}
+
+@article{cofee2,
+  abstract   = {Many engineering disciplines require problem-solving skills, which cannot be learned by memorization alone. Open-ended textual exercises allow students to acquire these skills. Students can learn from their mistakes when instructors provide individual feedback. However, grading these exercises is often a manual, repetitive, and time-consuming activity. The number of computer science students graduating per year has steadily increased over the last decade. This rise has led to large courses that cause a heavy workload for instructors, especially if they provide individual feedback to students. This article presents CoFee, a framework to generate and suggest computer-aided feedback for textual exercises based on machine learning. CoFee utilizes a segment-based grading concept, which links feedback to text segments. CoFee automates grading based on topic modeling and an assessment knowledge repository acquired during previous assessments. A language model builds an intermediate representation of the text segments. Hierarchical clustering identifies groups of similar text segments to reduce the grading overhead. We first demonstrated the CoFee framework in a small laboratory experiment in 2019, which showed that the grading overhead could be reduced by 85%. This experiment confirmed the feasibility of automating the grading process for problem-solving exercises. We then evaluated CoFee in a large course at the Technical University of Munich from 2019 to 2021, with up to 2, 200 enrolled students per course. We collected data from 34 exercises offered in each of these courses. On average, CoFee suggested feedback for 45% of the submissions. 92% (Positive Predictive Value) of these suggestions were precise and, therefore, accepted by the instructors.},
+  author     = {Bernius, Jan Philip and Krusche, Stephan and Bruegge, Bernd},
+  doi        = {https://doi.org/10.1016/j.caeai.2022.100081},
+  issn       = {2666-920X},
+  journal    = {Computers and Education: Artificial Intelligence},
+  keywords   = {Software engineering, Education, Interactive learning, Automatic assessment, Grading, Assessment support system, Learning, Feedback},
+  pages      = {100081},
+  title      = {Machine learning based feedback on textual student answers in large courses},
+  url        = {https://www.sciencedirect.com/science/article/pii/S2666920X22000364},
+  volume     = {3},
+  year       = {2022},
+  bdsk-url-1 = {https://www.sciencedirect.com/science/article/pii/S2666920X22000364},
+  bdsk-url-2 = {https://doi.org/10.1016/j.caeai.2022.100081}
+}
+
+@inproceedings{singh2013automated,
+  title        = {Automated feedback generation for introductory programming assignments},
+  author       = {Singh, Rishabh and Gulwani, Sumit and Solar-Lezama, Armando},
+  booktitle    = {ACM SIGPLAN Notices},
+  volume       = {48},
+  number       = {6},
+  pages        = {15–26},
+  year         = {2013},
+  organization = {ACM},
+  url          = {https://people.csail.mit.edu/rishabh/papers/autograderPLDI13.pdf}
+}
+
+@inproceedings{compass,
+  author = {Krusche, Stephan},
+  year   = {2022},
+  month  = {01},
+  pages  = {},
+  title  = {Semi-Automatic Assessment of Modeling Exercises using Supervised Machine Learning},
+  doi    = {10.24251/HICSS.2022.108}
+}
+
+@inproceedings{messer2022grading,
+  abstract  = {Over the last few years, Computer Science class sizes have increased, resulting in a higher grading workload. Universities often use multiple graders to quickly deliver the grades and associated feedback to manage this workload. While using multiple graders enables the required turnaround times to be achieved, it can come at the cost of consistency and feedback quality. Partially automating the process of grading and feedback could help solve these issues. This project will look into methods to assist in grading and feedback partially subjective elements of programming assignments, such as readability, maintainability, and documentation, to increase the marker's amount of time to write meaningful feedback. We will investigate machine learning and natural language processing methods to improve grade uniformity and feedback quality in these areas. Furthermore, we will investigate how using these tools may allow instructors to include open-ended requirements that challenge students to use their ideas for possible features in their assignments.},
+  address   = {Cham},
+  author    = {Messer, Marcus},
+  booktitle = {Artificial Intelligence in Education. Posters and Late Breaking Results, Workshops and Tutorials, Industry and Innovation Tracks, Practitioners' and Doctoral Consortium},
+  editor    = {Rodrigo, Maria Mercedes and Matsuda, Noburu and Cristea, Alexandra I. and Dimitrova, Vania},
+  isbn      = {978-3-031-11647-6},
+  pages     = {35--40},
+  publisher = {Springer International Publishing},
+  title     = {Grading Programming Assignments with an Automated Grading and Feedback Assistant},
+  year      = {2022}
+}
+
+
+@article{sourceCodeAssessment,
+  abstract       = {The rate of software development has increased dramatically. Conventional compilers cannot assess and detect all source code errors. Software may thus contain errors, negatively affecting end-users. It is also difficult to assess and detect source code logic errors using traditional compilers, resulting in software that contains errors. A method that utilizes artificial intelligence for assessing and detecting errors and classifying source code as correct (error-free) or incorrect is thus required. Here, we propose a sequential language model that uses an attention-mechanism-based long short-term memory (LSTM) neural network to assess and classify source code based on the estimated error probability. The attentive mechanism enhances the accuracy of the proposed language model for error assessment and classification. We trained the proposed model using correct source code and then evaluated its performance. The experimental results show that the proposed model has logic and syntax error detection accuracies of 92.2% and 94.8%, respectively, outperforming state-of-the-art models. We also applied the proposed model to the classification of source code with logic and syntax errors. The average precision, recall, and F-measure values for such classification are much better than those of benchmark models. To strengthen the proposed model, we combined the attention mechanism with LSTM to enhance the results of error assessment and detection as well as source code classification. Finally, our proposed model can be effective in programming education and software engineering by improving code writing, debugging, error-correction, and reasoning.},
+  article-number = {2973},
+  author         = {Rahman, Md. Mostafizer and Watanobe, Yutaka and Nakamura, Keita},
+  doi            = {10.3390/app10082973},
+  issn           = {2076-3417},
+  journal        = {Applied Sciences},
+  number         = {8},
+  title          = {Source Code Assessment and Classification Based on Estimated Error Probability Using Attentive LSTM Language Model and Its Application in Programming Education},
+  url            = {https://www.mdpi.com/2076-3417/10/8/2973},
+  volume         = {10},
+  year           = {2020},
+  bdsk-url-1     = {https://www.mdpi.com/2076-3417/10/8/2973},
+  bdsk-url-2     = {https://doi.org/10.3390/app10082973}
+}
+
+@misc{atheneTracking,
+  author = {Petry, Jonas},
+  title  = {Exercise Assessment Management in Artemis by Students and Instructors},
+  year   = {2020},
+  note   = {Bachelor`s thesis at Technical University of Munich}
+}
+
+@misc{atheneLoadBalancer,
+  author = {Michel, Linus},
+  title  = {Optimizing and Scaling Automatic Assessments of Textual Exercises for Very Large Lectures},
+  year   = {2020},
+  note   = {Master`s thesis at Technical University of Munich}
+}
+
+@misc{atheneLanguage,
+  author = {Cremer, Tim},
+  title  = {Language Independent Text Assessment},
+  year   = {2022},
+  note   = {Bachelor`s thesis at Technical University of Munich}
+}
+
+@inproceedings{elmo,
+  title     = {Deep Contextualized Word Representations},
+  author    = {Peters, Matthew E.  and
+               Neumann, Mark  and
+               Iyyer, Mohit  and
+               Gardner, Matt  and
+               Clark, Christopher  and
+               Lee, Kenton  and
+               Zettlemoyer, Luke},
+  booktitle = {Proceedings of the 2018 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers)},
+  month     = jun,
+  year      = {2018},
+  address   = {New Orleans, Louisiana},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/N18-1202},
+  doi       = {10.18653/v1/N18-1202},
+  pages     = {2227--2237},
+  abstract  = {We introduce a new type of deep contextualized word representation that models both (1) complex characteristics of word use (e.g., syntax and semantics), and (2) how these uses vary across linguistic contexts (i.e., to model polysemy). Our word vectors are learned functions of the internal states of a deep bidirectional language model (biLM), which is pre-trained on a large text corpus. We show that these representations can be easily added to existing models and significantly improve the state of the art across six challenging NLP problems, including question answering, textual entailment and sentiment analysis. We also present an analysis showing that exposing the deep internals of the pre-trained network is crucial, allowing downstream models to mix different types of semi-supervision signals.}
+}
+
+@misc{codeBERT,
+  doi       = {10.48550/ARXIV.2002.08155},
+  url       = {https://arxiv.org/abs/2002.08155},
+  author    = {Feng, Zhangyin and Guo, Daya and Tang, Duyu and Duan, Nan and Feng, Xiaocheng and Gong, Ming and Shou, Linjun and Qin, Bing and Liu, Ting and Jiang, Daxin and Zhou, Ming},
+  keywords  = {Computation and Language (cs.CL), Programming Languages (cs.PL), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {CodeBERT: A Pre-Trained Model for Programming and Natural Languages},
+  publisher = {arXiv},
+  year      = {2020},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@inproceedings{ArTEMiS,
+  author    = {Krusche, Stephan and Seitz, Andreas},
+  doi       = {10.1145/3159450.3159602},
+  pages     = {284--289},
+  publisher = {ACM},
+  series    = {49th Technical Symposium on Computer Science Education},
+  title     = {{ArTEMiS: An Automatic Assessment Management System for Interactive Learning}},
+  year      = {2018}
+}
+
+@inproceedings{hdbscan,
+  doi       = {10.1109/icdmw.2017.12},
+  url       = {https://doi.org/10.1109%2Ficdmw.2017.12},
+  year      = 2017,
+  month     = {nov},
+  publisher = {{IEEE}
+               },
+  author    = {Leland McInnes and John Healy},
+  title     = {Accelerated Hierarchical Density Based Clustering},
+  booktitle = {2017 {IEEE} International Conference on Data Mining Workshops ({ICDMW})}
+}

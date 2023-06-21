@@ -163,35 +163,37 @@
 ]
 
 = Requirements Analysis
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This chapter follows the Requirements Analysis Document Template in @bruegge2004object. Important: Make sure that the whole chapter is independent of the chosen technology and development platform. The idea is that you illustrate concepts, taxonomies and relationships of the application domain independent of the solution domain! Cite @bruegge2004object several times in this chapter.
-
-]
+// Note: This chapter follows the Requirements Analysis Document Template in @bruegge2004object. Important: Make sure that the whole chapter is independent of the chosen technology and development platform. The idea is that you illustrate concepts, taxonomies and relationships of the application domain independent of the solution domain! Cite @bruegge2004object several times in this chapter.
 
 == Overview
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Provide a short overview about the purpose, scope, objectives and success criteria of the system that you like to develop.
-]
+// Note: Provide a short overview about the purpose, scope, objectives and success criteria of the system that you like to develop.
+Despite our intentions to plan and detail it meticulously, we anticipate that we will only be able to fulfill some specifications for the new semi-automatic grading system. With the limitation of only two people working on this project for only six months in mind, our strategy leans toward the progressive delivery of a scaled-down system. Prioritizing high-quality code and thorough documentation, we opt for this approach over rushing the development of an expansive yet potentially flawed prototype.
 
 == Current System
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This section is only required if the proposed system (i.e. the system that you develop in the thesis) should replace an existing system.
-]
+// Note: This section is only required if the proposed system (i.e. the system that you develop in the thesis) should replace an existing system.
+// - current: System also called Athena / Athene (somewhat inconsistent), as a "reference implementation" of an approach to giving automatic feedback called CoFee (@cofee)
+// current: Athena-CoFee integrated into existing LMS (Learning Management System) Artemis
+// - Athena-CoFee system is essentially a service for segmentation and clustering test exercise submissions, for Artemis.
+// - When the deadline of an exercise is reached, the following happens.
+// * The *Artemis LMS* sends a list of submissions to the *Load Balancer* of Athena-CoFee, including a callback URL for later @atheneLoadBalancer
+// * The *Load Balancer* distributes the next tasks between different services
+// * The *Segmentation Service* partitions each submission into a list of `TextBlock`s, by start index and end index.
+// * The *Embedding Service* uses deeply contextualized word representations (ElMO @elmo) for creating a linguistic embedding of the segments @cofee
+// * The *Clustering Service* uses the Hierarchical Density-Based Spatial Clustering (HDBSCAN) clustering algorithm to create clusters of the embedded segments.
+// * The Load Balancer sends the segments and clusters to Artemis using the callback URL, where they are stored in the database
+// - When a tutor starts assessing a student's submission, the Athena-CoFee subsystem within Artemis will suggest feedback on segments close to other ones in the same cluster based on feedback given on the other segments within the cluster.
+
+// TODO: add more detail
+
+The current system under investigation is named Athena, but is occasionally referred to as Athene outside of this work. This system acts as a "reference implementation" for a distinctive approach to dispensing automatic feedback, known as CoFee (@cofee). Athena-CoFee is integrated into an existing Learning Management System (LMS), Artemis, functioning as a service dedicated to segmenting and clustering test exercise submissions.
+
+When a predetermined exercise deadline arrives, a sequence of events unfolds. Artemis LMS sends a list of submissions to the Load Balancer within Athena-CoFee, including a callback URL for subsequent use (@atheneLoadBalancer). This Load Balancer distributes the tasks among several different services.
+
+The Segmentation Service first partitions each submission into a list of TextBlocks, which are characterized by start and end indexes. The Embedding Service then adopts deeply contextualized word representations, specifically the ElMO model (@elmo), to construct a linguistic embedding of these segments (@cofee). Following this, the Clustering Service applies the Hierarchical Density-Based Spatial Clustering (HDBSCAN, @hdbscan) algorithm to assemble clusters of the embedded segments.
+
+Upon completion of these processes, the Load Balancer transmits the segmented and clustered data back to Artemis via the initially supplied callback URL, and this data is then stored in the system's database.
+
+Within Artemis, the Athena-CoFee subsystem is activated when a tutor begins to assess a student's submission. This subsystem suggests feedback for segments closely associated with others in the same cluster, drawing on feedback given on other segments within the cluster. This mechanism supports the tutor in providing a consistent and thorough evaluation of student submissions.
 
 == Proposed System
 #rect(
@@ -481,6 +483,10 @@
 )[
   Note: Describe honestly the achieved goals (e.g. the well implemented and tested use cases) and the open goals here. if you only have achieved goals, you did something wrong in your analysis.
 ]
+
+- #sym.circle.stroked.small
+- ◐
+- #sym.circle.filled
 
 === Realized Goals
 #rect(

@@ -70,6 +70,13 @@
     #it
   ]
 ]
+#let nfr_counter = counter("nfr")
+#let nfr(it) = block[
+  #nfr_counter.step()
+  #enum(numbering: n => "NFR " + nfr_counter.display(), body-indent: 2em)[
+    #it
+  ]
+]
 
 = Introduction
 #rect(
@@ -262,6 +269,15 @@ Functional requirements are independent of implementation details. They solely d
   to the LMS.
   Feedback suggestions are generated based on the selected assessment module's capabilities and analysis parameters. // constraint of action
 ]
+#fr[
+  *Communicate Module Health Status*
+  During the operation of the LMS, // condition
+  Artemis and Athena // subject
+  should be able to communicate // action
+  their respective module health statuses // object
+  to each other.
+  This action should not interfere with the normal functioning of either system. // constraint of action
+]
 
 *More Exercise Types*
 // - Athena should be able to receive submissions and feedback for text exercises, programming exercises, file upload exercises, and modeling exercises.
@@ -279,7 +295,7 @@ Functional requirements are independent of implementation details. They solely d
 #fr[
   *Send Submissions and Feedback for Various Exercises*
   After the completion of any text, programming, or file upload exercise by a user, // condition
-  Artemis // subject
+  specifically Artemis // subject
   will automatically send // action
   the corresponding submissions and feedback // object
   to Athena.
@@ -306,7 +322,6 @@ Functional requirements are independent of implementation details. They solely d
   a newly developed programming assessment module called ThemisML. // object
   ThemisML, being a new module, should not interfere with the functionality of the existing assessment modules in Athena. // constraint of action
 ]
-
 #fr[
   *Feedback Suggestions by ThemisML*
   When the LMS sends a submission for a programming exercise, // condition
@@ -316,7 +331,6 @@ Functional requirements are independent of implementation details. They solely d
   based on the similarity of the submissions' code and existing feedback.
   Only if sufficient historical submission data and feedback are available can ThemisML provide feedback suggestions. // constraint of action
 ]
-
 #fr[
   *Replace Themis Grading App Integration*
   With the inclusion of ThemisML in Athena, // condition
@@ -325,6 +339,8 @@ Functional requirements are independent of implementation details. They solely d
   with an API call to Artemis. // object
   The replacement should not affect the functionality of the Themis grading app. // constraint of action
 ]
+
+// TODO: Do I need to make the FRs more granular? Moritz has 15. Here are 11.
 
 
 === Nonfunctional Requirements
@@ -343,6 +359,11 @@ Functional requirements are independent of implementation details. They solely d
 ]
 // is documentation an nfr? essential
 // ThemisML should be providing feedback suggestions fast enough (all modules actually)
+// minimal configuration / simple setup process
+// scalable system
+// easy to develop new modules
+// user documentation
+// developer documentation
 
 == System Models
 #rect(

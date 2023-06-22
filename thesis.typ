@@ -207,21 +207,13 @@ Artemis activates the Athena-CoFee subsystem when a tutor begins to assess a stu
 
 == Proposed System
 // Note: Describe the proposed system in detail. Use the following subsections to structure your description.
-We propose a new system on top of Athena-CoFee called Athena. In the following, we will describe the functional and non-functional requirements of Athena in detail using the Requirements Analysis Document Template in @bruegge2004object.
+We propose a new system on top of Athena-CoFee called Athena. In the following, we will describe Athena's functional and non-functional requirements using the Requirements Analysis Document Template in @bruegge2004object.
 
 === Functional Requirements
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: List and describe all functional requirements of your system. Also mention requirements that you were not able to realize. The short title should be in the form “verb objective”
-
-  - FR1 Short Title: Short Description. 
-  - FR2 Short Title: Short Description. 
-  - FR3 Short Title: Short Description.
-]
+// Note: List and describe all functional requirements of your system. Also mention requirements that you were not able to realize. The short title should be in the form “verb objective”
+//   - FR1 Short Title: Short Description. 
+//   - FR2 Short Title: Short Description. 
+//   - FR3 Short Title: Short Description.
 Functional requirements are independent of implementation details. They solely describe the interactions between the system and its environment @bruegge2004object. We use ISO/IEC/IEEE 29148:2018 to specify functional requirements in a structured way.
 // 3 parts:
 // 1. Generalization: Multiple modules
@@ -304,8 +296,34 @@ Functional requirements are independent of implementation details. They solely d
 ]
 
 *Programming Assessment Module*
+// - A newly developed programming assessment module called ThemisML should be included in Athena. It should be able to provide feedback suggestions for programming exercises based on the similarity of the submissions' code and existing feedback.
+// - The existing integration of the Themis grading app into ThemisML should be replaced with an integration into Artemis + Athena.
 #fr[
-  *Bold text 3* Some paragraph text that never goes left of the number. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  *Include New Programming Assessment Module*
+  As part of the Athena system expansion, // condition
+  Athena // subject
+  will incorporate // action
+  a newly developed programming assessment module called ThemisML. // object
+  ThemisML, being a new module, should not interfere with the functionality of the existing assessment modules in Athena. // constraint of action
+]
+
+#fr[
+  *Feedback Suggestions by ThemisML*
+  When the LMS sends a submission for a programming exercise, // condition
+  ThemisML // subject
+  can provide // action
+  feedback suggestions // object
+  based on the similarity of the submissions' code and existing feedback.
+  Only if sufficient historical submission data and feedback are available can ThemisML provide feedback suggestions. // constraint of action
+]
+
+#fr[
+  *Replace Themis Grading App Integration*
+  With the inclusion of ThemisML in Athena, // condition
+  the existing integration // subject
+  of the Themis grading app should be replaced // action
+  with an API call to Artemis. // object
+  The replacement should not affect the functionality of the Themis grading app. // constraint of action
 ]
 
 
@@ -324,6 +342,7 @@ Functional requirements are independent of implementation details. They solely d
 
 ]
 // is documentation an nfr? essential
+// ThemisML should be providing feedback suggestions fast enough (all modules actually)
 
 == System Models
 #rect(

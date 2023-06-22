@@ -344,19 +344,11 @@ Functional requirements are independent of implementation details. They solely d
 
 
 === Nonfunctional Requirements
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: List and describe all nonfunctional requirements of your system. Also mention requirements that you were not able to realize. Categorize them using the FURPS+ model described in @bruegge2004object without the category functionality that was already covered with the functional requirements.
+// Note: List and describe all nonfunctional requirements of your system. Also mention requirements that you were not able to realize. Categorize them using the FURPS+ model described in @bruegge2004object without the category functionality that was already covered with the functional requirements.
+// - NFR1 Category: Short Description. 
+// - NFR2 Category: Short Description. 
+// - NFR3 Category: Short Description.
 
-  - NFR1 Category: Short Description. 
-  - NFR2 Category: Short Description. 
-  - NFR3 Category: Short Description.
-
-]
 // is documentation an nfr? essential
 // ThemisML should be providing feedback suggestions fast enough (all modules actually)
 // minimal configuration / simple setup process
@@ -364,6 +356,76 @@ Functional requirements are independent of implementation details. They solely d
 // easy to develop new modules
 // user documentation
 // developer documentation
+
+// TODO: write some introductory sentence here about NFRs
+*Scalability*
+#nfr[
+  *System Scalability*
+  The system should scale effectively to accommodate growth in the number of users and assessments.
+]
+
+*Usability*
+#nfr[
+  *Feedback Accessibility*
+  Tutors should be able to effortlessly view and interpret the feedback suggestions provided by Athena.
+]
+#nfr[
+  *Easy Configuration*
+  The system should be easily configurable with a simple setup process to encourage adoption.
+]
+
+*Performance*
+#nfr[
+  *Response Time*
+  Feedback suggestions should be provided to tutors in a timely manner, ideally within a few seconds.
+]
+#nfr[
+  *Immediate Grading*
+  Tutors should be able to start grading a submission immediately, even if Athena has not yet provided feedback suggestions. In this case, suggestions from Athena should load asynchronously, allowing grading to proceed without delay.
+]
+
+*Maintainability*
+#nfr[
+  *New Module Development*
+  The system should support the easy development of new modules, enabling straightforward integration into Athena.
+]
+#nfr[
+  *System Maintenance*
+  The system should be easy to maintain and update, with clear documentation on system architecture and code.
+]
+
+*Security*
+// - Artemis and Athena should authenticate to each other (both!) using a shared API secret. This secret should be checked on all requests.
+// - No data like submissions or feedback for the student should be leaked to the outside of the systems
+// - The interaction between Artemis and Athena should be based on the Principle of Least Privilege (with a short explanation)
+#nfr[
+  *Mutual Authentication*
+  Both Artemis and Athena should authenticate each other using a shared API secret. This secret should be checked on all requests to ensure secure communication.
+]
+#nfr[
+  *Data Leakage Prevention*
+  Confidential data, such as student submissions or feedback, should not be leaked outside of Artemis and Athena. Appropriate data protection measures must be in place.
+]
+
+*Reliability*
+#nfr[
+  *System Availability*
+  The system should be designed to have high availability, targeting a 99.9% uptime.
+]
+#nfr[
+  *Module Independence*
+  A failure in one module of Athena should not impact the functionality of other modules.
+]
+
+*Documentation*
+#nfr[
+  *User Documentation*
+  Detailed user documentation should be provided, including guidelines for using feedback suggestions in the LMS.
+]
+#nfr[
+  *Developer's Guide*
+  A comprehensive developer's guide should be available, detailing the system architecture, database schemas, and module development process.
+]
 
 == System Models
 #rect(

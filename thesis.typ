@@ -459,18 +459,29 @@ A scenario is "a concrete, focused, informal description of a single feature of 
 \ \ 
 
 *Visionary Scenarios*
+
+*Real-time Automatic Feedback*
 // The student already receives feedback suggestions in real-time themselves and submits a fully correct submission at the end, having learned a lot more in the process with the shortest feedback cycle possible. The system automatically finds mistakes and points the student to where they could be wrong with helpful but not too revealing feedback. This way, there is no need for additional grading, and the tutors for the course can fully concentrate on supporting the students in other ways.
 Julia, a persistent student in a Data Structures course, and Leo, a dedicated tutor for the same course, find themselves in a modern, technologically advanced learning environment. This time, the students have an innovative tool at their disposal that offers real-time feedback suggestions while they are working on their exercises.
 In this context, Julia encounters a complex assignment on tree data structures. As she works her way through the exercise, she benefits from the system's feedback suggestions. The tool cleverly points out possible mistakes without revealing the entire solution, nudging Julia towards the correct path.
 This intelligent feedback system operates like a silent tutor, helping Julia correct minor errors and improve her understanding in real-time. It guides her, prompting her to think more critically about her code, encouraging her to find and fix errors independently. By the time Julia finishes the assignment and submits it, her work is free of errors. The immediate feedback she received throughout her work allowed her to correct her mistakes as she made them.
 Freed from the time-consuming task of grading assignments, Leo can now invest more of his time in addressing students' conceptual questions and mentoring them in their learning journey. He can now engage more deeply with students.
-
+\ \ 
+*Enhancing Automatic Test Feedback*
+// - The automatic tests to check the correctness of programming exercises provide accurate feedback, but it isn't always helpful to the student.
+// - Therefore, the _Introduction to Informatics_ course runs some basic tests after the submission deadline, but otherwise the tutors of the course grade the submissions manually.
+// - This takes a lot of time and it is difficult (for the tutors) to always spot the exact place in which the tests fail.
+// - Because of this, the course now uses Athena to enhance the automatic test results such that they are processed and their wording is automatically enhanced to provide more detail on the exact root cause of the underlying issue.
+// - This way, tutors can focus on grading other related issues and can be much quicker overall.
+Sophie, a dedicated tutor for the Introduction to Informatics course, and Noah, a meticulous student enrolled in the course, navigate a new approach to grading programming exercises. The course originally relied on a combination of automated tests and manual grading by tutors. However, the tests, although accurate, often failed to provide the detailed feedback students like Noah needed.
+To overcome this limitation, the course implemented the Athena system.
+As Noah submits his code, the Athena system evaluates it. It pinpoints where and why a test might have failed, providing feedback that is both precise and insightful.
+Sophie no longer has to search through every line of code to spot errors or understand the causes of test failures. This change gives her more time to focus on other relevant aspects of students' submissions.
 
 \ \ 
 *Demo Scenarios*
 
 *Quicker Feedback Loop*
-// Outline:
 // - Edward is a tutor in the Software Engineering course
 // - Fiona is a student in the Software Engineering course
 // - Fiona is an eager student who always submits solutions for all weekly exercises in the course, but she often makes a lot of minor mistakes that many other students struggle with in a similar fashion

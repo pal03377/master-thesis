@@ -499,8 +499,8 @@ For Fiona, it means she gets her feedback much faster. She can learn from her mi
   fill: yellow,
 )[
   Note: This subsection should contain a UML Class Diagram showing the most important objects, attributes, methods and relations of your application domain including taxonomies using specification inheritance (see @bruegge2004object). Do not insert objects, attributes or methods of the solution domain. *Important:* Make sure to describe the analysis object model thoroughly in the text so that readers are able to understand the diagram. Also write about the rationale how and why you modeled the concepts like this.
-
 ]
+As described by Bruegge and Dutoit, we use the analysis model together with nonfunctional requirements to prepare for the architecture of the system@bruegge2004object. One of the parts of the analysis model is the analysis object model, which we realize as two separate UML class diagrams, one for Artemis and one for Athena.
 
 === Dynamic Model
 #rect(

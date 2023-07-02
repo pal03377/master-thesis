@@ -439,22 +439,8 @@ Functional requirements are independent of implementation details. They solely d
 // TODO: write short overview of what this part (Systmem Models) contains: Scenarios, Use Case Model, Analysis Object Model, Dynamic Model, User Interface
 
 === Scenarios
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: If you do not distinguish between visionary and demo scenarios, you can remove the two subsubsections below and list all scenarios here.
-
-  *Visionary Scenarios*
-
-  Note: Describe 1-2 visionary scenario here, i.e. a scenario that would perfectly solve your problem, even if it might not be realizable. Use free text description.
-
-  *Demo Scenarios*
-
-  Note: Describe 1-2 demo scenario here, i.e. a scenario that you can implement and demonstrate until the end of your thesis. Use free text description.
-]
+// Visionary Scenario: scenario that would perfectly solve the problem, even if it might not be realizable. Use free text description
+// Demo Scenario: scenario that you can implement and demonstrate until the end of your thesis
 A scenario is "a concrete, focused, informal description of a single feature of the system from the viewpoint of a single actor" @bruegge2004object. The following sections describe X visionary and X demonstration scenarios. // TODO: insert values for X
 \ \ 
 
@@ -477,7 +463,6 @@ Sophie, a dedicated tutor for the Introduction to Informatics course, and Noah, 
 To overcome this limitation, the course implemented the Athena system.
 As Noah submits his code, the Athena system evaluates it. It pinpoints where and why a test might have failed, providing feedback that is both precise and insightful.
 Sophie no longer has to search through every line of code to spot errors or understand the causes of test failures. This change gives her more time to focus on other relevant aspects of students' submissions.
-
 \ \ 
 *Demo Scenarios*
 

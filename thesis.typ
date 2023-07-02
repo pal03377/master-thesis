@@ -436,6 +436,7 @@ Functional requirements are independent of implementation details. They solely d
 )[
   Note: This section includes important system models for the requirements analysis.
 ]
+// TODO: write short overview of what this part (Systmem Models) contains: Scenarios, Use Case Model, Analysis Object Model, Dynamic Model, User Interface
 
 === Scenarios
 #rect(
@@ -454,6 +455,25 @@ Functional requirements are independent of implementation details. They solely d
 
   Note: Describe 1-2 demo scenario here, i.e. a scenario that you can implement and demonstrate until the end of your thesis. Use free text description.
 ]
+A scenario is "a concrete, focused, informal description of a single feature of the system from the viewpoint of a single actor" @bruegge2004object. The following sections describe X visionary and X demonstration scenarios. // TODO: insert values for X
+\ \ 
+
+*Visionary Scenarios*
+
+*Quicker Feedback Loop*
+// Outline:
+// - Edward is a tutor in the Software Engineering course
+// - Fiona is a student in the Software Engineering course
+// - Fiona is an eager student who always submits solutions for all weekly exercises in the course, but she often makes a lot of minor mistakes that many other students struggle with in a similar fashion
+// - Accurate and timely feedback is very important for Fiona, as she will still have the concepts of the last exercise freshly in mind - the sooner she gets the feedback, the more she still remembers the intricate details of the exercise and the fewer misconceptions will manifest in her mind in the meantime
+// - Edward, however, needs help keeping up the pace for grading, as there are many students, and he always has a lot of work this way. Usually, the results of the manual grading process take about two weeks to complete.
+// - With the help of accurate and quick automatic feedback suggestions, Edward can speed up the grading significantly. The system automatically detects common errors and suggests feedback on them. It can also find more difficult-to-spot mistakes, saving Edward a lot of time trying to find the issue in the submission.
+// - This way, Fiona also gets her results faster.
+Edward is a teaching assistant in a Software Engineering course. One of the students in the course is Fiona. She is a hard-working individual who always turns in her weekly exercises on time.
+Fiona, like her classmates, sometimes makes small errors in her work. The nature of learning something new is such that these mistakes can happen, and catching them early is vital for steady progress. Fiona needs to understand her errors while the exercises are still fresh in her mind.
+Edward, on the other hand, has a big task on his hands. He needs to grade many assignments, and this would usually take up to two weeks. This delay isn't ideal because students need their feedback sooner rather than later.
+However, the automatic feedback suggestion capabilities of the learning platform are enabled: Edward can see suggestions as soon as Fiona and the other students submit their work. The tool not only highlights the mistakes that students often make but also points out the less obvious ones that can be hard to spot. This saves Edward a lot of time and allows him to focus on delivering timely feedback.
+For Fiona, it means she gets her feedback much faster. She can learn from her mistakes, adjust her approach, and move on to the next exercise without delay.
 
 === Use Case Model
 #rect(

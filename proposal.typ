@@ -1,0 +1,1 @@
+See https://github.com/pal03377/master-thesis-proposal

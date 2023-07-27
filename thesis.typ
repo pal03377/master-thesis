@@ -428,20 +428,12 @@ Functional requirements are independent of implementation details. They solely d
 ]
 
 == System Models
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This section includes important system models for the requirements analysis.
-]
-// TODO: write short overview of what this part (Systmem Models) contains: Scenarios, Use Case Model, Analysis Object Model, Dynamic Model, User Interface
+In this part of the requirements analysis, we will present the system models for the Athena system. We start by describing the scenarios that we envision for the system. Then, we present the use case model, analysis object model, dynamic model, and user interface of the system, including detailed diagrams and descriptions.
 
 === Scenarios
 // Visionary Scenario: scenario that would perfectly solve the problem, even if it might not be realizable. Use free text description
 // Demo Scenario: scenario that you can implement and demonstrate until the end of your thesis
-A scenario is "a concrete, focused, informal description of a single feature of the system from the viewpoint of a single actor" @bruegge2004object. The following sections describe X visionary and X demonstration scenarios. // TODO: insert values for X
+A scenario is "a concrete, focused, informal description of a single feature of the system from the viewpoint of a single actor" @bruegge2004object. The following sections describe two visionary scenarios and one demonstration scenario.
 \ \ 
 
 *Visionary Scenarios*

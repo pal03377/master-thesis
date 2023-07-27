@@ -512,12 +512,12 @@ For Fiona, it means she gets her feedback much faster. She can learn from her mi
 
 === Use Case Model
 // Note: This subsection should contain a UML Use Case Diagram including roles and their use cases. You can use colors to indicate priorities. Think about splitting the diagram into multiple ones if you have more than 10 use cases. *Important:* Make sure to describe the most important use cases using the use case table template. Also describe the rationale of the use case model, i.e. why you modeled it like you show it in the diagram.
-According to Bruegge and Dutoit, use cases describe "a function provided by the system that yields a visible result for an actor"@bruegge2004object. In our discussion, we'll consider Artemis as our system, and the actors will be represented by an _instructor_, a _tutor_ and _Athena_ interacting with the system.
+According to Bruegge and Dutoit, use cases describe "a function provided by the system that yields a visible result for an actor"~@bruegge2004object. In our discussion, we'll consider Artemis as our system, and the actors will be represented by an _instructor_, a _tutor_ and _Athena_ interacting with the system.
 We'll break down the use case model into two separate diagrams for clarity.
 
 #figure(
   image("figures/use-case-diagram-tutor-instructor.svg", width: 100%),
-  caption: [Use Case Diagram for the Tutor],
+  caption: [Use Case Diagram for a tutor and an instructor of the course],
 ) <useCaseModelTutorInstructor>
 
 In @useCaseModelTutorInstructor we show the use cases of both an instructor and a tutor who use Artemis with Athena to grade students' submissions.
@@ -536,15 +536,18 @@ It can then suggest feedback for the submission (#frlink(<frProvideFeedbackSugge
 Both suggesting the next submission and suggesting feedback need insight into the submissions by the students, which is why Athena needs to be able to access them.
 
 === Analysis Object Model
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This subsection should contain a UML Class Diagram showing the most important objects, attributes, methods and relations of your application domain including taxonomies using specification inheritance (see @bruegge2004object). Do not insert objects, attributes or methods of the solution domain. *Important:* Make sure to describe the analysis object model thoroughly in the text so that readers are able to understand the diagram. Also write about the rationale how and why you modeled the concepts like this.
-]
-As described by Bruegge and Dutoit, we use the analysis model together with nonfunctional requirements to prepare for the architecture of the system@bruegge2004object. One of the parts of the analysis model is the analysis object model, which we realize as two separate UML class diagrams, one for Artemis and one for Athena.
+// Note: This subsection should contain a UML Class Diagram showing the most important objects, attributes, methods and relations of your application domain including taxonomies using specification inheritance (see @bruegge2004object). Do not insert objects, attributes or methods of the solution domain. *Important:* Make sure to describe the analysis object model thoroughly in the text so that readers can understand the diagram. Also, write about the rationale about how and why you modeled the concepts like this.
+As described by Bruegge and Dutoit, we use the analysis model together with nonfunctional requirements to prepare for the architecture of the system~@bruegge2004object. One of the parts of the analysis model is the analysis object model, which we realize as two separate UML class diagrams for clarity.
+
+#figure(
+  image("figures/aom-1.svg", width: 100%),
+  caption: [Analysis Object Model for the Artemis System concerning automatic feedback suggestions],
+) <analysisObjectModel1>
+
+#figure(
+  image("figures/aom-2.svg", width: 85%),
+  caption: [More detailed view on the Analysis Object Model for the feedback],
+) <analysisObjectModel2>
 
 === Dynamic Model
 #rect(

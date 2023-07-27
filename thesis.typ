@@ -244,6 +244,7 @@ Functional requirements are independent of implementation details. They solely d
 // 2. Generalization: Multiple exercise types
 // 3. Semi-Automatic Suggestions for Programming Submissions
 
+#v(1em)
 *Assessment Modules*
 // - There should be multiple assessment modules in Athena, each of which can be turned on or off
 // - A user of the LMS can choose which assessment module(s) to use for a particular exercise
@@ -323,6 +324,7 @@ Functional requirements are independent of implementation details. They solely d
   This action should not interfere with the normal functioning of either system. // constraint of action
 ] <frCommunicateModuleHealthStatus>
 
+#v(1em)
 *More Exercise Types*
 // - Athena should be able to receive submissions and feedback for text exercises, programming exercises, file upload exercises, and modeling exercises.
 // - Artemis should send submissions and feedback for text exercises, programming exercises, file upload exercises, and modeling exercises to Athena.
@@ -346,6 +348,7 @@ Functional requirements are independent of implementation details. They solely d
   The data transfer will only happen if Athena is enabled in Artemis and has an active corresponding assessment module. // constraint of action
 ] <frSendSubmissionsAndFeedback>
 
+#v(1em)
 *Programming Assessment Module*
 // - A newly developed programming assessment module called ThemisML should be included in Athena. It should be able to provide feedback suggestions for programming exercises based on the similarity of the submissions' code and existing feedback.
 // - The existing integration of the Themis grading app into ThemisML should be replaced with an integration into Artemis + Athena.
@@ -508,14 +511,7 @@ However, the automatic feedback suggestion capabilities of the learning platform
 For Fiona, it means she gets her feedback much faster. She can learn from her mistakes, adjust her approach, and move on to the next exercise without delay.
 
 === Use Case Model
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This subsection should contain a UML Use Case Diagram including roles and their use cases. You can use colors to indicate priorities. Think about splitting the diagram into multiple ones if you have more than 10 use cases. *Important:* Make sure to describe the most important use cases using the use case table template (./tex/use-case-table.tex). Also describe the rationale of the use case model, i.e. why you modeled it like you show it in the diagram.
-]
+// Note: This subsection should contain a UML Use Case Diagram including roles and their use cases. You can use colors to indicate priorities. Think about splitting the diagram into multiple ones if you have more than 10 use cases. *Important:* Make sure to describe the most important use cases using the use case table template. Also describe the rationale of the use case model, i.e. why you modeled it like you show it in the diagram.
 According to Bruegge and Dutoit, use cases describe "a function provided by the system that yields a visible result for an actor"@bruegge2004object. In our discussion, we'll consider Artemis as our system, and the actors will be represented by an _instructor_, a _tutor_ and _Athena_ interacting with the system.
 We'll break down the use case model into two separate diagrams for clarity.
 
@@ -524,13 +520,20 @@ We'll break down the use case model into two separate diagrams for clarity.
   caption: [Use Case Diagram for the Tutor],
 ) <useCaseModelTutorInstructor>
 
-In @useCaseModelTutorInstructor we show the use cases of both an instructor and a tutor who use Artemis with Athena to grade students' submissions. The instructor can select the assessment module that is best suited for giving feedback suggestions on the specific exercise to be assessed (#frlink(<frSelectAssessmentModule>)). After that has happened and the exercise due date is reached, the tutor can start grading the submissions. They can view a given submission and directly receive feedback suggestions from Athena (#frlink(<frViewFeedbackSuggestionsUI>)). The tutor can then either accept the suggestions or edit them (#frlink(<frAcceptFeedbackSuggestions>)). Alternatively, they can also choose to ignore the suggestions and write their own feedback (#frlink(<frRejectFeedbackSuggestions>)). After the tutor has finished grading the submission, they can submit the result to the system.
+In @useCaseModelTutorInstructor we show the use cases of both an instructor and a tutor who use Artemis with Athena to grade students' submissions.
+The instructor can select the assessment module that is best suited for giving feedback suggestions on the specific exercise to be assessed (#frlink(<frSelectAssessmentModule>)). Examples of the assessment module include the CoFee module for text exercises, ThemisML for programming exercises or one of the two available modules using LLMs for feedback suggestions on both programming and text exercises.
+After the instructor selected an assessment module and after the exercise due date is reached, the tutor can start assessing the submissions. They can view a given submission that is chosen by the current assessment module in Athena (see @useCaseModelAthena). Then, they will directly receive feedback suggestions from Athena (#frlink(<frViewFeedbackSuggestionsUI>)).
+The tutor can either accept the suggestions or edit them to match their evaluation of the submission (#frlink(<frAcceptFeedbackSuggestions>)). Alternatively, they can also choose to reject the suggestions and to only give manual feedback (#frlink(<frRejectFeedbackSuggestions>)). Any combination of accepting, modifying and rejecting suggestions is possible.
+After the tutor has finished grading the submission, they can submit the result to the system.
 
 #figure(
   image("figures/use-case-diagram-Athena.svg", width: 82%),
   caption: [Use Case Diagram for the Athena System],
 ) <useCaseModelAthena>
 
+In @useCaseModelAthena we show the use cases of the Athena system in Artemis. Athena can suggest the next submission for assessment (#frlink(<frSuggestNextSubmission>)) to later learn as efficiently as possible from the given manual feedback in the correct order (e.g. by suggesting the submission with the highest potential _information gain_ in CoFee).
+It can then suggest feedback for the submission (#frlink(<frProvideFeedbackSuggestions>)) using the assessment module selected by the instructor, which makes the suggestions based on the submission itself, previous manual feedback given by all tutors, and potentially other related metadata like grading instructions of the exercise.
+Both suggesting the next submission and suggesting feedback need insight into the submissions by the students, which is why Athena needs to be able to access them.
 
 === Analysis Object Model
 #rect(

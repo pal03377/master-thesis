@@ -27,6 +27,11 @@
   )
   show math.equation: set text(weight: 400)
   show heading: set text(font: body-font)
+  show heading: it => {
+    v(0.5em)
+    it
+    v(0.5em)
+  }
   set heading(numbering: "1.1")
   set par(leading: 1em)
 

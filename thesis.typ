@@ -63,6 +63,12 @@
 )
 
 // Custom functions
+// inspired by https://github.com/typst/typst/issues/325#issuecomment-1502633209:
+#let enumlink(prefix, enum_counter, label) = link(label)[#locate(loc => {
+  let item = query(selector(label), loc).first();
+  [#{prefix}~#{numbering("1",..enum_counter.at(item.location()).map(i => i+1))}] // can't work out numbering of enum, but render number
+})]
+
 #let fr_counter = counter("fr")
 #let fr(it) = block[
   #fr_counter.step()
@@ -70,6 +76,7 @@
     #it
   ]
 ]
+#let frlink(label) = enumlink("FR", fr_counter, label)
 #let nfr_counter = counter("nfr")
 #let nfr(it) = block[
   #nfr_counter.step()
@@ -77,6 +84,16 @@
     #it
   ]
 ]
+#let nfrlink(label) = enumlink("NFR", fr_counter, label)
+#show ref: it => {
+  if it.element != none and it.element.func() == fr {
+    "FR " + it.element.args[0].display()
+  } else if it.element != none and it.element.func() == nfr {
+    "NFR " + it.element.args[0].display()
+  } else {
+    it
+  }
+}
 
 = Introduction
 #rect(
@@ -241,25 +258,25 @@ Functional requirements are independent of implementation details. They solely d
   which assessment module // object
   to use for a particular exercise.
   Only assessment modules that are compatible with the exercise type can be selected. // constraint of action
-]
+] <frSelectAssessmentModule>
 #fr[
-  *Provide Suggested Submission*
+  *Suggest Next Submission*
   Upon receiving a request from the LMS, // condition
   an assessment module // subject
   can generate // action
   a suggested next submission // object
   based on the previous submissions and their feedback.
   The suggestion can only be provided if there are previous submissions and feedback data available. // constraint of action
-]
+] <frSuggestNextSubmission>
 #fr[
-  *Send Submissions and Feedback*
+  *Receive Submissions and Feedback*
   After the deadline of an exercise and each time a tutor submits feedback, // condition
   the LMS // subject
   can transmit // action
   the submissions or associated feedback // object
-  to Athena for analysis.
+  to Athena for analysis, so that Athena can learn from past feedback.
   The transmission should only occur if the chosen assessment module in Athena is active. // constraint of action
-]
+] <frReceiveSubmissionsAndFeedback>
 #fr[
   *Provide Feedback Suggestions*
   When a tutor starts grading a submission, // condition
@@ -268,7 +285,34 @@ Functional requirements are independent of implementation details. They solely d
   feedback suggestions // object
   to the LMS.
   Feedback suggestions are generated based on the selected assessment module's capabilities and analysis parameters. // constraint of action
-]
+] <frProvideFeedbackSuggestions>
+#fr[
+  *View Feedback Suggestions UI*
+  Once Athena has finished processing all incoming data and can provide feedback suggestions, // condition
+  Artemis // subject
+  can display // action
+  a UI for tutors to view these feedback suggestions // object
+  for text exercises, programming exercises, and file upload exercises.
+  The UI should be accessible only to authorized tutors who are grading the exercise. // constraint of action
+] <frViewFeedbackSuggestionsUI>
+#fr[
+  *Accept Feedback Suggestions*
+  When a tutor is content with a given feedback suggestion, // condition
+  they // subject
+  can accept // action
+  it // object
+  from within the LMS.
+  // constraint of action
+] <frAcceptFeedbackSuggestions>
+#fr[
+  *Reject Feedback Suggestions*
+  When a tutor does not want to apply a feedback suggestion, // condition
+  they // subject
+  can reject // action
+  it // object
+  from within the LMS.
+  // constraint of action
+] <frRejectFeedbackSuggestions>
 #fr[
   *Communicate Module Health Status*
   During the operation of the LMS, // condition
@@ -277,7 +321,7 @@ Functional requirements are independent of implementation details. They solely d
   their respective module health statuses // object
   to each other.
   This action should not interfere with the normal functioning of either system. // constraint of action
-]
+] <frCommunicateModuleHealthStatus>
 
 *More Exercise Types*
 // - Athena should be able to receive submissions and feedback for text exercises, programming exercises, file upload exercises, and modeling exercises.
@@ -291,7 +335,7 @@ Functional requirements are independent of implementation details. They solely d
   the submissions and feedback // object
   for text exercises, programming exercises, and file upload exercises.
   The data must be in a format compatible with Athena. // constraint of action
-]
+] <frReceiveSubmissionsAndFeedback>
 #fr[
   *Send Submissions and Feedback for Various Exercises*
   After the completion of any text, programming, or file upload exercise by a user, // condition
@@ -300,16 +344,7 @@ Functional requirements are independent of implementation details. They solely d
   the corresponding submissions and feedback // object
   to Athena.
   The data transfer will only happen if Athena is enabled in Artemis and has an active corresponding assessment module. // constraint of action
-]
-#fr[
-  *View Feedback Suggestions UI*
-  Once Athena has finished processing all incoming data and can provide feedback suggestions, // condition
-  Artemis // subject
-  can display // action
-  a UI for tutors to view these feedback suggestions // object
-  for text exercises, programming exercises, and file upload exercises.
-  The UI should be accessible only to authorized tutors who are grading the exercise. // constraint of action
-]
+] <frSendSubmissionsAndFeedback>
 
 *Programming Assessment Module*
 // - A newly developed programming assessment module called ThemisML should be included in Athena. It should be able to provide feedback suggestions for programming exercises based on the similarity of the submissions' code and existing feedback.
@@ -321,7 +356,7 @@ Functional requirements are independent of implementation details. They solely d
   will incorporate // action
   a newly developed programming assessment module called ThemisML. // object
   ThemisML, being a new module, should not interfere with the functionality of the existing assessment modules in Athena. // constraint of action
-]
+] <frIncludeNewProgrammingAssessmentModule>
 #fr[
   *Feedback Suggestions by ThemisML*
   When the LMS sends a submission for a programming exercise, // condition
@@ -330,15 +365,15 @@ Functional requirements are independent of implementation details. They solely d
   feedback suggestions // object
   based on the similarity of the submissions' code and existing feedback.
   Only if sufficient historical submission data and feedback are available can ThemisML provide feedback suggestions. // constraint of action
-]
-#fr[
-  *Replace Themis Grading App Integration*
-  With the inclusion of ThemisML in Athena, // condition
-  the existing integration // subject
-  of the Themis grading app should be replaced // action
-  with an API call to Artemis. // object
-  The replacement should not affect the functionality of the Themis grading app. // constraint of action
-]
+] <frFeedbackSuggestionsByThemisML>
+//#fr[
+//  *Replace Themis Grading App Integration*
+//  With the inclusion of ThemisML in Athena, // condition
+//  the existing integration // subject
+//  of the Themis grading app should be replaced // action
+//  with an API call to Artemis. // object
+//  The replacement should not affect the functionality of the Themis grading app. // constraint of action
+//] <frReplaceThemisGradingAppIntegration>
 
 // TODO: Do I need to make the FRs more granular? Moritz has 15. Here are 11.
 
@@ -362,37 +397,37 @@ Functional requirements are independent of implementation details. They solely d
 #nfr[
   *System Scalability*
   The system should scale effectively to accommodate growth in the number of users and assessments.
-]
+] <nfrSystemScalability>
 
 *Usability*
 #nfr[
   *Feedback Accessibility*
   Tutors should be able to effortlessly view and interpret the feedback suggestions provided by Athena.
-]
+] <nfrFeedbackAccessibility>
 #nfr[
   *Easy Configuration*
   The system should be easily configurable with a simple setup process to encourage adoption.
-]
+] <nfrEasyConfiguration>
 
 *Performance*
 #nfr[
   *Response Time*
   Feedback suggestions should be provided to tutors in a timely manner, ideally within a few seconds.
-]
+] <nfrResponseTime>
 #nfr[
   *Immediate Grading*
   Tutors should be able to start grading a submission immediately, even if Athena has not yet provided feedback suggestions. In this case, suggestions from Athena should load asynchronously, allowing grading to proceed without delay.
-]
+] <nfrImmediateGrading>
 
 *Maintainability*
 #nfr[
   *New Module Development*
   The system should support the easy development of new modules, enabling straightforward integration into Athena.
-]
+] <nfrNewModuleDevelopment>
 #nfr[
   *System Maintenance*
   The system should be easy to maintain and update, with clear documentation on system architecture and code.
-]
+] <nfrSystemMaintenance>
 
 *Security*
 // - Artemis and Athena should authenticate to each other (both!) using a shared API secret. This secret should be checked on all requests.
@@ -401,31 +436,31 @@ Functional requirements are independent of implementation details. They solely d
 #nfr[
   *Mutual Authentication*
   Both Artemis and Athena should authenticate each other using a shared API secret. This secret should be checked on all requests to ensure secure communication.
-]
+] <nfrMutualAuthentication>
 #nfr[
   *Data Leakage Prevention*
   Confidential data, such as student submissions or feedback, should not be leaked outside of Artemis and Athena. Appropriate data protection measures must be in place.
-]
+] <nfrDataLeakagePrevention>
 
 *Reliability*
 #nfr[
   *System Availability*
   The system should be designed to have high availability, targeting a 99.9% uptime.
-]
+] <nfrSystemAvailability>
 #nfr[
   *Module Independence*
   A failure in one module of Athena should not impact the functionality of other modules.
-]
+] <nfrModuleIndependence>
 
 *Documentation*
 #nfr[
   *User Documentation*
   Detailed user documentation should be provided, including guidelines for using feedback suggestions in the LMS.
-]
+] <nfrUserDocumentation>
 #nfr[
   *Developer's Guide*
   A comprehensive developer's guide should be available, detailing the system architecture, database schemas, and module development process.
-]
+] <nfrDevelopersGuide>
 
 == System Models
 In this part of the requirements analysis, we will present the system models for the Athena system. We start by describing the scenarios that we envision for the system. Then, we present the use case model, analysis object model, dynamic model, and user interface of the system, including detailed diagrams and descriptions.
@@ -442,7 +477,7 @@ A scenario is "a concrete, focused, informal description of a single feature of 
 // The student already receives feedback suggestions in real-time themselves and submits a fully correct submission at the end, having learned a lot more in the process with the shortest feedback cycle possible. The system automatically finds mistakes and points the student to where they could be wrong with helpful but not too revealing feedback. This way, there is no need for additional grading, and the tutors for the course can fully concentrate on supporting the students in other ways.
 Julia, a persistent student in a Data Structures course, and Leo, a dedicated tutor for the same course, find themselves in a modern, technologically advanced learning environment. This time, the students have an innovative tool at their disposal that offers real-time feedback suggestions while they are working on their exercises.
 In this context, Julia encounters a complex assignment on tree data structures. As she works her way through the exercise, she benefits from the system's feedback suggestions. The tool cleverly points out possible mistakes without revealing the entire solution, nudging Julia towards the correct path.
-This intelligent feedback system operates like a silent tutor, helping Julia correct minor errors and improve her understanding in real-time. It guides her, prompting her to think more critically about her code, encouraging her to find and fix errors independently. By the time Julia finishes the assignment and submits it, her work is free of errors. The immediate feedback she received throughout her work allowed her to correct her mistakes as she made them.
+This intelligent feedback system operates like a silent tutor, helping Julia correct minor errors and improve her understanding in real-time. It guides her, prompting her to think more critically about her code, and encourages her to find and fix errors independently. By the time Julia finishes the assignment and submits it, her work is free of errors. The immediate feedback she received throughout her work allowed her to correct her mistakes as she made them.
 Freed from the time-consuming task of grading assignments, Leo can now invest more of his time in addressing students' conceptual questions and mentoring them in their learning journey. He can now engage more deeply with students.
 \ \ 
 *Enhancing Automatic Test Feedback*
@@ -480,8 +515,22 @@ For Fiona, it means she gets her feedback much faster. She can learn from her mi
   fill: yellow,
 )[
   Note: This subsection should contain a UML Use Case Diagram including roles and their use cases. You can use colors to indicate priorities. Think about splitting the diagram into multiple ones if you have more than 10 use cases. *Important:* Make sure to describe the most important use cases using the use case table template (./tex/use-case-table.tex). Also describe the rationale of the use case model, i.e. why you modeled it like you show it in the diagram.
-
 ]
+According to Bruegge and Dutoit, use cases describe "a function provided by the system that yields a visible result for an actor"@bruegge2004object. In our discussion, we'll consider Artemis as our system, and the actors will be represented by an _instructor_, a _tutor_ and _Athena_ interacting with the system.
+We'll break down the use case model into two separate diagrams for clarity.
+
+#figure(
+  image("figures/use-case-diagram-tutor-instructor.svg", width: 100%),
+  caption: [Use Case Diagram for the Tutor],
+) <useCaseModelTutorInstructor>
+
+In @useCaseModelTutorInstructor we show the use cases of both an instructor and a tutor who use Artemis with Athena to grade students' submissions. The instructor can select the assessment module that is best suited for giving feedback suggestions on the specific exercise to be assessed (#frlink(<frSelectAssessmentModule>)). After that has happened and the exercise due date is reached, the tutor can start grading the submissions. They can view a given submission and directly receive feedback suggestions from Athena (#frlink(<frViewFeedbackSuggestionsUI>)). The tutor can then either accept the suggestions or edit them (#frlink(<frAcceptFeedbackSuggestions>)). Alternatively, they can also choose to ignore the suggestions and write their own feedback (#frlink(<frRejectFeedbackSuggestions>)). After the tutor has finished grading the submission, they can submit the result to the system.
+
+#figure(
+  image("figures/use-case-diagram-Athena.svg", width: 82%),
+  caption: [Use Case Diagram for the Athena System],
+) <useCaseModelAthena>
+
 
 === Analysis Object Model
 #rect(

@@ -544,6 +544,8 @@ As described by Bruegge and Dutoit, we use the analysis model together with nonf
   caption: [Analysis Object Model for the Artemis System concerning automatic feedback suggestions],
 ) <analysisObjectModel1>
 
+// TODO: Describe AOM more
+
 === Dynamic Model
 #rect(
   width: 100%,
@@ -553,6 +555,11 @@ As described by Bruegge and Dutoit, we use the analysis model together with nonf
 )[
   Note: This subsection should contain dynamic UML diagrams. These can be a UML state diagrams, UML communication diagrams or UML activity diagrams.*Important:* Make sure to describe the diagram and its rationale in the text. *Do not use UML sequence diagrams.*
 ]
+
+#figure(
+  image("figures/activity-diagram.svg", width: 100%),
+  caption: [Activity Diagram showing the assessment workflow with Athena],
+) <activityDiagram>
 
 === User Interface
 #rect(

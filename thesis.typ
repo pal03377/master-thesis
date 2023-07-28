@@ -540,14 +540,9 @@ Both suggesting the next submission and suggesting feedback need insight into th
 As described by Bruegge and Dutoit, we use the analysis model together with nonfunctional requirements to prepare for the architecture of the system~@bruegge2004object. One of the parts of the analysis model is the analysis object model, which we realize as two separate UML class diagrams for clarity.
 
 #figure(
-  image("figures/aom-1.svg", width: 100%),
+  image("figures/aom.svg", width: 100%),
   caption: [Analysis Object Model for the Artemis System concerning automatic feedback suggestions],
 ) <analysisObjectModel1>
-
-#figure(
-  image("figures/aom-2.svg", width: 85%),
-  caption: [More detailed view on the Analysis Object Model for the feedback],
-) <analysisObjectModel2>
 
 === Dynamic Model
 #rect(

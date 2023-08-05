@@ -231,7 +231,7 @@ Artemis activates the Athena-CoFee subsystem when a tutor begins to assess a stu
 
 == Proposed System
 // Note: Describe the proposed system in detail. Use the following subsections to structure your description.
-We propose a new system on top of Athena-CoFee called Athena. In the following, we will describe Athena's functional and non-functional requirements using the Requirements Analysis Document Template in @bruegge2004object.
+We propose a new system on top of Athena-CoFee called Athena. In the following, we will describe the functional and non-functional requirements of Athena using the Requirements Analysis Document Template in @bruegge2004object.
 
 === Functional Requirements
 // Note: List and describe all functional requirements of your system. Also mention requirements that you were not able to realize. The short title should be in the form “verb objective”
@@ -270,14 +270,23 @@ Functional requirements are independent of implementation details. They solely d
   The suggestion can only be provided if there are previous submissions and feedback data available. // constraint of action
 ] <frSuggestNextSubmission>
 #fr[
-  *Receive Submissions and Feedback*
-  After the deadline of an exercise and each time a tutor submits feedback, // condition
+  *Process student submissions*
+  After the deadline of an exercise, // condition
   the LMS // subject
-  can transmit // action
-  the submissions or associated feedback // object
+  transmits // action
+  all submissions // object
+  to Athena for analysis, so that Athena can prepare for future feedback suggestions.
+  The transmission should only occur if the chosen assessment module in Athena is active. // constraint of action
+] <frReceiveSubmissions>
+#fr[
+  *Learn from past feedback*
+  Each time a tutor submits feedback, // condition
+  the LMS // subject
+  transmits // action
+  the associated feedback // object
   to Athena for analysis, so that Athena can learn from past feedback.
   The transmission should only occur if the chosen assessment module in Athena is active. // constraint of action
-] <frReceiveSubmissionsAndFeedback>
+] <frReceiveFeedback>
 #fr[
   *Provide Feedback Suggestions*
   When a tutor starts grading a submission, // condition
@@ -288,7 +297,7 @@ Functional requirements are independent of implementation details. They solely d
   Feedback suggestions are generated based on the selected assessment module's capabilities and analysis parameters. // constraint of action
 ] <frProvideFeedbackSuggestions>
 #fr[
-  *View Feedback Suggestions UI*
+  *Review Suggestions*
   Once Athena has finished processing all incoming data and can provide feedback suggestions, // condition
   Artemis // subject
   can display // action
@@ -305,6 +314,15 @@ Functional requirements are independent of implementation details. They solely d
   from within the LMS.
   // constraint of action
 ] <frAcceptFeedbackSuggestions>
+#fr[
+  *Modify Feedback Suggestions*
+  When a tutor wants to modify a feedback suggestion, // condition
+  they // subject
+  can do so // action
+  it // object
+  from within the LMS.
+  // constraint of action
+] <frModifyFeedbackSuggestions>
 #fr[
   *Reject Feedback Suggestions*
   When a tutor does not want to apply a feedback suggestion, // condition
@@ -337,7 +355,7 @@ Functional requirements are independent of implementation details. They solely d
   the submissions and feedback // object
   for text exercises, programming exercises, and file upload exercises.
   The data must be in a format compatible with Athena. // constraint of action
-] <frReceiveSubmissionsAndFeedback>
+] <frMoreGeneralSubmissionsAndFeedbackReceive>
 #fr[
   *Send Submissions and Feedback for Various Exercises*
   After the completion of any text, programming, or file upload exercise by a user, // condition
@@ -506,14 +524,14 @@ Sophie no longer has to search through every line of code to spot errors or unde
 // - This way, Fiona also gets her results faster.
 Edward is a teaching assistant in a Software Engineering course. One of the students in the course is Fiona. She is a hard-working individual who always turns in her weekly exercises on time.
 Fiona, like her classmates, sometimes makes small errors in her work. The nature of learning something new is such that these mistakes can happen, and catching them early is vital for steady progress. Fiona needs to understand her errors while the exercises are still fresh in her mind.
-Edward, on the other hand, has a big task on his hands. He needs to grade many assignments, and this would usually take up to two weeks. This delay isn't ideal because students need their feedback sooner rather than later.
+Edward, on the other hand, has a big task on his hands. He needs to grade many assignments, and this would usually take up to two weeks. This delay is not ideal because students need their feedback sooner rather than later.
 However, the automatic feedback suggestion capabilities of the learning platform are enabled: Edward can see suggestions as soon as Fiona and the other students submit their work. The tool not only highlights the mistakes that students often make but also points out the less obvious ones that can be hard to spot. This saves Edward a lot of time and allows him to focus on delivering timely feedback.
 For Fiona, it means she gets her feedback much faster. She can learn from her mistakes, adjust her approach, and move on to the next exercise without delay.
 
 === Use Case Model
 // Note: This subsection should contain a UML Use Case Diagram including roles and their use cases. You can use colors to indicate priorities. Think about splitting the diagram into multiple ones if you have more than 10 use cases. *Important:* Make sure to describe the most important use cases using the use case table template. Also describe the rationale of the use case model, i.e. why you modeled it like you show it in the diagram.
-According to Bruegge and Dutoit, use cases describe "a function provided by the system that yields a visible result for an actor"~@bruegge2004object. In our discussion, we'll consider Artemis as our system, and the actors will be represented by an _instructor_, a _tutor_ and _Athena_ interacting with the system.
-We'll break down the use case model into two separate diagrams for clarity.
+According to Bruegge and Dutoit, use cases describe "a function provided by the system that yields a visible result for an actor"~@bruegge2004object. In the discussion, we will consider Artemis as the system, and the actors will be represented by an _instructor_, a _tutor_ and _Athena_ interacting with the system.
+We will break down the use case model into two separate diagrams for clarity.
 
 #figure(
   image("figures/use-case-diagram-tutor-instructor.svg", width: 100%),

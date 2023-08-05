@@ -555,14 +555,20 @@ Both suggesting the next submission and suggesting feedback need insight into th
 
 === Analysis Object Model
 // Note: This subsection should contain a UML Class Diagram showing the most important objects, attributes, methods and relations of your application domain including taxonomies using specification inheritance (see @bruegge2004object). Do not insert objects, attributes or methods of the solution domain. *Important:* Make sure to describe the analysis object model thoroughly in the text so that readers can understand the diagram. Also, write about the rationale about how and why you modeled the concepts like this.
-As described by Bruegge and Dutoit, we use the analysis model together with nonfunctional requirements to prepare for the architecture of the system~@bruegge2004object. One of the parts of the analysis model is the analysis object model, which we realize as two separate UML class diagrams for clarity.
+As described by Bruegge and Dutoit, we use the analysis model to prepare for the architecture of the system~@bruegge2004object. The corresponding analysis object model is shown in @analysisObjectModel and includes the most important objects, attributes, methods and relations of the application domain.
 
 #figure(
   image("figures/aom.svg", width: 100%),
   caption: [Analysis Object Model for the Artemis System concerning automatic feedback suggestions],
-) <analysisObjectModel1>
+) <analysisObjectModel>
 
-// TODO: Describe AOM more
+A *Course* has multiple *Users*, each with a name. These might be *Students*, *Tutors* or *Instructors*.
+There are several *Exercises* in a course, which can be either *Text Exercises* or *Programming Exercises*, with the corresponding type of content. Each exercise has a title, a maximum score, and a due date.
+The course instructors can _select the assessment module_ for any exercise. This way, they can choose between the different approaches for automatic feedback suggestions.
+Students can create a *Submission* for an exercise, which contains the actual content of their solution. Tutors can _view_ these submissions and _assess_ them. Athena will _suggest feedback_ on the submission.
+This feedback is a *Feedback Suggestion*, which the tutor can _accept_, _modify_ or _reject_. There are two other types of feedback: *Manual Feedback*, which is given by the tutor, and *Automatic Feedback*, which is given on programming exercises using the fully automatic tests in Artemis.
+A *Feedback* consists of the feedback text, an optional reference to the location in the submission that it applies to and a given number of credits, which can also be negative.
+A collection of feedback creates an *Assessment*, which is the result of assessing a submission. It has a given non-negative score and can be _submitted_ by the tutor.
 
 === Dynamic Model
 // Note: This subsection should contain dynamic UML diagrams. These can be a UML state diagrams, UML communication diagrams or UML activity diagrams. *Important:* Make sure to describe the diagram and its rationale in the text. *Do not use UML sequence diagrams.*

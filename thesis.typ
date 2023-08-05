@@ -565,14 +565,16 @@ As described by Bruegge and Dutoit, we use the analysis model together with nonf
 // TODO: Describe AOM more
 
 === Dynamic Model
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This subsection should contain dynamic UML diagrams. These can be a UML state diagrams, UML communication diagrams or UML activity diagrams.*Important:* Make sure to describe the diagram and its rationale in the text. *Do not use UML sequence diagrams.*
-]
+// Note: This subsection should contain dynamic UML diagrams. These can be a UML state diagrams, UML communication diagrams or UML activity diagrams. *Important:* Make sure to describe the diagram and its rationale in the text. *Do not use UML sequence diagrams.*
+@activityDiagram shows an activity diagram of the assessment workflow with Athena.
+When the submission due date of the exercise is reached, Artemis starts to prepare the exercise assessment. One step of this preparation is to send all submissions to Athena for processing.
+Artemis then enables the assessment of the exercise for the tutors.
+Depending on whether the feature is supported or not given the exercise, Artemis then either sends a list of submission IDs to Athena or chooses a random submission to assess. This way, Athena can select the best submission, i.e., the submission with the highest information gain, for the tutor to assess.
+The selected submission is then sent to the tutor, who can request suggestions from Athena right after getting the submission. The tutor can also directly start the manual review in case Athena takes unusually long to respond to the request.
+Athena then generates and sends the feedback suggestions to the tutor to review.
+After the tutor has finished the assessment, they can submit the assessment to Artemis.
+Artemis saves the assessment in its database and also sends the assessment to Athena for learning.
+After this step, the assessment workflow is finished, and the tutor can start assessing the next submission until there all submissions are assessed.
 
 #figure(
   image("figures/activity-diagram.svg", width: 100%),

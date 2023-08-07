@@ -186,14 +186,22 @@
 ]
 
 = Related Work
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches / concepts / workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was al- ready solved by XYZ.” If you have multiple related works, use subsections to separate them.
-]
+// Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches / concepts / workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was already solved by XYZ.” If you have multiple related works, use subsections to separate them.
+The work of this thesis builds on and extends the work of Bernius et al.~@cofee.
+They introduce *CoFee*, a machine learning methodology developed to provide computer-assisted feedback for open-ended textual assignments. While CoFee addresses a specific subset of our broader objective, our goal is to support different types of exercises, including text-based ones.
+As mentioned by Bernius et al. in~@cofee, there are already other existing solutions to the problem of automatically assisting teachers in grading exercises:
+
+*Atenea*#footnote[Not to be confused with *Athena*, the name of the system we are developing.] is a system that provides automatic scores for short textual answers in English and Spanish computer science exercises using Latent Semantic Analysis and other natural language processing techniques~@atenea2005.
+It scores submissions based on the similarity of the student's answer to a set of reference answers provided by the teacher. This approach has the problem of requiring the teacher to provide a set of reference answers for each exercise, which can be time-consuming and error-prone. Also, the range of possible answers is limited to the ones provided by the teacher and answers similar to them. This means that the system is not able to recognize answers that are correct but different from the given ones.
+Atenea, like Athena, is a modularized system to allow for the integration of different scoring methods, but this remains within the scope of different ways to grade free-text answers.
+
+*Automated Text Scoring* is a similar task to providing feedback suggestions, but it is focused on scoring the quality of a text instead of providing feedback to the student~@alikaniotis2016. Alikaniotis et al. propose a system that uses a deep learning approach to score the quality of a text. The system makes its results more interpretable by providing the locations of the text that are most relevant to the score. This is done by using Long-Short Term Memory networks trained on the Kaggle dataset containing almost 13,000 essays, marked by two raters~@alikaniotis2016.
+The system is different from Athena in that it is not focused on providing feedback to the student but on scoring the quality of the text. It also only generally works on essays, while Athena is designed to work on a broader range of exercises.
+
+// TODO: continue here:
+// for programming exercises: @singh2013automated and @messer2022grading
+
+// TODO: include https://dl.acm.org/doi/10.1145/3231711 ?
 
 = Requirements Analysis
 // Note: This chapter follows the Requirements Analysis Document Template in @bruegge2004object. Important: Make sure that the whole chapter is independent of the chosen technology and development platform. The idea is that you illustrate concepts, taxonomies and relationships of the application domain independent of the solution domain! Cite @bruegge2004object several times in this chapter.

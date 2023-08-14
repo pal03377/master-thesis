@@ -96,7 +96,19 @@
 }
 
 = Introduction
-What is the 
+What is the best way to provide feedback on online exercises?
+Written feedback can have many forms, including simple corrections, marks, comments, questions and targets~@morris2021formative.
+Feedback is information provided by an agent, such as a teacher, to a learner, such as a student, regarding aspects of the learner's performance or understanding~@hattie2007feedback. It can effectively guide students toward the correct solution and help them learn from their mistakes, depending on the quality and impact of the feedback~@hattie2007feedback.
+Feedback is an essential part of the learning process, and it is especially important in the context of online learning. In this context, feedback can be provided by a teacher or a computer system. The latter is called automatic feedback.
+Automatic feedback can be especially helpful in courses with a large number of students, where it is not feasible for a teacher to provide feedback to each student individually~@ArTEMiS.
+Keuning et al. found that such feedback has increased in diversity over the last decades and "new techniques are being applied to generate feedback that is increasingly helpful for students"~@keuning2018review.
+
+The automated generation of feedback is a challenging task, yet it is crucial for the success of online learning: It is difficult for teachers to provide feedback to each student individually in courses with a large number of students~@ArTEMiS. The number of students in computer science courses at universities is steadily increasing. At the Technical University of Munich, the number of full-time students1#footnote[i.e., full-time equivalents]has recently increased by more than 2,400 within five years#footnote[TUM in Zahlen 2020, https://mediatum.ub.tum.de/doc/1638190/1638190.pdf].
+The current state of the art does not yet provide a satisfactory solution to fully automating the feedback process for most types of exercises. However, the process of providing individual feedback to each student can be supported by semi-automatic feedback systems, e.g. the CoFee framework for textual exercises presented by Bernius et al~@cofee.
+
+The implementation of this framework, called Athena, is integrated into the _Artemis_ learning platform#footnote[Source code and links to the documentation available on https://github.com/ls1intum/Artemis, last visited August 14th, 2023] that is developed and used at the Technical University of Munich. It could successfully save work on grading 34 exercises from 2019 to 2021~@cofee2.
+
+Cremer and Michel recently enhanced the system in two key dimensions: adding support for more languages in text assessments and increasing the system's capacity to handle a higher workload~#cite("atheneLanguage", "atheneLoadBalancer").
 
 == Problem
 #rect(

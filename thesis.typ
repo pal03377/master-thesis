@@ -187,31 +187,32 @@
 
 = Related Work
 // Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches / concepts / workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was already solved by XYZ.” If you have multiple related works, use subsections to separate them.
-The work of this thesis builds on and extends the work of Bernius et al.~@cofee.
-They introduce *CoFee*, a machine learning methodology developed to provide computer-assisted feedback for open-ended textual assignments. While CoFee addresses a specific subset of our broader objective, our goal is to support different types of exercises, including text-based ones.
-As mentioned by Bernius et al. in~@cofee, there are already other existing solutions to the problem of automatically assisting teachers in grading exercises:
-CoFee is integrated into Athena as an assessment module for text exercises. Alongside it, there are other assessment modules, some of which support programming exercises.
 
-*Atenea*#footnote[Not to be confused with *Athena*, the name of the system we are developing.] is a system that provides automatic scores for short textual answers in English and Spanish computer science exercises using Latent Semantic Analysis and other natural language processing techniques~@atenea2005.
+_Atenea_#footnote[Not to be confused with *Athena*, the name of the system we are developing.] is a system that provides automatic scores for short textual answers in English and Spanish computer science exercises using Latent Semantic Analysis and other natural language processing techniques~@atenea2005.
 It scores submissions based on the similarity of the student's answer to a set of reference answers provided by the teacher. This approach has the problem of requiring the teacher to provide a set of reference answers for each exercise, which can be time-consuming and error-prone. Also, the range of possible answers is limited to the ones provided by the teacher and answers similar to them. This means that the system is not able to recognize answers that are correct but different from the given ones.
 Atenea, like Athena, is a modularized system to allow for the integration of different scoring methods, but this remains within the scope of different ways to grade free-text answers.
 
 #linebreak()
-*Automated Text Scoring* is a similar task to providing feedback suggestions, but it is focused on scoring the quality of a text instead of providing feedback to the student~@alikaniotis2016. Alikaniotis et al. propose a system that uses a deep learning approach to score the quality of a text. The system makes its results more interpretable by providing the locations of the text that are most relevant to the score. This is done by using Long-Short Term Memory networks trained on the Kaggle dataset containing almost 13,000 essays, marked by two raters~@alikaniotis2016.
+Alikaniotis et al. propose a system for Automated Text Scoring that uses a deep learning approach to score the quality of a text~@alikaniotis2016. The system makes its results more interpretable by providing the locations of the text that are most relevant to the score. This is done by using Long-Short Term Memory networks trained on the Kaggle dataset containing almost 13,000 essays, marked by two raters.
 The system is different from Athena in that it is not focused on providing feedback to the student but on scoring the quality of the text. It also only generally works on essays, while Athena is designed to work on a broader range of exercises.
+
+#linebreak()
+Bernius et al. introduce _CoFee_, a machine-learning methodology developed to provide computer-assisted feedback for open-ended textual assignments~@cofee. While CoFee addresses a specific subset of our broader objective, our goal is to support different types of exercises, including text-based ones. We integrated CoFee into Athena as an assessment module for text exercises. The name "Athena"#footnote[Also sometimes referred to as "Athene"] was previously used for the integrated system, but we will use it to refer to the new system in this work.
+CoFee is integrated into Athena as an assessment module for text exercises. Alongside it, there are other assessment modules, some of which support programming exercises.
 
 // TODO: This seems a bit out of place...
 #linebreak()
-Chow et al. integrated an *automatic programming feedback system* into the *Grok Learning platform* to provide direct feedback to students~@chow2017automated.
-They utilize different methods to create hints for students, including clustering, pattern mining and filtering. The results are hints about potential failing inputs, suggested code changes and concept explanations. The system exclusively provides these hints for Python.
-The system is different from Athena in that it is not focused on providing feedback suggestions to tutors but on providing hints to students while they solve the exercise. Also, Athena is not limited to Python but can be used for programming exercises using any programming language and for text exercises.
+Chow et al. integrated an automatic programming feedback system into the _Grok Learning platform_ to provide direct feedback to students~@chow2017automated.
+They utilize different methods to create hints for students, including clustering, pattern mining and filtering. These hints include potential failing inputs, suggested code changes and concept explanations. The system exclusively works for exercises in the programming language Python.
+It is different from Athena in that it is not focused on providing feedback suggestions to tutors but on providing hints to students while they solve the exercise. Also, Athena is not limited to Python but can be used for programming exercises using any programming language, as well as text exercises.
 
 #linebreak()
-Sing et al. propose an *automated feedback generation for introductory programming assignments* that uses a sample solution written in a subset of Python to give feedback in the form of a list of changes necessary to transform the student's submission into a solution with the same behavior~@singh2013automated. The system can detect common mistakes and provide feedback on them, but its feedback is limited to suggestions on how to fix the mistakes in the code. It does not provide any feedback on the quality of the code or the solution's design. Neither does it provide any feedback on the student's approach to solving the problem or deeper insight into the underlying misunderstanding that led to the mistake.
+Sing et al. propose an automated feedback generation for introductory programming assignments that uses a sample solution written in a subset of Python to give feedback in the form of a list of changes necessary to transform the student's submission into a solution with the same behavior~@singh2013automated. The system can detect common mistakes and provide feedback on them, but its feedback is limited to suggestions on how to fix the mistakes in the code. It does not provide any feedback on the quality of the code or the solution's design. Neither does it provide any feedback on the student's approach to solving the problem or deeper insight into the underlying misunderstanding that led to the mistake.
 Athena can provide feedback suggestions for programming exercises, but it is not limited to providing suggestions on how to fix mistakes in the code. Depending on the chosen assessment module, Athena can provide feedback on the quality of the code, the solution's design, and the student's approach to solving the problem. Furthermore, the assessment modules in Athena generally don't require a sample solution to work.
 
 // Note that generally, one could include related work that proves to be useful as an assessment module in Athena:
 // TODO: Does this make sense here?
+#linebreak()
 Athena has been designed with adaptability in mind. In the future, findings from other research or methodologies can be incorporated into it if they are shown to be useful for providing feedback suggestions in our specific context.
 
 

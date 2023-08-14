@@ -96,14 +96,7 @@
 }
 
 = Introduction
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Introduce the topic of your thesis, e.g. with a little historical overview.
-]
+What is the 
 
 == Problem
 #rect(
@@ -207,8 +200,8 @@ They utilize different methods to create hints for students, including clusterin
 It is different from Athena in that it is not focused on providing feedback suggestions to tutors but on providing hints to students while they solve the exercise. Also, Athena is not limited to Python but can be used for programming exercises using any programming language, as well as text exercises.
 
 #linebreak()
-Sing et al. propose an automated feedback generation for introductory programming assignments that uses a sample solution written in a subset of Python to give feedback in the form of a list of changes necessary to transform the student's submission into a solution with the same behavior~@singh2013automated. The system can detect common mistakes and provide feedback on them, but its feedback is limited to suggestions on how to fix the mistakes in the code. It does not provide any feedback on the quality of the code or the solution's design. Neither does it provide any feedback on the student's approach to solving the problem or deeper insight into the underlying misunderstanding that led to the mistake.
-Athena can provide feedback suggestions for programming exercises, but it is not limited to providing suggestions on how to fix mistakes in the code. Depending on the chosen assessment module, Athena can provide feedback on the quality of the code, the solution's design, and the student's approach to solving the problem. Furthermore, the assessment modules in Athena generally don't require a sample solution to work.
+Sing et al. propose an automated feedback generation for introductory programming assignments that uses a sample solution written in a subset of Python to give feedback in the form of a list of changes necessary to transform the student's submission into a solution with the same behavior~@singh2013automated. The system can detect common mistakes and provide feedback on them, but its feedback is limited to suggestions on how to fix the mistakes in the code. It does not provide any feedback on the quality of the code or the design of the solution. Neither does it provide any feedback on the student's approach to solving the problem or deeper insight into the underlying misunderstanding that led to the mistake.
+Athena can provide feedback suggestions for programming exercises, but it is not limited to providing suggestions on how to fix mistakes in the code. Depending on the chosen assessment module, Athena can provide feedback on the quality of the code, the design of the solution, and the student's approach to solving the problem. Furthermore, the assessment modules in Athena generally do not require a sample solution to work.
 
 // Note that generally, one could include related work that proves to be useful as an assessment module in Athena:
 // TODO: Does this make sense here?
@@ -246,7 +239,7 @@ When a predetermined exercise deadline arrives, a sequence of events unfolds. Ar
 
 The Segmentation Service first partitions each submission into a list of TextBlocks and stores their start and end indexes. The Embedding Service then adopts deeply contextualized word representations, specifically the ElMO model (@elmo), to construct a linguistic embedding of these segments (@cofee). Following this, the Clustering Service applies the Hierarchical Density-Based Spatial Clustering (HDBSCAN, @hdbscan) algorithm to assemble clusters of the embedded segments.
 
-Upon completion of these processes, the Load Balancer transmits the segmented and clustered data back to Artemis via the initially supplied callback URL, and this data is then stored in the system's database.
+Upon completion of these processes, the Load Balancer transmits the segmented and clustered data back to Artemis via the initially supplied callback URL, and this data is then stored in the database of the system.
 
 Artemis activates the Athena-CoFee subsystem when a tutor begins to assess a student's submission. This subsystem suggests feedback for segments closely associated with others in the same cluster, drawing on feedback given on other segments within the cluster. This mechanism supports the tutor in providing a consistent and thorough evaluation of student submissions.
 
@@ -315,7 +308,7 @@ Functional requirements are independent of implementation details. They solely d
   can deliver // action
   feedback suggestions // object
   to the LMS.
-  Feedback suggestions are generated based on the selected assessment module's capabilities and analysis parameters. // constraint of action
+  Feedback suggestions are generated based on the capabilities of the selected assessment module and analysis parameters. // constraint of action
 ] <frProvideFeedbackSuggestions>
 #fr[
   *Review Suggestions*
@@ -405,7 +398,7 @@ Functional requirements are independent of implementation details. They solely d
   ThemisML // subject
   can provide // action
   feedback suggestions // object
-  based on the similarity of the submissions' code and existing feedback.
+  based on the similarity of the code and existing feedback of the submissions.
   Only if sufficient historical submission data and feedback are available can ThemisML provide feedback suggestions. // constraint of action
 ] <frFeedbackSuggestionsByThemisML>
 //#fr[
@@ -518,12 +511,12 @@ A scenario is "a concrete, focused, informal description of a single feature of 
 *Real-time Automatic Feedback*
 // The student already receives feedback suggestions in real-time themselves and submits a fully correct submission at the end, having learned a lot more in the process with the shortest feedback cycle possible. The system automatically finds mistakes and points the student to where they could be wrong with helpful but not too revealing feedback. This way, there is no need for additional grading, and the tutors for the course can fully concentrate on supporting the students in other ways.
 Julia, a persistent student in a Data Structures course, and Leo, a dedicated tutor for the same course, find themselves in a modern, technologically advanced learning environment. This time, the students have an innovative tool at their disposal that offers real-time feedback suggestions while they are working on their exercises.
-In this context, Julia encounters a complex assignment on tree data structures. As she works her way through the exercise, she benefits from the system's feedback suggestions. The tool cleverly points out possible mistakes without revealing the entire solution, nudging Julia towards the correct path.
-This intelligent feedback system operates like a silent tutor, helping Julia correct minor errors and improve her understanding in real-time. It guides her, prompting her to think more critically about her code, and encourages her to find and fix errors independently. By the time Julia finishes the assignment and submits it, her work is free of errors. The immediate feedback she received throughout her work allowed her to correct her mistakes as she made them.
+In this context, Julia encounters a complex assignment on tree data structures. As she works her way through the exercise, she benefits from the feedback suggestions of the system. The tool cleverly points out possible mistakes without revealing the entire solution, nudging Julia towards the correct path.
+This intelligent feedback system operates like a silent tutor, helping Julia correct minor errors and improve her understanding in real time. It guides her, prompting her to think more critically about her code, and encourages her to find and fix errors independently. By the time Julia finishes the assignment and submits it, her work is free of errors. The immediate feedback she received throughout her work allowed her to correct her mistakes as she made them.
 Freed from the time-consuming task of grading assignments, Leo can now invest more of his time in addressing students' conceptual questions and mentoring them in their learning journey. He can now engage more deeply with students.
 \ \ 
 *Enhancing Automatic Test Feedback*
-// - The automatic tests to check the correctness of programming exercises provide accurate feedback, but it isn't always helpful to the student.
+// - The automatic tests to check the correctness of programming exercises provide accurate feedback, but it is not always helpful to the student.
 // - Therefore, the _Introduction to Informatics_ course runs some basic tests after the submission deadline, but otherwise the tutors of the course grade the submissions manually.
 // - This takes a lot of time and it is difficult (for the tutors) to always spot the exact place in which the tests fail.
 // - Because of this, the course now uses Athena to enhance the automatic test results such that they are processed and their wording is automatically enhanced to provide more detail on the exact root cause of the underlying issue.

@@ -38,7 +38,7 @@
   v(5mm)
   align(center, text(font: sans-font, 1.5em, weight: 100, "School of Computation, Information and Technology \n -- Informatics --"))
   
-  v(15mm)
+  v(10mm)
 
   align(center, text(font: sans-font, 1.3em, weight: 100, degree + "’s Thesis in " + program))
   v(8mm)

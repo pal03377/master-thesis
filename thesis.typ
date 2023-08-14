@@ -566,7 +566,7 @@ The tutor can either accept the suggestions or edit them to match their evaluati
 After the tutor has finished grading the submission, they can submit the result to the system.
 
 #figure(
-  image("figures/use-case-diagram-Athena.svg", width: 82%),
+  image("figures/use-case-diagram-athena.svg", width: 82%),
   caption: [Use Case Diagram for the Athena System],
 ) <useCaseModelAthena>
 

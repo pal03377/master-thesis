@@ -112,7 +112,8 @@ Cremer and Michel recently enhanced the system in two key dimensions: adding sup
 
 == Problem
 // Note: Describe the problem that you like to address in your thesis to show the importance of your work. Focus on the negative symptoms of the currently available solution.
-// TODO: 1 sentence: Although... (positive stuff), we still have a problem: (negative stuff)
+Although Athena effectively generates feedback suggestions for tutors in text submissions using the CoFee approach~@cofee2, a significant issue remains: Athena's current architecture constrains its extensibility and adaptability.
+
 Currently, _Athena_ is bound to one approach in the process of generating feedback suggestions for tutors and it only supports text submissions using the _CoFee_ approach. This decreases the flexibility and extensibility of the system and is one of the main points we will improve in this thesis.
 On a more practical level, Athena does not support programming exercises, which are a common type of exercise in computer science courses. Support for programming exercises is one of the main advantages of Artemis over other exercise management systems (such as Moodle#footnote[https://moodle.org]), so it is beneficial that we extend Athena to support programming exercises as well.
 // Support for automatic assessments of modeling exercises in Athena would also be beneficial. These are already possible using _Compass_~@compass, which is currently integrated with Artemis and is not a focus of this thesis.
@@ -125,14 +126,16 @@ Two types of actors could have problems with the current status of Athena:
   For example, recent innovations in the field of machine learning like the openly available LLaMA language model~@touvron2023llama or the GPT-4 model from OpenAI~@openai2023gpt4 could be used to improve the quality of feedback suggestions, but this is not possible with the current system architecture.
 
 == Motivation
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Motivate scientifically why solving this problem is necessary. What kind of benefits do we have by solving the problem?
-]
+// Note: Motivate scientifically why solving this problem is necessary. What kind of benefits do we have by solving the problem?
+In this section, we explore the potential benefits of addressing the identified issues in Athena, specifically its constrained approach to generating feedback suggestions and its current inability to support programming exercises.
+
+Quality feedback to students holds significant importance. To this end, equipping tutors with the necessary support to improve their feedback delivery is crucial. This support allows tutors to allocate more time to challenging assessments. Evaluations, both positive and negative, not only document students' knowledge but also play a pivotal role in shaping their learning and motivation~@wulf2010feedback. As such, these assessments must be conducted with care and effectiveness~@sabilah2018openended.
+
+Second, extending Athena to support programming exercises aligns with Artemis's strengths and addresses a significant gap in its current functionality. By enabling Athena to generate feedback suggestions for programming exercises, we align the capabilities of Athena with the fundamental features of Artemis, thereby creating a more seamless and comprehensive user experience for tutors.
+By extension, the experience for students will improve as well, as they will receive more timely, consistent and thorough feedback on their submissions.
+Hattie et al. note that only feedback that addresses multiple dimensions (like the direction, the progress and the next steps) are effective in improving student performance~@hattie2007educational, so it is important that tutors have the time and resources to provide such feedback. Athena can help with this by providing feedback suggestions, which will save tutors time and effort.
+
+Last, keeping the Athena system updated with the latest developments in the field of machine learning is essential for maintaining its competitive edge. The current system architecture has limitations when it comes to integrating new approaches into Athena. With a redesigned system, we aim to significantly enhance its flexibility and extensibility. This update will allow Athena to more easily incorporate future innovations in feedback suggestions, and to adapt swiftly to the state of the art. Additionally, this new architecture will facilitate the combination of different approaches, accelerating research and enabling more timely alignment with emerging developments.
 
 == Objectives
 #rect(

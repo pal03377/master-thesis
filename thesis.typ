@@ -110,7 +110,7 @@ The implementation of the CoFee framework is called _Athena_ and is integrated i
 
 Cremer and Michel recently enhanced the system in two key dimensions: adding support for more languages in text assessments and increasing the system's capacity to handle a higher workload~#cite("atheneLanguage", "atheneLoadBalancer").
 
-== Problem
+== Problem <problem>
 // Note: Describe the problem that you like to address in your thesis to show the importance of your work. Focus on the negative symptoms of the currently available solution.
 Although Athena effectively generates feedback suggestions for tutors in text submissions using the CoFee approach~@cofee2, a significant issue remains: Athena's current architecture constrains its extensibility and adaptability.
 
@@ -123,6 +123,7 @@ Two types of actors could have problems with the current status of Athena:
   For textual exercises, Athena currently provides suggestions for around 45\% of the submissions~@cofee2.
 - Also, it is difficult for *researchers* to integrate additional approaches and features into Athena, as the system is currently bound to one approach for each step in the generation process. 
   The system for the actual choice of assessment suggestions is part of Artemis (outside of Athena). This makes it impossible to change the logic for the suggestion choice independently of Artemis. In a more general sense, it violates the _Single Responsibility Principle_. // TODO: Add citation for SRP
+  More practically, it prevents Athena from being used with other LMSs than Artemis, which is a significant limitation.
   For example, recent innovations in the field of machine learning like the openly available LLaMA language model~@touvron2023llama or the GPT-4 model from OpenAI~@openai2023gpt4 could be used to improve the quality of feedback suggestions, but this is not possible with the current system architecture.
 
 == Motivation
@@ -138,14 +139,29 @@ Hattie et al. note that only feedback that addresses multiple dimensions (like t
 Last, keeping the Athena system updated with the latest developments in the field of machine learning is essential for maintaining its competitive edge. The current system architecture has limitations when it comes to integrating new approaches into Athena. With a redesigned system, we aim to significantly enhance its flexibility and extensibility. This update will allow Athena to more easily incorporate future innovations in feedback suggestions, and to adapt swiftly to the state of the art. Additionally, this new architecture will facilitate the combination of different approaches, accelerating research and enabling more timely alignment with emerging developments.
 
 == Objectives
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Describe the research goals and/or research questions and how you address them by summarizing what you want to achieve in your thesis, e.g. developing a system and then evaluating it.
-]
+// Note: Describe the research goals and/or research questions and how you address them by summarizing what you want to achieve in your thesis, e.g. developing a system and then evaluating it.
+This thesis aims to address the issues outlined in @problem by advocating for a transformative architectural shift in Athena, designed to enhance its flexibility and extensibility.
+To achieve this overarching objective, we have delineated the following specific sub-goals:
+
+=== Shift in System Responsibilities
+We want to shift the responsibility of computing feedback suggestions from the Artemis system to Athena. This will allow us to decouple the two systems and make Athena more flexible and extensible.
+The Athena system will be independently deployable and will be able to provide feedback suggestions for any learning management system (LMS) like Artemis. Further development will also be accelerated, as Athena can be developed and tested independently of Artemis.
+
+=== Modularized Architecture
+The transformation to a modularized architecture will be realized by evolving the current system architecture to accommodate various _assessment modules_.
+There will be an _assessment module manager_ that is responsible for managing the interactions between the assessment modules and the LMS.
+An assessment module is a self-contained component designed to offer various functionalities related to feedback suggestion generation. At its core, it provides a mechanism to generate feedback suggestions for a submission.
+Additionally, based on specific requirements, the module may offer extended capabilities, such as receiving feedback from tutors or suggesting a subsequent submission for a student.
+
+=== Assisting Tools for Module Development
+We will provide a basic tool for testing assessment modules while in development, called the "playground". This will serve as a straightforward web interface, allowing developers to send sample submissions and feedback to the assessment module under development, request feedback suggestions, and comprehensively test the module using exemplary data.
+
+Additionally, we will offer a Python package, athena, aimed at streamlining the creation of assessment modules. While the technical stack for developing an assessment module remains unrestricted, this supplementary tool is designed to enhance the development experience and accelerate the development process for Python developers.
+
+=== Programming Assessment Module "ThemisML"
+We will develop a specialized assessment module for programming exercises, informed by insights from the practical course _iPraktikum_ at the Technical University of Munich.
+This module will leverage the pre-trained model CodeBERT~@codeBERT, developed by Microsoft, to embed and cluster programming submissions. This approach will enable the generation of feedback suggestions for programming exercises like CoFee.
+Furthermore, we will seamlessly integrate these suggestions into the assessment user interface of Artemis.
 
 == Outline
 #rect(

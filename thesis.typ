@@ -111,14 +111,18 @@ The implementation of the CoFee framework is called _Athena_ and is integrated i
 Cremer and Michel recently enhanced the system in two key dimensions: adding support for more languages in text assessments and increasing the system's capacity to handle a higher workload~#cite("atheneLanguage", "atheneLoadBalancer").
 
 == Problem
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Describe the problem that you like to address in your thesis to show the importance of your work. Focus on the negative symptoms of the currently available solution.
-]
+// Note: Describe the problem that you like to address in your thesis to show the importance of your work. Focus on the negative symptoms of the currently available solution.
+// TODO: 1 sentence: Although... (positive stuff), we still have a problem: (negative stuff)
+Currently, _Athena_ is bound to one approach in the process of generating feedback suggestions for tutors and it only supports text submissions using the _CoFee_ approach. This decreases the flexibility and extensibility of the system and is one of the main points we will improve in this thesis.
+On a more practical level, Athena does not support programming exercises, which are a common type of exercise in computer science courses. Support for programming exercises is one of the main advantages of Artemis over other exercise management systems (such as Moodle#footnote[https://moodle.org]), so it is beneficial that we extend Athena to support programming exercises as well.
+// Support for automatic assessments of modeling exercises in Athena would also be beneficial. These are already possible using _Compass_~@compass, which is currently integrated with Artemis and is not a focus of this thesis.
+
+Two types of actors could have problems with the current status of Athena:
+- *Tutors* in courses with manually graded programming exercises: They cannot profit from Athena's assessment generation capabilities, because Athena does not support programming exercises. This means that they won't get any automatically generated suggestions for programming exercises, which would save them a lot of time.
+  For textual exercises, Athena currently provides suggestions for around 45\% of the submissions~@cofee2.
+- Also, it is difficult for *researchers* to integrate additional approaches and features into Athena, as the system is currently bound to one approach for each step in the generation process. 
+  The system for the actual choice of assessment suggestions is part of Artemis (outside of Athena). This makes it impossible to change the logic for the suggestion choice independently of Artemis. In a more general sense, it violates the _Single Responsibility Principle_. // TODO: Add citation for SRP
+  For example, recent innovations in the field of machine learning like the openly available LLaMA language model~@touvron2023llama or the GPT-4 model from OpenAI~@openai2023gpt4 could be used to improve the quality of feedback suggestions, but this is not possible with the current system architecture.
 
 == Motivation
 #rect(

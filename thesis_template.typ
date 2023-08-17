@@ -39,6 +39,8 @@
 
   
   // --- Table of Contents ---
+  set page(numbering: "(i)")
+  counter(page).update(1)
   outline(
     title: {
       text(font: body-font, 1.5em, weight: 700, "Contents")
@@ -54,6 +56,9 @@
 
   // Main body.
   set par(justify: true)
+
+  set page(numbering: "1")
+  counter(page).update(1)
 
   body
 

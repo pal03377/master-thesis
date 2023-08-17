@@ -174,47 +174,47 @@ Furthermore, we will seamlessly integrate these suggestions into the assessment 
 ]
 
 = Background
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Describe each proven technology / concept shortly that is important to understand your thesis. Point out why it is interesting for your thesis. Make sure to incorporate references to important literature here.
-]
+// Note: Describe each proven technology/concept shortly that is important to understand your thesis. Point out why it is interesting for your thesis. Make sure to incorporate references to important literature here.
+In this chapter, the key concepts and technologies essential to this thesis are presented. First, the Artemis learning management system is introduced, which serves as the integration point for Athena.
+Next, the CoFee framework is discussed; this is the current method employed by Athena to generate feedback suggestions for textual exercises.
+This is followed by an overview of the ThemisML approach, the proposed strategy for Athena to generate feedback suggestions for programming exercises.
+Finally, we give an overview of the microservice architecture, which Athena leverages to structure its components.
 
-== e.g. User Feedback
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This section would summarize the concept User Feedback using definitions, historical overviews and pointing out the most important aspects of User Feedback.
-]
+== Artemis
+Artemis is an open-source automated assessment management system designed for large computer science classes~@ArTEMiS. It automatically evaluates students' programming assignments and provides immediate, iterative feedback, enabling students to refine their solutions~@ArTEMiS.
+It features an online code editor and interactive exercise instructions, making it adaptable and programming language-independent. The system is intended to reduce instructors' manual assessment workload and to enhance the learning experience for students by offering timely and actionable feedback on their work~@ArTEMiS.
+At the time of writing, Artemis supports exercises in the following formats: programming, text, modeling, file upload and quiz.
 
-== e.g. Representational State Transfer
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This section would summarize the architectural style Representational State Transfer (REST) using definitions, historical overviews and pointing out the most important aspects of the architecture.
-]
+== CoFee
+// Will describe in "Current System"
+CoFee is "a machine learning approach designed to suggest computer-aided feedback in open-ended textual exercises"~@cofee.
+We will describe the CoFee approach and its current implementation in more detail in @currentSystem.
 
-== e.g. Scrum
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This section would summarize the agile method Scrum using definitions, historical overviews and pointing out the most important aspects of Scrum.
-]
+== ThemisML
+ThemisML is a "system for automated feedback suggestions of programming exercises"#footnote[https://github.com/ls1intum/Themis-ML, last visited August 17th, 2023] developed by a group of the practical course "iPraktikum" in the winter semester of 2022/23 at the Technical University of Munich. It is based on the CodeBERT model~@codeBERT, which is a pre-trained model for programming language processing by Microsoft.
+Its source code is openly available on #link("https://github.com/ls1intum/Themis-ML")[GitHub]. The following description is based on the documentation of the system, available at https://ls1intum.github.io/Themis.
+
+Similar to CoFee, ThemisML analyzes student code submissions and compares them with past feedback from previous assessments. Based on this analysis, ThemisML proposes context-specific feedback for the current submission, which tutors can review and modify as needed. This system aims to streamline the assessment process, enhancing both the accuracy and efficiency of feedback provided to students.
+ThemisML employs ANTLR4#footnote[https://www.antlr.org, last visited August 17th, 2023] for method extraction from code and utilizes CodeBERTScore~@zhou2023codebertscore#footnote[Source code available at https://github.com/neulab/code-bert-score, last visited August 17th, 2023. At the time of initial development, the source code was already available, but the complementary paper was not released yet.], a wrapper for the CodeBERT machine learning model~@codeBERT, to compare code submissions and assess their similarity.
+Thus, ThemisML is a tool that helps tutors who use the Themis app give clearer and more focused feedback on student programming assignments.
+
+// == FastAPI // TODO: Do I want this here?
+
+== Microservice Architecture
+// TODO: Also talk about Docker?
+Microservices are small, autonomous services that communicate through well-defined APIs, allowing them to be independently deployed and evolved without tight coupling to other services~@newman2015building.
+
+Newman highlights several notable advantages of adopting a microservice architecture in the book "Building Microservices"~@newman2015building, including:
+- *Technology Heterogeneity:* This architecture allows for the use of diverse technologies across different services, offering flexibility and potentially enhancing the development process.
+- *Resilience:* The isolated nature of microservices ensures that the failure of one service does not directly impact the functionality of others, contributing to the overall system's robustness.
+- *Scaling:* Microservices facilitate more straightforward and efficient scaling of individual services, as opposed to the often cumbersome scaling of a monolithic application.
+
+While these advantages are enticing, microservices are also generally seen as more complex to manage and deploy compared to monolithic architectures~@hossain2023microservice,
+they can be more difficult to test in combination with other services~@hossain2023microservice,
+and can even be worse in performance in specific cases~@aldebagy2018comparative.
 
 = Related Work
-// Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches / concepts / workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was already solved by XYZ.” If you have multiple related works, use subsections to separate them.
+// Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches/concepts/workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was already solved by XYZ.” If you have multiple related works, use subsections to separate them.
 
 _Atenea_#footnote[Not to be confused with *Athena*, the name of the system we are developing.] is a system that provides automatic scores for short textual answers in English and Spanish computer science exercises using Latent Semantic Analysis and other natural language processing techniques~@atenea2005.
 It scores submissions based on the similarity of the student's answer to a set of reference answers provided by the teacher. This approach has the problem of requiring the teacher to provide a set of reference answers for each exercise, which can be time-consuming and error-prone. Also, the range of possible answers is limited to the ones provided by the teacher and answers similar to them. This means that the system is not able to recognize answers that are correct but different from the given ones.
@@ -251,7 +251,7 @@ Athena has been designed with adaptability in mind. In the future, findings from
 // Note: Provide a short overview about the purpose, scope, objectives and success criteria of the system that you like to develop.
 Despite our intentions to plan and detail it meticulously, we anticipate that we will only be able to fulfill some specifications for the new semi-automatic grading system. With the limitation of only two people working on this project for only six months in mind, our strategy leans toward the progressive delivery of a scaled-down system. Prioritizing high-quality code and thorough documentation, we opt for this approach over rushing the development of an expansive yet potentially flawed prototype.
 
-== Current System
+== Current System <currentSystem>
 // Note: This section is only required if the proposed system (i.e. the system that you develop in the thesis) should replace an existing system.
 // - current: System also called Athena / Athene (somewhat inconsistent), as a "reference implementation" of an approach to giving automatic feedback called CoFee (@cofee)
 // current: Athena-CoFee integrated into existing LMS (Learning Management System) Artemis

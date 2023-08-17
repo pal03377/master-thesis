@@ -84,7 +84,7 @@
     #it
   ]
 ]
-#let nfrlink(label) = enumlink("NFR", fr_counter, label)
+#let nfrlink(label) = enumlink("NFR", nfr_counter, label)
 #show ref: it => {
   if it.element != none and it.element.func() == fr {
     "FR " + it.element.args[0].display()
@@ -448,7 +448,7 @@ Functional requirements are independent of implementation details. They solely d
 // TODO: Do I need to make the FRs more granular? Moritz has 15. Here are 11.
 
 
-=== Nonfunctional Requirements
+=== Nonfunctional Requirements <nfr>
 // Note: List and describe all nonfunctional requirements of your system. Also mention requirements that you were not able to realize. Categorize them using the FURPS+ model described in @bruegge2004object without the category functionality that was already covered with the functional requirements.
 // - NFR1 Category: Short Description. 
 // - NFR2 Category: Short Description. 
@@ -643,18 +643,12 @@ After this step, the assessment workflow is finished, and the tutor can start as
   stroke: 0.5pt,
   fill: yellow,
 )[
-  Note: Show mockups of the user interface of the software you develop and their connections / transitions. You can also create a storyboard. *Important:* Describe the mockups and their rationale in the text.
+  Note: Show mockups of the user interface of the software you develop and their connections/transitions. You can also create a storyboard. *Important:* Describe the mockups and their rationale in the text.
 ]
 
 = System Design
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This chapter follows the System Design Document Template in @bruegge2004object. You describe in this chapter how you map the concepts of the application domain to the solution domain. Some sections are optional, if they do not apply to your problem. Cite @bruegge2004object several times in this chapter.
-]
+// Note: This chapter follows the System Design Document Template in @bruegge2004object. You describe in this chapter how you map the concepts of the application domain to the solution domain. Some sections are optional if they do not apply to your problem. Cite @bruegge2004object several times in this chapter.
+In the following sections, we present our system design, which is informed by the requirements and system models specified earlier. We start by identifying design goals based on our non-functional requirements and then move on to discuss our approach to subsystem decomposition, hardware-software mapping, data management strategies, and access control policies~@bruegge2004object.
 
 == Overview
 #rect(
@@ -663,27 +657,60 @@ After this step, the assessment workflow is finished, and the tutor can start as
   stroke: 0.5pt,
   fill: yellow,
 )[
-  Note: Provide a brief overview of the software architecture and references to other chapters (e.g. requirements analysis), references to existing systems, constraints impacting the software architecture..
+  Note: Provide a brief overview of the software architecture and references to other chapters (e.g. requirements analysis), references to existing systems, constraints impacting the software architecture.
 ]
 
 == Design Goals
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Derive design goals from your nonfunctional requirements, prioritize them (as they might conflict with each other) and describe the rationale of your prioritization. Any trade-offs between design goals (e.g., build vs. buy, memory space vs. response time), and the rationale behind the specific solution should be described in this section
-]
+// Note: Derive design goals from your nonfunctional requirements, prioritize them (as they might conflict with each other) and describe the rationale of your prioritization. Any trade-offs between design goals (e.g., build vs. buy, memory space vs. response time), and the rationale behind the specific solution should be described in this section
+We begin by establishing clear design goals for our proposed system, building on the nonfunctional requirements outlined in @nfr. Following this, we prioritize these goals and engage in a detailed discussion regarding the reasoning behind this ranking, as well as the possible trade-offs that may arise. To organize our approach, we use a set of design criteria suggested by Bruegge and Dutoit, systematically categorizing our design goals into five distinct and purposeful groups~@bruegge2004object.
 
-== Subsytem Decomposition
+// From the book (p. 243): 5 groups of design criteria:
+// 1. Performance criteria: Response time, Throughput, Memory
+// 2. Dependability criteria: Robustness, Reliability, Availability, Fault Tolerance, Security, Safety
+// 3. Cost criteria: Development cost, Deployment cost, Upgrade cost, Maintenance cost, Administration cost
+// 4. Maintenance criteria: Extensibility, Modifiability, Adaptability, Portability, Readability, Traceability of requirements
+// 5. End user criteria: Utility, Usability
+
+*Performance Criteria*
+To ensure seamless integration within the Artemis grading workflow, the feedback suggestions of Athena must be provided swiftly, ideally within a few seconds, as specified in~#nfrlink(<nfrResponseTime>). Additionally, to prevent any delays in the grading process, tutors must be able to initiate grading immediately while the suggestions load asynchronously, as outlined in~#nfrlink(<nfrImmediateGrading>).
+
+*Dependability Criteria*
+For Athena to be a reliable component of Artemis's grading process, it must aim for a high level of system availability, targeting a 99.9% uptime, as suggested in~#nfrlink(<nfrSystemAvailability>). Additionally, it is vital to maintain the resilience of Athena by ensuring that a failure in one of its modules does not compromise the functionality of other modules, as defined in~#nfrlink(<nfrModuleIndependence>).
+
+*Cost Criteria*
+The security of Athena is very important, and strict measures are in place to ensure this. As per~#nfrlink(<nfrMutualAuthentication>), both Artemis and Athena authenticate each other using a shared API secret on all requests, maintaining the integrity and confidentiality of the data. Additionally, stringent data protection measures, in line with~#nfrlink(<nfrDataLeakagePrevention>), ensure that confidential student data is not leaked outside the Athena and Artemis systems.
+
+*Maintenance Criteria*
+To maintain the relevance and utility of Athena over time, the system is designed to support the seamless development and integration of new modules, fulfilling the goal of~#nfrlink(<nfrNewModuleDevelopment>). Complementing this, Athena is built to be easy to maintain and update, with comprehensive and clear documentation on system architecture and code as per~#nfrlink(<nfrSystemMaintenance>).
+
+To ensure that Athena is user-friendly and maintainable, extensive documentation is prepared. Detailed user documentation, as specified in ~#nfrlink(<nfrUserDocumentation>), will enable tutors and administrators to effectively utilize the system. For future development and maintenance needs, a comprehensive developer's guide is made available, detailing the system architecture, database schemas, and module development process, as outlined in~#nfrlink(<nfrDevelopersGuide>).
+
+*End User Criteria*
+User experience is deeply considered in our design. Tutors using Artemis should be able to effortlessly view and interpret all feedback suggestions, aligning with~#nfrlink(<nfrFeedbackAccessibility>). Moreover, the system is developed to be easily configurable, aiming to encourage widespread adoption among educators and institutions, as highlighted in~#nfrlink(<nfrEasyConfiguration>).
+
+*Prioritization and Trade-offs*
+We prioritize the design goals from most important to least important as follows:
+1. *End User Criteria*: 
+   Ensuring a positive and efficient experience for the tutors using Artemis is the highest priority. This directly impacts the tutors' satisfaction and the effectiveness of the grading process. As Athena's feedback is central to the tutors' workflow within Artemis, ease of use is essential for successful integration and broad adoption.
+2. *Maintenance Criteria*: 
+   Maintenance, with a strong focus on documentation, is critical to ensure that the wide and diverse range of developers contributing to the open-source Artemis project can easily understand, adapt, and extend Athena's implementation. Clear and thorough documentation is necessary, as it allows for more effortless collaboration and future enhancement.
+3. *Performance Criteria*: 
+   The system aims to be fast and responsive, with a strict requirement that submission selection should be within 2 seconds. Additionally, tutors must be able to grade submissions independently of whether feedback suggestions are available; grading should not be affected negatively if suggestions are delayed or unavailable. While performance remains crucial as it affects user satisfaction, some trade-offs in response times for feedback suggestions are acceptable to ensure that the grading process remains uninterrupted.
+4. *Cost Criteria*: 
+  Given that Artemis operates as an open-source project with limited funding, minimizing maintenance and administration costs is vital. We need to operate within a tight budget while striving to achieve effective integration and user satisfaction.
+5. *Dependability Criteria*: 
+   While high availability is valuable, occasional downtimes or failures might be tolerable, given the nature of a complementary feedback suggestion system where immediate, continuous operation may not always be critical.
+
+This prioritization strategy aims to establish Athena as a user-centric, maintainable, and cost-effective addition to the Artemis ecosystem, aligning with the community-driven, open-source nature of the project.
+
+== Subsystem Decomposition
 #rect(
   width: 100%,
   radius: 10%,
   stroke: 0.5pt,
   fill: yellow,
 )[
-  Note: Describe the architecture of your system by decomposing it into subsys- tems and the services provided by each subsystem. Use UML class diagrams including packages / components for each subsystem.
+  Note: Describe the architecture of your system by decomposing it into subsystems and the services provided by each subsystem. Use UML class diagrams including packages/components for each subsystem.
 ]
 
 == Hardware Software Mapping
@@ -713,7 +740,7 @@ After this step, the assessment workflow is finished, and the tutor can start as
   stroke: 0.5pt,
   fill: yellow,
 )[
-  Note: Optional section describing the access control and security issues based on the nonfunctional requirements in the requirements analysis. It also de- scribes the implementation of the access matrix based on capabilities or access control lists, the selection of authentication mechanisms and the use of en- cryption algorithms.
+  Note: Optional section describing the access control and security issues based on the nonfunctional requirements in the requirements analysis. It also de- scribes the implementation of the access matrix based on capabilities or access control lists, the selection of authentication mechanisms and the use of encryption algorithms.
 ]
 
 == Global Software Control

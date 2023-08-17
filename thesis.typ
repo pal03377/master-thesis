@@ -106,23 +106,23 @@ Keuning et al. found that such feedback has increased in diversity over the last
 The automated generation of feedback is a challenging task, yet it is crucial for the success of online learning: It is difficult for teachers to provide feedback to each student individually in courses with a large number of students~@ArTEMiS. The number of students in computer science courses at universities is steadily increasing. At the Technical University of Munich, the number of full-time students#footnote[i.e., full-time equivalents] has recently increased by more than 2,400 within five years#footnote[TUM in Zahlen 2020, https://mediatum.ub.tum.de/doc/1638190/1638190.pdf].
 
 The current state of the art does not yet provide a satisfactory solution to fully automating the feedback process for most types of exercises. However, the process of providing individual feedback to each student can be supported by semi-automatic feedback systems, e.g. the CoFee framework for textual exercises presented by Bernius et al~@cofee.
-The implementation of the CoFee framework is called _Athena_ and is integrated into the _Artemis_ learning platform#footnote[Source code and links to the documentation available on https://github.com/ls1intum/Artemis, last visited August 14th, 2023] that is developed and used at the Technical University of Munich. From 2019 to 2021, this integration effectively streamlined the grading process for 34 exercises~@cofee2.
+The implementation of the CoFee framework is called _Athena_#footnote[Source code and setup documentation available on https://github.com/ls1intum/Athena-CoFee, last visited August 17th, 2023] and is integrated into the _Artemis_ learning platform#footnote[Source code and links to the documentation available on https://github.com/ls1intum/Artemis, last visited August 14th, 2023] that is developed and used at the Technical University of Munich. From 2019 to 2021, this integration effectively streamlined the grading process for 34 exercises~@cofee2.
 
 Cremer and Michel recently enhanced the system in two key dimensions: adding support for more languages in text assessments and increasing the system's capacity to handle a higher workload~#cite("atheneLanguage", "atheneLoadBalancer").
 
 == Problem <problem>
 // Note: Describe the problem that you like to address in your thesis to show the importance of your work. Focus on the negative symptoms of the currently available solution.
-Although Athena effectively generates feedback suggestions for tutors in text submissions using the CoFee approach~@cofee2, a significant issue remains: Athena's current architecture constrains its extensibility and adaptability.
+Although Athena effectively generates feedback suggestions for tutors in text submissions using the CoFee approach~@cofee2, a significant issue remains: The current architecture of Athena constrains its extensibility and adaptability.
 
-Currently, _Athena_ is bound to one approach in the process of generating feedback suggestions for tutors and it only supports text submissions using the _CoFee_ approach. This decreases the flexibility and extensibility of the system and is one of the main points we will improve in this thesis.
-On a more practical level, Athena does not support programming exercises, which are a common type of exercise in computer science courses. Support for programming exercises is one of the main advantages of Artemis over other exercise management systems (such as Moodle#footnote[https://moodle.org]), so it is beneficial that we extend Athena to support programming exercises as well.
+Currently, Athena is bound to one approach in the process of generating feedback suggestions for tutors and it only supports text submissions using the _CoFee_ approach. This decreases the flexibility and extensibility of the system and is one of the main points we will improve in this thesis.
+On a more practical level, Athena does not support programming exercises, which are commonly featured in computer science courses. The lack of support for programming exercises in Athena is a limitation, especially considering that this feature is a main advantage of Artemis over other exercise management systems, such as Moodle#footnote[https://moodle.org]. Therefore, extending Athena to support programming exercises is a critical area for improvement.
 // Support for automatic assessments of modeling exercises in Athena would also be beneficial. These are already possible using _Compass_~@compass, which is currently integrated with Artemis and is not a focus of this thesis.
 
 Two types of actors could have problems with the current status of Athena:
 - *Tutors* in courses with manually graded programming exercises: They cannot profit from Athena's assessment generation capabilities, because Athena does not support programming exercises. This means that they won't get any automatically generated suggestions for programming exercises, which would save them a lot of time.
   For textual exercises, Athena currently provides suggestions for around 45\% of the submissions~@cofee2.
 - Also, it is difficult for *researchers* to integrate additional approaches and features into Athena, as the system is currently bound to one approach for each step in the generation process. 
-  The system for the actual choice of assessment suggestions is part of Artemis (outside of Athena). This makes it impossible to change the logic for the suggestion choice independently of Artemis. In a more general sense, it violates the _Single Responsibility Principle_. // TODO: Add citation for SRP
+  The system for the actual choice of assessment suggestions is part of Artemis (outside of Athena). This external dependency makes it impossible to change the logic for the suggestion choice independently of Artemis. In a more general sense, this architecture violates the _Single Responsibility Principle_. // TODO: Add citation for SRP
   More practically, it prevents Athena from being used with other LMSs than Artemis, which is a significant limitation.
   For example, recent innovations in the field of machine learning like the openly available LLaMA language model~@touvron2023llama or the GPT-4 model from OpenAI~@openai2023gpt4 could be used to improve the quality of feedback suggestions, but this is not possible with the current system architecture.
 
@@ -130,7 +130,7 @@ Two types of actors could have problems with the current status of Athena:
 // Note: Motivate scientifically why solving this problem is necessary. What kind of benefits do we have by solving the problem?
 In this section, we explore the potential benefits of addressing the identified issues in Athena, specifically its constrained approach to generating feedback suggestions and its current inability to support programming exercises.
 
-Quality feedback to students holds significant importance. To this end, equipping tutors with the necessary support to improve their feedback delivery is crucial. This support allows tutors to allocate more time to challenging assessments. Evaluations, both positive and negative, not only document students' knowledge but also play a pivotal role in shaping their learning and motivation~@wulf2010feedback. As such, these assessments must be conducted with care and effectiveness~@sabilah2018openended.
+Quality feedback to students holds significant importance. To this end, equipping tutors with the necessary support to improve their feedback delivery is crucial. This support allows tutors to allocate more time to challenging assessments. Evaluations by tutors, both positive and negative, not only document students' knowledge but also play a pivotal role in shaping their learning and motivation~@wulf2010feedback. As such, these assessments must be conducted with care and effectiveness~@sabilah2018openended.
 
 Second, extending Athena to support programming exercises aligns with Artemis's strengths and addresses a significant gap in its current functionality. By enabling Athena to generate feedback suggestions for programming exercises, we align the capabilities of Athena with the fundamental features of Artemis, thereby creating a more seamless and comprehensive user experience for tutors.
 By extension, the experience for students will improve as well, as they will receive more timely, consistent and thorough feedback on their submissions.
@@ -141,7 +141,7 @@ Last, keeping the Athena system updated with the latest developments in the fiel
 == Objectives
 // Note: Describe the research goals and/or research questions and how you address them by summarizing what you want to achieve in your thesis, e.g. developing a system and then evaluating it.
 This thesis aims to address the issues outlined in @problem by advocating for a transformative architectural shift in Athena, designed to enhance its flexibility and extensibility.
-To achieve this overarching objective, we have delineated the following specific sub-goals:
+To achieve this overarching objective, we have identified the following specific sub-goals:
 
 === Shift in System Responsibilities
 We want to shift the responsibility of computing feedback suggestions from the Artemis system to Athena. This will allow us to decouple the two systems and make Athena more flexible and extensible.
@@ -156,7 +156,7 @@ Additionally, based on specific requirements, the module may offer extended capa
 === Assisting Tools for Module Development
 We will provide a basic tool for testing assessment modules while in development, called the "playground". This will serve as a straightforward web interface, allowing developers to send sample submissions and feedback to the assessment module under development, request feedback suggestions, and comprehensively test the module using exemplary data.
 
-Additionally, we will offer a Python package, athena, aimed at streamlining the creation of assessment modules. While the technical stack for developing an assessment module remains unrestricted, this supplementary tool is designed to enhance the development experience and accelerate the development process for Python developers.
+Additionally, we will offer a Python package, called `athena`, aimed at streamlining the creation of assessment modules. While the technical stack for developing an assessment module remains unrestricted, this supplementary tool is designed to enhance the development experience and accelerate the development process for Python developers.
 
 === Programming Assessment Module "ThemisML"
 We will develop a specialized assessment module for programming exercises, informed by insights from the practical course _iPraktikum_ at the Technical University of Munich.

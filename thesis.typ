@@ -704,14 +704,20 @@ We prioritize the design goals from most important to least important as follows
 This prioritization strategy aims to establish Athena as a user-centric, maintainable, and cost-effective addition to the Artemis ecosystem, aligning with the community-driven, open-source nature of the project.
 
 == Subsystem Decomposition
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Describe the architecture of your system by decomposing it into subsystems and the services provided by each subsystem. Use UML class diagrams including packages/components for each subsystem.
-]
+// Note: Describe the architecture of your system by decomposing it into subsystems and the services provided by each subsystem. Use UML class diagrams including packages/components for each subsystem.
+// - There are 3 main subsystems: Artemis client, Artemis server, Athena
+// - Artemis client: UI, communication with Artemis server
+As a distinct subsystem, Athena analyzes exercises, student submissions, and historical feedback to generate targeted suggestions. It operates alongside two other primary subsystems: the Artemis Client, the user interface for tutors, and the Artemis server, which manages its logic and data.
+Communication between Athena and the Artemis components is facilitated through the respective APIs of Artemis and Athena, using a REST interface with JSON serialization.
+
+// TODO: Diagram of a rough overview of all systems without much detail
+
+// TODO: Separate Diagrams and headings for Client (with detailed components), Server (with detailed AthenaService-s), Athena (with detailed module and Python package structure), CoFee (with adapter structure), (ThemisML maybe later)
+
+#figure(
+  image("figures/subsystem-decomposition-component-diagram.svg", width: 100%),
+  caption: [Subsystem Decomposition of the Artemis System],
+) <subsystemDecomposition>
 
 == Hardware Software Mapping
 #rect(

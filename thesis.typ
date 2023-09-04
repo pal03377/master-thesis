@@ -122,7 +122,7 @@ Two types of actors could have problems with the current status of Athena:
 - *Tutors* in courses with manually graded programming exercises: They cannot profit from Athena's assessment generation capabilities, because Athena does not support programming exercises. This means that they won't get any automatically generated suggestions for programming exercises, which would save them a lot of time.
   For textual exercises, Athena currently provides suggestions for around 45\% of the submissions~@cofee2.
 - Also, it is difficult for *researchers* to integrate additional approaches and features into Athena, as the system is currently bound to one approach for each step in the generation process. 
-  The system for the actual choice of assessment suggestions is part of Artemis (outside of Athena). This external dependency makes it impossible to change the logic for the suggestion choice independently of Artemis. In a more general sense, this architecture violates the _Single Responsibility Principle_. // TODO: Add citation for SRP
+  The system for the actual choice of assessment suggestions is part of Artemis (outside Athena). This external dependency makes it impossible to change the logic for the suggestion choice independently of Artemis. In a more general sense, this architecture violates the _Single Responsibility Principle_. // TODO: Add citation for SRP
   More practically, it prevents Athena from being used with other LMSs than Artemis, which is a significant limitation.
   For example, recent innovations in the field of machine learning like the openly available LLaMA language model~@touvron2023llama or the GPT-4 model from OpenAI~@openai2023gpt4 could be used to improve the quality of feedback suggestions, but this is not possible with the current system architecture.
 
@@ -509,7 +509,7 @@ Functional requirements are independent of implementation details. They solely d
 ] <nfrMutualAuthentication>
 #nfr[
   *Data Leakage Prevention*
-  Confidential data, such as student submissions or feedback, should not be leaked outside of Artemis and Athena. Appropriate data protection measures must be in place.
+  Confidential data, such as student submissions or feedback, should not be leaked outside Artemis and Athena. Appropriate data protection measures must be in place.
 ] <nfrDataLeakagePrevention>
 
 *Reliability*

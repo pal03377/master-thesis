@@ -743,13 +743,13 @@ This prioritization strategy aims to establish Athena as a user-centric, maintai
 // - There are 3 main subsystems: Artemis client, Artemis server, Athena
 // - Artemis client: UI, communication with Artemis server
 As a distinct subsystem, _Athena_ analyzes exercises, student submissions, and historical feedback to generate targeted suggestions. It operates alongside two other primary subsystems: the _Artemis Client_, the user interface for tutors, and the _Artemis server_, which manages its logic and data.
-As an alternative interface to the Artemis Client, tutors can also use the _Themis Grading App_ to assess submissions.
+As an alternative interface to the Artemis Client, tutors can also use the _Themis Grading App_ to assess submissions. The collaborator Tarlan Ismayilsoy adds the integration of Athena's feedback suggestions into the Themis app in his ongoing Master's Thesis.
 
 The communication between all components in @subsystemDecompositionOverview is facilitated through the respective APIs of the subsystems, using a REST interface with JSON serialization.
 
 #figure(
   image("figures/subsystem-decomposition-overview.svg", width: 100%),
-  caption: [Subsystem decomposition overview over the interaction between Athena, Artemis and the Themis Grading App],
+  caption: [Subsystem decomposition diagram: Overview of the interaction between Athena, Artemis and the Themis Grading App],
 ) <subsystemDecompositionOverview>
 
 === Athena
@@ -765,11 +765,18 @@ The _Assessment Module Manager_ serves as the coordinator for all assessment mod
 Lastly, the _Playground_ is a web application that also communicates with Athena through this API. This platform provides a sandbox environment for researchers, allowing them to test the efficacy of various assessment modules and to preview the generated feedback suggestions for a given submission.
 
 #figure(
-  image("figures/subsystem-decomposition-athena.svg", width: 100%),
+  image("figures/subsystem-decomposition-athena.svg", width: 90%),
   caption: [Subsystem decomposition of Athena],
 ) <subsystemDecompositionAthena>
 
 === CoFee Module
+We largely keep the architecture of the CoFee module as proposed by Bernius and Michel~#cite("cofee", "cofee2", "atheneLoadBalancer"). Notably, Michel contributed a _Load Balancer_ that efficiently distributes incoming requests among the CoFee modules for _Segmentation_, _Embedding_, and _Clustering_~@atheneLoadBalancer.
+Unfortunately, the load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _Module Adapter_ that provides a unified interface for the CoFee module to the Athena system.
+
+#figure(
+  image("figures/subsystem-decomposition-cofee-module.svg", width: 80%),
+  caption: [Subsystem decomposition of the CoFee Module, inspired by similar diagrams in @cofee and @atheneLoadBalancer],
+) <subsystemDecompositionCoFee>
 
 === Artemis Server
 

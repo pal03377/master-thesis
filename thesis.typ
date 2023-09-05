@@ -753,17 +753,16 @@ The communication between all components in @subsystemDecompositionOverview is f
 ) <subsystemDecompositionOverview>
 
 === Athena
-We present an overview of the Athena system in @subsystemDecompositionAthena.
+We introduce the architecture of the Athena system in @subsystemDecompositionAthena.
 //
-On the left, we see the available assessment modules. These modules are responsible for generating feedback suggestions for a given submission and they can be simply exchanged for any other module of the same type, because they use the same interface. The _CoFee Module_ and the _Text LLM Module_ both generate feedback suggestions for text exercises, while the _ThemisML Module_ and the _Programming LLM Module_ generate feedback suggestions for programming exercises.
+Placed on the left side of the architecture diagram are various assessment modules. These modules have the primary function of creating feedback suggestions tailored to specific student submissions.
+Importantly, these modules are designed to be interchangeable due to their adherence to a unified interface. For example, both the _CoFee Module_ and the _Text LLM Module_ focus on generating feedback for text-based exercises, whereas the _ThemisML Module_ and the _Programming LLM Module_ specialize in formulating suggestions for programming exercises.
 
-The CoFee module is described in more detail in the next section.
-The ThemisML module is based on the pre-existing ThemisML system#footnote[https://github.com/ls1intum/Themis-ML, last visited September 5th, 2023] and adapted to the Athena system.
-Both LLM modules were implemented by collaborator Felix Dietrich, who describes them in detail in his Master's Thesis that he will submit at the same time as this thesis.
+Further details on the CoFee module are provided in the subsequent section. The ThemisML module, on the other hand, is an adaptation of the pre-existing ThemisML system#footnote[https://github.com/ls1intum/Themis-ML, last visited September 5th, 2023], tailored to fit into the Athena framework. The LLM modules -- both Text and Programming -- were developed by collaborator Felix Dietrich, who discusses them extensively in his concurrent Master's Thesis.
 
-The _Assessment Module Manager_ is responsible for orchestrating the assessment modules and providing an API for external LMSs to interact with Athena.
+The _Assessment Module Manager_ serves as the coordinator for all assessment modules. Additionally, it offers an Application Programming Interface (API) to facilitate interactions between external LMSs and Athena.
 
-The _Playground_ also uses this API to interact with Athena. It is a web application that allows researchers to test the assessment modules and to see the feedback suggestions that they generate for a given submission.
+Lastly, the _Playground_ is a web application that also communicates with Athena through this API. This platform provides a sandbox environment for researchers, allowing them to test the efficacy of various assessment modules and to preview the generated feedback suggestions for a given submission.
 
 #figure(
   image("figures/subsystem-decomposition-athena.svg", width: 100%),

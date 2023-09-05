@@ -191,7 +191,7 @@ CoFee is "a machine learning approach designed to suggest computer-aided feedbac
 We will describe the CoFee approach and its current implementation in more detail in @currentSystem.
 
 == ThemisML
-ThemisML is a "system for automated feedback suggestions of programming exercises"#footnote[https://github.com/ls1intum/Themis-ML, last visited August 17th, 2023] developed by a group of the practical course "iPraktikum" in the winter semester of 2022/23 at the Technical University of Munich. It is based on the CodeBERT model~@codeBERT, which is a pre-trained model for programming language processing by Microsoft.
+ThemisML is a "system for automated feedback suggestions of programming exercises"#footnote[https://github.com/ls1intum/Themis-ML, last visited September 5th, 2023] developed by a group of the practical course "iPraktikum" in the winter semester of 2022/23 at the Technical University of Munich. It is based on the CodeBERT model~@codeBERT, which is a pre-trained model for programming language processing by Microsoft.
 Its source code is openly available on #link("https://github.com/ls1intum/Themis-ML")[GitHub]. The following description is based on the documentation of the system, available at https://ls1intum.github.io/Themis.
 
 Similar to CoFee, ThemisML analyzes student code submissions and compares them with past feedback from previous assessments. Based on this analysis, ThemisML proposes context-specific feedback for the current submission, which tutors can review and modify as needed. This system aims to streamline the assessment process, enhancing both the accuracy and efficiency of feedback provided to students.
@@ -742,17 +742,40 @@ This prioritization strategy aims to establish Athena as a user-centric, maintai
 // Note: Describe the architecture of your system by decomposing it into subsystems and the services provided by each subsystem. Use UML class diagrams including packages/components for each subsystem.
 // - There are 3 main subsystems: Artemis client, Artemis server, Athena
 // - Artemis client: UI, communication with Artemis server
-As a distinct subsystem, Athena analyzes exercises, student submissions, and historical feedback to generate targeted suggestions. It operates alongside two other primary subsystems: the Artemis Client, the user interface for tutors, and the Artemis server, which manages its logic and data.
-Communication between Athena and the Artemis components is facilitated through the respective APIs of Artemis and Athena, using a REST interface with JSON serialization.
+As a distinct subsystem, _Athena_ analyzes exercises, student submissions, and historical feedback to generate targeted suggestions. It operates alongside two other primary subsystems: the _Artemis Client_, the user interface for tutors, and the _Artemis server_, which manages its logic and data.
+As an alternative interface to the Artemis Client, tutors can also use the _Themis Grading App_ to assess submissions.
 
-// TODO: Diagram of a rough overview of all systems without much detail
-
-// TODO: Separate Diagrams and headings for Client (with detailed components), Server (with detailed AthenaService-s), Athena (with detailed module and Python package structure), CoFee (with adapter structure), (ThemisML maybe later)
+The communication between all components in @subsystemDecompositionOverview is facilitated through the respective APIs of the subsystems, using a REST interface with JSON serialization.
 
 #figure(
-  image("figures/subsystem-decomposition-component-diagram.svg", width: 100%),
-  caption: [Subsystem Decomposition of the Artemis System],
-) <subsystemDecomposition>
+  image("figures/subsystem-decomposition-overview.svg", width: 100%),
+  caption: [Subsystem decomposition overview over the interaction between Athena, Artemis and the Themis Grading App],
+) <subsystemDecompositionOverview>
+
+=== Athena
+We present an overview of the Athena system in @subsystemDecompositionAthena.
+//
+On the left, we see the available assessment modules. These modules are responsible for generating feedback suggestions for a given submission and they can be simply exchanged for any other module of the same type, because they use the same interface. The _CoFee Module_ and the _Text LLM Module_ both generate feedback suggestions for text exercises, while the _ThemisML Module_ and the _Programming LLM Module_ generate feedback suggestions for programming exercises.
+
+The CoFee module is described in more detail in the next section.
+The ThemisML module is based on the pre-existing ThemisML system#footnote[https://github.com/ls1intum/Themis-ML, last visited September 5th, 2023] and adapted to the Athena system.
+Both LLM modules were implemented by collaborator Felix Dietrich, who describes them in detail in his Master's Thesis that he will submit at the same time as this thesis.
+
+The _Assessment Module Manager_ is responsible for orchestrating the assessment modules and providing an API for external LMSs to interact with Athena.
+
+The _Playground_ also uses this API to interact with Athena. It is a web application that allows researchers to test the assessment modules and to see the feedback suggestions that they generate for a given submission.
+
+#figure(
+  image("figures/subsystem-decomposition-athena.svg", width: 100%),
+  caption: [Subsystem decomposition of Athena],
+) <subsystemDecompositionAthena>
+
+=== CoFee Module
+
+=== Artemis Server
+
+=== Artemis Client
+// TODO: Separate Diagrams and headings for Client (with detailed components), Server (with detailed AthenaService-s), Athena (with detailed module and Python package structure), CoFee (with adapter structure), (ThemisML maybe later)
 
 == Hardware Software Mapping
 #rect(

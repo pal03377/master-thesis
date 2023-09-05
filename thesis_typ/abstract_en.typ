@@ -46,9 +46,9 @@
   par(justify: true)[
 As educational platforms evolve to accommodate modern learning paradigms, Learning Management Systems like Artemis have become pivotal in administering programming courses. However, tutors still face the time-consuming task of providing detailed feedback. While the recently proposed Athena system has begun to semi-automate this process for text exercises, a gap remains for programming exercises. The research made in this thesis aims to fill that void by adapting Athena to handle both text and programming exercises in a unified manner.
 
-We implement a modular design that streamlines the addition and interchangeability of feedback-generating components. Included in this new architecture are CoFee, the current text-exercise feedback module from Athena, and a machine-learning module specialized for programming exercises. We integrate this new Athena system into Artemis.
+We present a modular design that streamlines the addition and interchangeability of feedback-generating components. Included in this new architecture are CoFee, the current text-exercise feedback module from Athena, and a machine-learning module specialized for programming exercises. We integrate this new Athena system into Artemis.
 
-We analyze Athena's existing framework to identify areas of improvement. We then design and implement a modular structure tailored to support multiple types of exercises and allow for extending the system by adding new feedback modules. We conduct a brief evaluation to assess the quality of the automated feedback it provides.
+An analysis of Athena's existing framework reveals areas for improvement. We design and implement a modular structure to support multiple types of exercises and allow for the addition of new feedback modules. A brief evaluation follows to assess the quality of the automated feedback the system offers.
 
 By expanding Athena's capabilities, this thesis aims to enrich the feedback loop in programming education, thereby offering advantages to both tutors and students.
   ]

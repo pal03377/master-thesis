@@ -22,14 +22,14 @@
   align(center, text(font: body-font, 1em, weight: "semibold", "Zusammenfassung"))
   
   par(justify: true)[
-Während Bildungsplattformen sich stetig an moderne Lernparadigmen anpassen, gewinnen Learning-Management-Systeme (LMS) wie Artemis zunehmend an Bedeutung in der Organisation von Programmierkursen. Trotzdem sind Tutoren nach wie vor mit der zeitaufwendigen Herausforderung konfrontiert, detailliertes Feedback zu geben. Das kürzlich eingeführte Athena-System hat zwar den Prozess für Textübungen teilweise automatisiert, jedoch bleibt eine Lücke bei den Programmierübungen bestehen. Die vorliegende Masterarbeit zielt darauf ab, diese Lücke zu schließen, indem Athena so modifiziert wird, dass es sowohl Text- als auch Programmierübungen auf integrierte Weise behandeln kann.
+Während sich Bildungsplattformen weiterentwickeln, um modernen Lernansätzen gerecht zu werden, spielen Learning-Management-Systeme wie Artemis eine entscheidende Rolle in der Organisation von Programmierkursen. Trotzdem stehen Dozenten und Tutoren vor der zeitaufwendigen Herausforderung, detailliertes Feedback zu liefern. Obwohl das kürzlich eingeführte Athena-System bereits einen semi-automatisierten Ansatz für Textaufgaben bietet, existiert eine noch ungeschlossene Lücke im Bereich der Programmieraufgaben. Die in dieser Masterarbeit durchgeführte Forschung zielt darauf ab, diese Lücke zu schließen, indem Athena so modifiziert wird, dass es sowohl Text- als auch Programmieraufgaben in einer einheitlichen Weise behandeln kann.
 
-Ein modulares Design wird implementiert, das die Integration und Austauschbarkeit von Komponenten zur Feedbackgenerierung erleichtert. In dieser neuen Architektur sind sowohl CoFee, das aktuelle Modul für Feedback bei Textübungen aus Athena, als auch "ThemisML," ein Machine-Learning-Modul speziell für Programmierübungen, enthalten. Dieses überarbeitete Athena-System wird im Anschluss in die bestehende Artemis-Plattform integriert.
+Wir setzen ein modulares Design um, das die Hinzufügung und Austauschbarkeit von Komponenten zur Feedbackgenerierung vereinfacht. In dieser neuen Architektur sind sowohl CoFee, Athenas aktuelles Modul für Feedback zu Textaufgaben, als auch ein für Programmieraufgaben spezialisiertes Modul auf Basis von maschinellem Lernen integriert. Dieses erweiterte Athena-System integrieren wir in Artemis.
 
-Unsere Methodik beginnt mit der Analyse des bestehenden Athena-Frameworks, um Verbesserungsmöglichkeiten zu identifizieren. Anschließend wird eine modulare Struktur entworfen und implementiert, die darauf abzielt, verschiedene Übungstypen zu unterstützen und den leichten Austausch von Feedback-Modulen zu ermöglichen. Nach der Integration des erneuerten Athena-Systems in die Artemis-Plattform wird eine kurze Evaluation durchgeführt, um die Qualität des automatisierten Feedbacks zu beurteilen.
+Wir analysieren die bestehende Struktur von Athena, um Verbesserungspotenziale zu identifizieren. Daraufhin entwerfen und implementieren wir eine modulare Architektur, die speziell darauf zugeschnitten ist, verschiedene Arten von Übungsaufgaben zu unterstützen und das System durch das Hinzufügen neuer Feedback-Module erweitern zu können. Außerdem führen wir eine kurze Evaluierung durch, um die Qualität des automatisierten Feedbacks zu beurteilen.
 
-Indem der Funktionsumfang von Athena erweitert wird, um eine größere Bandbreite an Übungen abzudecken, hat diese Masterarbeit das Ziel, den "Feedback Loop" in der Programmierausbildung zu optimieren und so sowohl für Tutoren als auch für Studierende Vorteile zu generieren.
-  ]
+Indem wir die Fähigkeiten von Athena ausbauen, verfolgt diese Masterarbeit das Ziel, die Feedback-Loop in der Programmierausbildung zu verkürzen, was sowohl für Dozenten als auch für Studierende deutliche Vorteile bietet.
+]
   
   v(1fr)
 }

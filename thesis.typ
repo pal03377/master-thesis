@@ -249,6 +249,7 @@ Athena has been designed with adaptability in mind. In the future, findings from
 
 == Overview
 // Note: Provide a short overview about the purpose, scope, objectives and success criteria of the system that you like to develop.
+// TODO: Make it sound less like two people are working on the specific thesis topic, just on the whole system in general
 Despite our intentions to plan and detail it meticulously, we anticipate that we will only be able to fulfill some specifications for the new semi-automatic grading system. With the limitation of only two people working on this project for only six months in mind, our strategy leans toward the progressive delivery of a scaled-down system. Prioritizing high-quality code and thorough documentation, we opt for this approach over rushing the development of an expansive yet potentially flawed prototype.
 
 == Current System <currentSystem>
@@ -802,6 +803,20 @@ Communication between Athena and the Artemis components is facilitated through t
 )[
   Note: Optional section describing the use cases how to start up the separate components of the system, how to shut them down, and what to do if a component or the system fails.
 ]
+
+= Object Design
+#rect(
+  width: 100%,
+  radius: 10%,
+  stroke: 0.5pt,
+  fill: yellow,
+)[
+  Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
+]
+
+== Feature 1
+
+== Feature 2
 
 = Case Study / Evaluation
 #rect(

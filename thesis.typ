@@ -796,7 +796,7 @@ Both the existing CoFee module and the new Module Adapter are based on the FastA
 // The _Athena Resource_ provides all endpoints that are purely related to Athena and its interaction with Artemis. It provides feedback suggestions to the client using the _Athena Feedback Suggestions Service_ and it also provides endpoints for Athena to download programming submissions if needed.
 // The _Athena Health Indicator_ provides information to the health dashboard that is built-in into Artemis to show the status of the connection to the Athena system.
 
-The Artemis Server, constructed using Java and Spring Boot, serves as a pivotal element in the work discussed in this thesis. Its primary role consists of managing communications with Athena, the automatic feedback suggestion system for tutors.
+The Artemis Server, constructed using Java and Spring Boot#footnote[https://spring.io/projects/spring-boot, last visited September 6th, 2023], serves as a pivotal element in the work discussed in this thesis. Its primary role consists of managing communications with Athena, the automatic feedback suggestion system for tutors.
 
 #figure(
   image("figures/subsystem-decomposition-artemis-server.svg", width: 100%),
@@ -822,7 +822,26 @@ Additionally, the _Text Block Repository_ serves a specific function in the repr
 
 === Artemis Client
 
-// TODO: TypeScript + Angular
+// - Artemis Web Client is a web client created with Angular
+// - There are two layers: The UI layer (Angular components) and the service layer (mostly connecting to the Artemis API)
+// - We add the new components _Text Feedback Suggestion Component_ and _Programming Feedback Suggestion Component_ to the UI layer to display feedback suggestions
+// - The feedback suggestion components have to be separate from each other because their layout has to resemble the layout of the corresponding feedback components
+// - We change both the _Text Submission Assessment Component_ and the _Programming Submission Assessment Component_ to support displaying feedback suggestions using these components - both referenced inline suggestions and unreferenced suggestions
+// - The Text Submission Assessment Component uses the _Text Assessment Service_ to get and save assessments.
+// - The Programming Submission Assessment Component uses the _Programming Assessment Service_ to get and save assessments.
+// - Both of these components use the _Athena Service_ to get feedback suggestions.
+// - The _Programming Submission Assessment Component_ is called `CodeEditorTutorAssessmentContainerComponent` in the source code
+
+The Artemis Web Client, developed using Angular, is divided into two primary layers: the UI layer, consisting of Angular components, and the service layer, primarily responsible for interfacing with the Artemis API.
+
+#figure(
+  image("figures/subsystem-decomposition-artemis-client.svg", width: 75%),
+  caption: [Subsystem decomposition of the Artemis Client],
+) <subsystemDecompositionArtemisClient>
+
+To enhance the user interface, we introduce two new components to the UI layer: the _Text Feedback Suggestion Component_ and the _Programming Feedback Suggestion Component_. These components display feedback suggestions and are deliberately separate to fit into the layout of their corresponding feedback components.
+
+In order to accommodate the display of feedback suggestions, we modify both the _Text Submission Assessment Component_ and the _Programming Submission Assessment Component_#footnote[Name in the existing source code: `CodeEditorTutorAssessmentContainerComponent`]. These modifications enable the components to display both inline-referenced suggestions and unreferenced suggestions. For handling and saving assessments, the _Text Submission Assessment Component_ utilizes the _Text Assessment Service_, while the _Programming Submission Assessment Component_ employs the _Programming Assessment Service_. Both components fetch feedback suggestions from Athena using the _Athena Service_.
 
 == Hardware Software Mapping
 #rect(

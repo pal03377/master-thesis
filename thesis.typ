@@ -861,14 +861,26 @@ To enhance the user interface, we introduce two new components to the UI layer: 
 In order to accommodate the display of feedback suggestions, we modify both the _Text Submission Assessment Component_ and the _Programming Submission Assessment Component_#footnote[Name in the existing source code: `CodeEditorTutorAssessmentContainerComponent`]. These modifications enable the components to display both inline-referenced suggestions and unreferenced suggestions. For handling and saving assessments, the _Text Submission Assessment Component_ utilizes the _Text Assessment Service_, while the _Programming Submission Assessment Component_ employs the _Programming Assessment Service_. Both components fetch feedback suggestions from Athena using the _Athena Service_.
 
 == Hardware Software Mapping
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This section describes how the subsystems are mapped onto existing hardware and software components. The description is accompanied by a UML deployment diagram. The existing components are often off-the-shelf components. If the components are distributed on different nodes, the network infrastructure and the protocols are also described.
-]
+// Note: This section describes how the subsystems are mapped onto existing hardware and software components. The description is accompanied by a UML deployment diagram. The existing components are often off-the-shelf components. If the components are distributed on different nodes, the network infrastructure and the protocols are also described.
+
+// - @deploymentDiagram shows an example setup based on the one used at Technical University of Munich
+// - We skip the load balancing of Artemis because it is not relevant for the thesis
+// - Both the Athena Server and the Artemis Server are deployed within the University Datacenter
+// - They each have their own database servers. The Artemis Server uses a MySQL database and the Athena Server uses a Postgres database.
+// - A tutor can access the Artemis Server using the Artemis Web Client, which is served by the Artemis Server. It communicates with the Artemis Server using the Artemis API through the https protocol.
+// - A researcher can access the Athena Server using the Athena Playground, which is served by the Athena Server. It communicates with the Athena Server using the Athena API through the https protocol.
+
+The deployment diagram presented in @deploymentDiagram illustrates an example architecture closely mirroring the actual system setup at the Technical University of Munich. Specifically, both the Athena Server and the Artemis Server are housed within the University Datacenter.
+Artemis can access the services provided by Athena through the Athena API, which is served by the Athena Server over HTTPs.
+Both the Athena and Artemis Servers are housed in the University Datacenter and use independent databases: Artemis uses MySQL, while Athena employs Postgres.
+We have intentionally omitted the load-balancing aspect of the Artemis system as it is not relevant to the research focus of this thesis.
+
+#figure(
+  image("figures/deployment-diagram.svg", width: 80%),
+  caption: [Deployment diagram of the Artemis and Athena systems, inspired by the deployment diagram from the Artemis documentation page#footnote[https://ls1intum.github.io/Artemis/dev/system-design/#deployment, last visited September 6th, 2023]],
+) <deploymentDiagram>
+
+Tutors access the Artemis Server via the Artemis Web Client, while researchers use the Athena Playground for the Athena Server. Both interfaces communicate with their respective servers through APIs using the HTTPs.
 
 == Persistent Data Management
 #rect(

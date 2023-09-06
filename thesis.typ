@@ -476,71 +476,70 @@ Functional requirements are independent of implementation details. They solely d
 *Maintainability*
 #nfr[
   *System Maintenance*
-  The system should be easy to maintain and update, with clear documentation on system architecture and code.
+    *System Maintenance*
+  Documentation should cover at least 95% of all system modules and APIs, and code should comply with industry-standard linting and style guidelines.
 ] <nfrSystemMaintenance>
 #nfr[
   *Extensibility*
-  The system should support the easy development of new modules, enabling straightforward integration into Athena.
+  The system should allow for the creation of the basic structure of a new module within two developer-hours, without requiring changes to existing modules.
 ] <nfrNewModuleDevelopment>
 
 *Usability*
 #nfr[
   *Feedback Accessibility*
-  Tutors should be able to effortlessly view and interpret the feedback suggestions provided by Athena.
+  Feedback suggestions should be accessible within two clicks and should take no longer than 30 seconds to load. Tutors should be able to accept, modify or discard a suggestion within five seconds.
 ] <nfrFeedbackAccessibility>
 #nfr[
   *Easy Configuration*
-  The system should be easily configurable with a simple setup process to encourage adoption.
+  Configuration changes to the system, like changing authentication secrets or external API tokens for some assessment modules, should be possible within 30 minutes.
 ] <nfrEasyConfiguration>
 
 *Scalability*
 #nfr[
   *System Scalability*
-  The system should scale effectively to accommodate growth in the number of users and assessments.
+  The system should be capable of processing submissions and generating feedback suggestions for 2,000 submissions within two hours after the due date of an exercise. It should be able to handle ten requests for feedback suggestions per second.
 ] <nfrSystemScalability>
 
 *Performance*
 #nfr[
   *Response Time*
-  Feedback suggestions should be provided to tutors in a timely manner, ideally within a few seconds.
+  Feedback suggestions should be displayed to tutors within 10 seconds for 95% of requests.
 ] <nfrResponseTime>
 #nfr[
   *Immediate Grading*
-  Tutors should be able to start grading a submission immediately, even if Athena has not yet provided feedback suggestions. In this case, suggestions from Athena should load asynchronously, allowing grading to proceed without delay.
+  The grading interface should be accessible within 1 second of request, and Athena's feedback suggestions should load asynchronously.
 ] <nfrImmediateGrading>
 
 *Security*
-// - Artemis and Athena should authenticate to each other (both!) using a shared API secret. This secret should be checked on all requests.
-// - No data like submissions or feedback for the student should be leaked to the outside of the systems
-// - The interaction between Artemis and Athena should be based on the Principle of Least Privilege (with a short explanation)
 #nfr[
   *Mutual Authentication*
-  Both Artemis and Athena should authenticate each other using a shared API secret. This secret should be checked on all requests to ensure secure communication.
+  Artemis and Athena should complete mutual authentication using a shared API secret.
 ] <nfrMutualAuthentication>
 #nfr[
   *Data Leakage Prevention*
-  Confidential data, such as student submissions or feedback, should not be leaked outside Artemis and Athena. Appropriate data protection measures must be in place.
+  Access to sensitive data should be restricted to authorized personnel only. Audit logs should report unauthorized access attempts.
 ] <nfrDataLeakagePrevention>
 
 *Reliability*
 #nfr[
   *System Availability*
-  The system should be designed to have high availability, targeting a 99.9% uptime.
+  The system should achieve at least 98% uptime, measured monthly.
 ] <nfrSystemAvailability>
 #nfr[
   *Module Independence*
-  A failure in one module of Athena should not impact the functionality of other modules.
+  A failure in one module should not impact the functionality of other modules, with auto-recovery mechanisms in place to restore functionality within 1 minute.
 ] <nfrModuleIndependence>
 
 *Documentation*
 #nfr[
   *User Documentation*
-  Detailed user documentation should be provided, including guidelines for using feedback suggestions in the LMS.
+  A user manual covering at least 95% of system functionalities should be available and updated within one month of any major system changes.
 ] <nfrUserDocumentation>
 #nfr[
   *Developer's Guide*
-  A comprehensive developer's guide should be available, detailing the system architecture, database schemas, and module development process.
+  A developer's guide should be available online and should include system architecture diagrams, database schemas, and module development guidelines.
 ] <nfrDevelopersGuide>
+
 
 == System Models
 In this part of the requirements analysis, we will present the system models for the Athena system. We start by describing the scenarios that we envision for the system. Then, we present the use case model, analysis object model, dynamic model, and user interface of the system, including detailed diagrams and descriptions.

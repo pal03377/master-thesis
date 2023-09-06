@@ -883,14 +883,27 @@ We have intentionally omitted the load-balancing aspect of the Artemis system as
 Tutors access the Artemis Server via the Artemis Web Client, while researchers use the Athena Playground for the Athena Server. Both interfaces communicate with their respective servers through APIs using the HTTPs.
 
 == Persistent Data Management
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Optional section that describes how data is saved over the lifetime of the system and which data. Usually this is either done by saving data in structured files or in databases. If this is applicable for the thesis, describe the approach for persisting data here and show a UML class diagram how the entity objects are mapped to persistent storage. It contains a rationale of the selected storage scheme, file system or database, a description of the selected database and database administration issues.
-]
+// Note: Optional section that describes how data is saved over the lifetime of the system and which data. Usually this is either done by saving data in structured files or in databases. If this is applicable for the thesis, describe the approach for persisting data here and show a UML class diagram how the entity objects are mapped to persistent storage. It contains a rationale of the selected storage scheme, file system or database, a description of the selected database and database administration issues.
+// TODO: Add some introductory text
+
+=== Artemis
+// - Reason for MySQL/Postgres as the database: The existing Artemis system already uses it.
+// - We add a new boolean exercise.feedback_suggestions_enabled column Artemis to enable the feedback suggestions for an exercise.
+// - Everything else is the same: Students submit submissions, all of one students submissions are a participation, a participation belongs to an exercise and has a result, a result gets feedback from a tutor.
+In managing persistent data for Athena within Artemis, we chose to support both MySQL and PostgreSQL because Artemis already supports these databases. We show the relevant parts from the Artemis data model in @classDiagramArtemis.
+
+We introduce a new column, `exercise.feedback_suggestions_enabled`. This boolean flag is used to indicate whether Athena's feedback suggestions are enabled for a particular exercise.
+The data structure remains largely the same as in Artemis. Students submit their work as _submissions_, which are part of a _participation_. Each participation is linked to an exercise and has a _result_, which has _feedback_ from a tutor.
+#figure(
+  image("figures/db-class-diagram-artemis.svg", width: 70%),
+  caption: [Part of the data model for the Artemis system taken from the Artemis documentation#footnote[https://ls1intum.github.io/Artemis/dev/system-design/#deployment, last visited September 6th, 2023], with the added `feedbackSuggestionsEnabled` column on the `Exercise` table],
+) <classDiagramArtemis>
+
+=== Athena
+// - reason to choose PostgreSQL
+// - General Assessment Modules data
+// - tables removed from Artemis for CoFee changes
+// - additional tables in CoFee module
 
 == Access Control
 #rect(

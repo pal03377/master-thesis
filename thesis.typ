@@ -627,12 +627,12 @@ As described by Bruegge and Dutoit, we use the analysis model to prepare for the
 
 #figure(
   image("figures/aom.svg", width: 100%),
-  caption: [Analysis Object Model for the Artemis System concerning automatic feedback suggestions],
+  caption: [Analysis Object Model for the Artemis System concerning feedback suggestions],
 ) <analysisObjectModel>
 
 A *Course* has multiple *Users*, each with a name. These might be *Students*, *Tutors* or *Instructors*.
 There are several *Exercises* in a course, which can be either *Text Exercises* or *Programming Exercises*, with the corresponding type of content. Each exercise has a title, a maximum score, and a due date.
-The course instructors can _select the assessment module_ for any exercise. This way, they can choose between the different approaches for automatic feedback suggestions.
+The course instructors can _select the assessment module_ for any exercise. This way, they can choose between the different approaches for feedback suggestions.
 Students can create a *Submission* for an exercise, which contains the actual content of their solution. Tutors can _view_ these submissions and _assess_ them. Athena will _suggest feedback_ on the submission.
 This feedback is a *Feedback Suggestion*, which the tutor can _accept_, _modify_ or _discard_. There are two other types of feedback: *Manual Feedback*, which is given by the tutor, and *Automatic Feedback*, which is given on programming exercises using the fully automatic tests in Artemis.
 A *Feedback* consists of the feedback text, an optional reference to the location in the submission that it applies to and a given number of credits, which can also be negative.

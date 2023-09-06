@@ -297,19 +297,10 @@ Functional requirements are independent of implementation details. They solely d
 #v(1em)
 *Assessment Modules*
 // - There should be multiple assessment modules in Athena, each of which can be turned on or off
-// - A user of the LMS can choose which assessment module(s) to use for a particular exercise
 // - An assessment module should be able to provide a suggested next submission to the LMS if requested
 // - The LMS should be able to send existing submissions and feedback to Athena for analysis.
 // - Athena should be able to provide feedback suggestions on a submission to the LMS.
-#fr[
-  *Select Assessment Module*
-  If automatic assessments are enabled in the LMS, // condition
-  an instructor // subject
-  can select // action
-  which assessment module // object
-  to use for a particular exercise.
-  Only assessment modules that are compatible with the exercise type can be selected. // constraint of action
-] <frSelectAssessmentModule>
+// - A user of the LMS can choose which assessment module(s) to use for a particular exercise
 #fr[
   *Suggest Next Submission*
   Upon receiving a request from the LMS, // condition
@@ -374,14 +365,23 @@ Functional requirements are independent of implementation details. They solely d
   // constraint of action
 ] <frModifyFeedbackSuggestions>
 #fr[
-  *Reject Feedback Suggestions*
+  *Discard Feedback Suggestions*
   When a tutor does not want to apply a feedback suggestion, // condition
   they // subject
-  can reject // action
+  can discard // action
   it // object
   from within the LMS.
   // constraint of action
-] <frRejectFeedbackSuggestions>
+] <frDiscardFeedbackSuggestions>
+#fr[
+  *Restore Discarded Feedback Suggestions*
+  When a tutor accidentally discarded a feedback suggestion, // condition
+  they // subject
+  can restore // action
+  it // object
+  from within the LMS.
+  // constraint of action
+] <frRestoreDiscardedFeedbackSuggestions>
 #fr[
   *Communicate Module Health Status*
   During the operation of the LMS, // condition
@@ -391,6 +391,15 @@ Functional requirements are independent of implementation details. They solely d
   to each other.
   This action should not interfere with the normal functioning of either system. // constraint of action
 ] <frCommunicateModuleHealthStatus>
+#fr[
+  *Select Assessment Module*
+  If automatic assessments are enabled in the LMS, // condition
+  an administrator // subject
+  can select // action
+  which assessment module // object
+  to use for a particular exercise.
+  Only assessment modules that are compatible with the exercise type can be selected. // constraint of action
+] <frSelectAssessmentModule> // TODO: Say that this one is not fulfilled / half-fulfilled with the Spring config (in the status section)
 
 #v(1em)
 *More Exercise Types*
@@ -464,11 +473,15 @@ Functional requirements are independent of implementation details. They solely d
 // developer documentation
 
 // TODO: write some introductory sentence here about NFRs
-*Scalability*
+*Maintainability*
 #nfr[
-  *System Scalability*
-  The system should scale effectively to accommodate growth in the number of users and assessments.
-] <nfrSystemScalability>
+  *System Maintenance*
+  The system should be easy to maintain and update, with clear documentation on system architecture and code.
+] <nfrSystemMaintenance>
+#nfr[
+  *Extensibility*
+  The system should support the easy development of new modules, enabling straightforward integration into Athena.
+] <nfrNewModuleDevelopment>
 
 *Usability*
 #nfr[
@@ -480,6 +493,12 @@ Functional requirements are independent of implementation details. They solely d
   The system should be easily configurable with a simple setup process to encourage adoption.
 ] <nfrEasyConfiguration>
 
+*Scalability*
+#nfr[
+  *System Scalability*
+  The system should scale effectively to accommodate growth in the number of users and assessments.
+] <nfrSystemScalability>
+
 *Performance*
 #nfr[
   *Response Time*
@@ -489,16 +508,6 @@ Functional requirements are independent of implementation details. They solely d
   *Immediate Grading*
   Tutors should be able to start grading a submission immediately, even if Athena has not yet provided feedback suggestions. In this case, suggestions from Athena should load asynchronously, allowing grading to proceed without delay.
 ] <nfrImmediateGrading>
-
-*Maintainability*
-#nfr[
-  *New Module Development*
-  The system should support the easy development of new modules, enabling straightforward integration into Athena.
-] <nfrNewModuleDevelopment>
-#nfr[
-  *System Maintenance*
-  The system should be easy to maintain and update, with clear documentation on system architecture and code.
-] <nfrSystemMaintenance>
 
 *Security*
 // - Artemis and Athena should authenticate to each other (both!) using a shared API secret. This secret should be checked on all requests.
@@ -591,7 +600,7 @@ We will break down the use case model into two separate diagrams for clarity.
 In @useCaseModelTutorInstructor we show the use cases of both an instructor and a tutor who use Artemis with Athena to grade students' submissions.
 The instructor can select the assessment module that is best suited for giving feedback suggestions on the specific exercise to be assessed (#frlink(<frSelectAssessmentModule>)). Examples of the assessment module include the CoFee module for text exercises, ThemisML for programming exercises or one of the two available modules using LLMs for feedback suggestions on both programming and text exercises.
 After the instructor selected an assessment module and after the exercise due date is reached, the tutor can start assessing the submissions. They can view a given submission that is chosen by the current assessment module in Athena (see @useCaseModelAthena). Then, they will directly receive feedback suggestions from Athena (#frlink(<frViewFeedbackSuggestionsUI>)).
-The tutor can either accept the suggestions or edit them to match their evaluation of the submission (#frlink(<frAcceptFeedbackSuggestions>)). Alternatively, they can also choose to reject the suggestions and to only give manual feedback (#frlink(<frRejectFeedbackSuggestions>)). Any combination of accepting, modifying and rejecting suggestions is possible.
+The tutor can either accept the suggestions or edit them to match their evaluation of the submission (#frlink(<frAcceptFeedbackSuggestions>)). Alternatively, they can also choose to discard the suggestions and to only give manual feedback (#frlink(<frDiscardFeedbackSuggestions>)). Any combination of accepting, modifying and discarding suggestions is possible.
 After the tutor has finished grading the submission, they can submit the result to the system.
 
 #figure(
@@ -616,7 +625,7 @@ A *Course* has multiple *Users*, each with a name. These might be *Students*, *T
 There are several *Exercises* in a course, which can be either *Text Exercises* or *Programming Exercises*, with the corresponding type of content. Each exercise has a title, a maximum score, and a due date.
 The course instructors can _select the assessment module_ for any exercise. This way, they can choose between the different approaches for automatic feedback suggestions.
 Students can create a *Submission* for an exercise, which contains the actual content of their solution. Tutors can _view_ these submissions and _assess_ them. Athena will _suggest feedback_ on the submission.
-This feedback is a *Feedback Suggestion*, which the tutor can _accept_, _modify_ or _reject_. There are two other types of feedback: *Manual Feedback*, which is given by the tutor, and *Automatic Feedback*, which is given on programming exercises using the fully automatic tests in Artemis.
+This feedback is a *Feedback Suggestion*, which the tutor can _accept_, _modify_ or _discard_. There are two other types of feedback: *Manual Feedback*, which is given by the tutor, and *Automatic Feedback*, which is given on programming exercises using the fully automatic tests in Artemis.
 A *Feedback* consists of the feedback text, an optional reference to the location in the submission that it applies to and a given number of credits, which can also be negative.
 A collection of feedback creates an *Assessment*, which is the result of assessing a submission. It has a given non-negative score and can be _submitted_ by the tutor.
 
@@ -716,7 +725,7 @@ For Athena to be a reliable component of Artemis's grading process, it must aim 
 The security of Athena is very important, and strict measures are in place to ensure this. As per~#nfrlink(<nfrMutualAuthentication>), both Artemis and Athena authenticate each other using a shared API secret on all requests, maintaining the integrity and confidentiality of the data. Additionally, stringent data protection measures, in line with~#nfrlink(<nfrDataLeakagePrevention>), ensure that confidential student data is not leaked outside the Athena and Artemis systems.
 
 *Maintenance Criteria*
-To maintain the relevance and utility of Athena over time, the system is designed to support the seamless development and integration of new modules, fulfilling the goal of~#nfrlink(<nfrNewModuleDevelopment>). Complementing this, Athena is built to be easy to maintain and update, with comprehensive and clear documentation on system architecture and code as per~#nfrlink(<nfrSystemMaintenance>).
+Focusing on developer extensibility, Athena is architected to allow effortless integration of new modules and functionalities, fulfilling the goal of~#nfrlink(<nfrNewModuleDevelopment>). Complementing this, Athena is built to be easy to maintain and update, with comprehensive and clear documentation on system architecture and code as per~#nfrlink(<nfrSystemMaintenance>).
 
 To ensure that Athena is user-friendly and maintainable, extensive documentation is prepared. Detailed user documentation, as specified in ~#nfrlink(<nfrUserDocumentation>), will enable tutors and administrators to effectively utilize the system. For future development and maintenance needs, a comprehensive developer's guide is made available, detailing the system architecture, database schemas, and module development process, as outlined in~#nfrlink(<nfrDevelopersGuide>).
 
@@ -728,9 +737,9 @@ We prioritize the design goals from most important to least important as follows
 1. *End User Criteria*: 
    Ensuring a positive and efficient experience for the tutors using Artemis is the highest priority. This directly impacts the tutors' satisfaction and the effectiveness of the grading process. As Athena's feedback is central to the tutors' workflow within Artemis, ease of use is essential for successful integration and broad adoption.
 2. *Maintenance Criteria*: 
-   Maintenance, with a strong focus on documentation, is critical to ensure that the wide and diverse range of developers contributing to the open-source Artemis project can easily understand, adapt, and extend Athena's implementation. Clear and thorough documentation is necessary, as it allows for more effortless collaboration and future enhancement.
+   Maintenance, with a strong focus on extensibility, is critical to ensure that the wide and diverse range of developers contributing to the open-source Artemis project can easily understand, adapt, and extend Athena's implementation. Clear and thorough documentation is necessary, as it allows for more effortless collaboration and future enhancement.
 3. *Performance Criteria*: 
-   The system aims to be fast and responsive, with a strict requirement that submission selection should be within 2 seconds. Additionally, tutors must be able to grade submissions independently of whether feedback suggestions are available; grading should not be affected negatively if suggestions are delayed or unavailable. While performance remains crucial as it affects user satisfaction, some trade-offs in response times for feedback suggestions are acceptable to ensure that the grading process remains uninterrupted.
+   The system aims to be fast and responsive, with a strict requirement that submission selection should be within 2 seconds. Additionally, tutors must be able to grade submissions independently of whether feedback suggestions are available; grading should be unaffected if suggestions are delayed or unavailable. While performance remains crucial as it affects user satisfaction, some trade-offs in response times for feedback suggestions are acceptable to ensure that the grading process remains uninterrupted.
 4. *Cost Criteria*: 
   Given that Artemis operates as an open-source project with limited funding, minimizing maintenance and administration costs is vital. We need to operate within a tight budget while striving to achieve effective integration and user satisfaction.
 5. *Dependability Criteria*: 

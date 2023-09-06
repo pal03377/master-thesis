@@ -742,6 +742,7 @@ This prioritization strategy aims to establish Athena as a user-centric, maintai
 // Note: Describe the architecture of your system by decomposing it into subsystems and the services provided by each subsystem. Use UML class diagrams including packages/components for each subsystem.
 // - There are 3 main subsystems: Artemis client, Artemis server, Athena
 // - Artemis client: UI, communication with Artemis server
+
 As a distinct subsystem, _Athena_ analyzes exercises, student submissions, and historical feedback to generate targeted suggestions. It operates alongside two other primary subsystems: the _Artemis Client_, the user interface for tutors, and the _Artemis server_, which manages its logic and data.
 As an alternative interface to the Artemis Client, tutors can also use the _Themis Grading App_ to assess submissions. The collaborator Tarlan Ismayilsoy adds the integration of Athena's feedback suggestions into the Themis app in his ongoing Master's Thesis.
 
@@ -753,7 +754,8 @@ The communication between all components in @subsystemDecompositionOverview is f
 ) <subsystemDecompositionOverview>
 
 === Athena
-We introduce the architecture of the Athena system in @subsystemDecompositionAthena.
+The Athena system is written in Python utilizing the FastAPI server framework#footnote[https://fastapi.tiangolo.com, last visited September 6th, 2023].
+We introduce the architecture of Athena in @subsystemDecompositionAthena.
 //
 Placed on the left side of the architecture diagram are various assessment modules. These modules have the primary function of creating feedback suggestions tailored to specific student submissions.
 Importantly, these modules are designed to be interchangeable due to their adherence to a unified interface. For example, both the _CoFee Module_ and the _Text LLM Module_ focus on generating feedback for text-based exercises, whereas the _ThemisML Module_ and the _Programming LLM Module_ specialize in formulating suggestions for programming exercises.
@@ -762,7 +764,7 @@ Further details on the CoFee module are provided in the subsequent section. The 
 
 The _Assessment Module Manager_ serves as the coordinator for all assessment modules. Additionally, it offers an Application Programming Interface (API) to facilitate interactions between external LMSs and Athena.
 
-Lastly, the _Playground_ is a web application that also communicates with Athena through this API. This platform provides a sandbox environment for researchers, allowing them to test the efficacy of various assessment modules and to preview the generated feedback suggestions for a given submission.
+Lastly, the _Playground_ is a web application created using the Next.js framework#footnote[https://nextjs.org, last visited September 6th, 2023] that also communicates with Athena through this API. This platform provides a sandbox environment for researchers, allowing them to test the efficacy of various assessment modules and to preview the generated feedback suggestions for a given submission.
 
 #figure(
   image("figures/subsystem-decomposition-athena.svg", width: 90%),
@@ -773,6 +775,8 @@ Lastly, the _Playground_ is a web application that also communicates with Athena
 We largely keep the architecture of the CoFee module as proposed by Bernius and Michel~#cite("cofee", "cofee2", "atheneLoadBalancer"). Notably, Michel contributed a _Load Balancer_ that efficiently distributes incoming requests among the CoFee modules for _Segmentation_, _Embedding_, and _Clustering_~@atheneLoadBalancer.
 Unfortunately, the load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _Module Adapter_ that provides a unified interface for the CoFee module to the Athena system.
 
+Both the existing CoFee module and the new Module Adapter are based on the FastAPI framework.
+
 #figure(
   image("figures/subsystem-decomposition-cofee-module.svg", width: 80%),
   caption: [Subsystem decomposition of the CoFee Module, inspired by similar diagrams in @cofee and @atheneLoadBalancer],
@@ -780,8 +784,45 @@ Unfortunately, the load balancer is highly coupled with the CoFee modules, which
 
 === Artemis Server
 
+// The Artemis Server is written in Java and uses Spring Boot. In the context of the work presented in this thesis, it is responsible for handling the communication with Athena.
+
+// All the components mentioned in the subsystem decomposition diagram that include "Athena" in their name are enabled using the "athena" Spring profile. This way, they are only loaded if the profile is active. This is useful because the Athena components can be disabled in production if they are not needed.
+
+// The architecture is split into three layers: web, application and persistence.
+// The _Text and Programming Exercise and Assessment Resources_ provide endpoints for creating and updating exercises and tutor assessments respectively. They trigger the following Athena services when there are updates:
+// - The _Athena Schedule Service_ schedules the _Athena Submission Sending Service_ that sends submissions on the exercise to Athena.
+// - The _Text and Programming Submission Services_ that request the currently best submission to assess from the _Athena Submission Selection Service_.
+// - The _Athena Feedback Sending Service_ is responsible for sending added feedback to Athena so that Athena can learn from it.
+// The _Athena Resource_ provides all endpoints that are purely related to Athena and its interaction with Artemis. It provides feedback suggestions to the client using the _Athena Feedback Suggestions Service_ and it also provides endpoints for Athena to download programming submissions if needed.
+// The _Athena Health Indicator_ provides information to the health dashboard that is built-in into Artemis to show the status of the connection to the Athena system.
+
+The Artemis Server, constructed using Java and Spring Boot, serves as a pivotal element in the work discussed in this thesis. Its primary role consists of managing communications with Athena, the automatic feedback suggestion system for tutors.
+
+#figure(
+  image("figures/subsystem-decomposition-artemis-server.svg", width: 100%),
+  caption: [Subsystem decomposition of the Artemis Server],
+) <subsystemDecompositionArtemisServer>
+
+@subsystemDecompositionArtemisServer provides an overview of the Artemis Server's subsystems.
+The system's architecture is organized into three distinct layers: the web layer, the application layer, and the persistence layer. The modules for _Text and Programming Exercise Resources_ and _Text and Programming Assessment Resources_ expose endpoints that facilitate the creation and modification of exercises and tutor assessments. Upon any updates in these areas, several Athena services are invoked:
+  
+1. The _Athena Schedule Service_ initiates the _Athena Submission Sending Service_, which forwards exercise submissions to Athena.
+2. The _Text and Programming Submission Services_ interact with the _Athena Submission Selection Service_ to find the most appropriate submission for the next assessment.
+3. The _Athena Feedback Sending Service_ takes on the role of transmitting new feedback to Athena, enabling Athena to refine its learning algorithms.
+
+Moreover, the _Athena Resource_ serves as a hub for all operations that exclusively concern functionality related to Athena. It delivers feedback suggestions to the client through the _Athena Feedback Suggestions Service_ and also offers endpoints to allow Athena to download programming submissions when required through the _Athena Repository Export Service_.
+
+Lastly, the _Athena Health Indicator_ integrates with Artemis's built-in health dashboard, providing data on the status of the connection between the Artemis system and Athena.
+
+A Spring profile labeled "athena" activates components with "Athena" in their identifiers. When activated, this profile loads these Athena-related components. This allows the deactivation of unnecessary Athena-related components in production if needed.
+
+In the persistence layer, the _Text and Programming Submission Repositories_ along with the _Feedback Repository_ retrieve data from the database using an Object-Relational Mapping (ORM) framework.
+Additionally, the _Text Block Repository_ serves a specific function in the representation conversion for feedback on text exercises. While Artemis uses inline references identified by text block IDs for feedback, Athena references the submission text by the start and end indices of the feedback within the submission text. The _Text Block Repository_ helps with this conversion between the two different feedback representations.
+
+
 === Artemis Client
-// TODO: Separate Diagrams and headings for Client (with detailed components), Server (with detailed AthenaService-s), Athena (with detailed module and Python package structure), CoFee (with adapter structure), (ThemisML maybe later)
+
+// TODO: TypeScript + Angular
 
 == Hardware Software Mapping
 #rect(

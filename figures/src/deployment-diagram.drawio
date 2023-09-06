@@ -1,9 +1,96 @@
-<mxfile host="app.diagrams.net" modified="2023-09-06T16:12:32.613Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="oFsUpNNb4lOGGryKECwx" version="21.7.2" type="google">
+<mxfile host="app.diagrams.net" modified="2023-09-06T17:26:50.940Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="51ka_HhX6IrbQ77OjCUs" version="21.7.2" type="github">
   <diagram name="Page-1" id="4VfvKljj3Kcl-AmsJXSn">
-    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="989" dy="549" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-1" value="" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;flipH=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="340" width="420" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-2" value="«infrastructure» &lt;b&gt;University Datacenter&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="760" y="350" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-5" value="«component»&lt;br&gt;&lt;b&gt;Artemis Database&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="900" y="400" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-6" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="YSg6k0IKZRD6IeiikpwW-5">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="YSg6k0IKZRD6IeiikpwW-9" target="YSg6k0IKZRD6IeiikpwW-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="YSg6k0IKZRD6IeiikpwW-9" target="YSg6k0IKZRD6IeiikpwW-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-9" value="«component»&amp;nbsp;&lt;b&gt;&lt;br&gt;Artemis Server&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="900" y="460" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-10" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="YSg6k0IKZRD6IeiikpwW-9">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-13" value="«component»&lt;b&gt;&lt;br&gt;Athena Database&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="400" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-14" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="YSg6k0IKZRD6IeiikpwW-13">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="YSg6k0IKZRD6IeiikpwW-11" target="YSg6k0IKZRD6IeiikpwW-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-11" value="«component»&lt;b&gt;&lt;br&gt;Athena Server&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="460" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-12" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="YSg6k0IKZRD6IeiikpwW-11">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-18" value="" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;flipH=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="900" y="550" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-19" value="«device»&lt;br&gt;&lt;b&gt;Tutor Machine&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="920" y="560" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.809;entryY=1.025;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1053.5000000000002" y="593" as="sourcePoint" />
+            <mxPoint x="1053.53" y="501" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-20" value="«component»&lt;b&gt;&lt;br&gt;Artemis Web Client&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="910" y="593" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-21" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="YSg6k0IKZRD6IeiikpwW-20">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-22" value="" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;flipH=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="550" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-23" value="«device»&lt;br&gt;&lt;b&gt;Researcher Machine&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="700" y="560" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.691;entryY=1.001;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="848.5" y="594" as="sourcePoint" />
+            <mxPoint x="848.47" y="500.0400000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-24" value="«component»&lt;b&gt;&lt;br&gt;Athena Playground&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="690" y="594" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="YSg6k0IKZRD6IeiikpwW-25" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="YSg6k0IKZRD6IeiikpwW-24">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

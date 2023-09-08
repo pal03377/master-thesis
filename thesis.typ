@@ -475,14 +475,15 @@ Functional requirements are independent of implementation details. They solely d
 // TODO: write some introductory sentence here about NFRs
 *Maintainability*
 #nfr[
-  *System Maintenance*
-    *System Maintenance*
-  Documentation should cover at least 95% of all system modules and APIs, and code should comply with industry-standard linting and style guidelines.
-] <nfrSystemMaintenance>
-#nfr[
   *Extensibility*
   The system should allow for the creation of the basic structure of a new module within two developer-hours, without requiring changes to existing modules.
 ] <nfrNewModuleDevelopment>
+
+*Documentation*
+#nfr[
+  *User Documentation*
+  A user manual covering at least 95% of system functionalities should be available and updated within one month of any major system changes.
+] <nfrUserDocumentation>
 
 *Usability*
 #nfr[
@@ -529,16 +530,6 @@ Functional requirements are independent of implementation details. They solely d
   *Module Independence*
   A failure in one module should not impact the functionality of other modules, with auto-recovery mechanisms in place to restore functionality within 1 minute.
 ] <nfrModuleIndependence>
-
-*Documentation*
-#nfr[
-  *User Documentation*
-  A user manual covering at least 95% of system functionalities should be available and updated within one month of any major system changes.
-] <nfrUserDocumentation>
-#nfr[
-  *Developer's Guide*
-  A developer's guide should be available online and should include system architecture diagrams, database schemas, and module development guidelines.
-] <nfrDevelopersGuide>
 
 
 == System Models
@@ -733,9 +724,9 @@ For Athena to be a reliable component of Artemis's grading process, it must aim 
 The security of Athena is very important, and strict measures are in place to ensure this. As per~#nfrlink(<nfrMutualAuthentication>), both Artemis and Athena authenticate each other using a shared API secret on all requests, maintaining the integrity and confidentiality of the data. Additionally, stringent data protection measures, in line with~#nfrlink(<nfrDataLeakagePrevention>), ensure that confidential student data is not leaked outside the Athena and Artemis systems.
 
 *Maintenance Criteria*
-Focusing on developer extensibility, Athena is architected to allow effortless integration of new modules and functionalities, fulfilling the goal of~#nfrlink(<nfrNewModuleDevelopment>). Complementing this, Athena is built to be easy to maintain and update, with comprehensive and clear documentation on system architecture and code as per~#nfrlink(<nfrSystemMaintenance>).
+Focusing on developer extensibility, Athena is architected to allow effortless integration of new modules and functionalities, fulfilling the goal of~#nfrlink(<nfrNewModuleDevelopment>). Complementing this, Athena is built to be easy to maintain and update, with comprehensive and clear documentation on system architecture and code as per~#nfrlink(<nfrUserDocumentation>).
 
-To ensure that Athena is user-friendly and maintainable, extensive documentation is prepared. Detailed user documentation, as specified in ~#nfrlink(<nfrUserDocumentation>), will enable tutors and administrators to effectively utilize the system. For future development and maintenance needs, a comprehensive developer's guide is made available, detailing the system architecture, database schemas, and module development process, as outlined in~#nfrlink(<nfrDevelopersGuide>).
+To ensure that Athena is user-friendly and maintainable, extensive documentation is prepared. Detailed user documentation, as specified in ~#nfrlink(<nfrUserDocumentation>), will enable tutors and administrators to effectively utilize the system. For future development and maintenance needs, a comprehensive developer's guide is made available, detailing the system architecture, database schemas, and module development process, supporting~#nfrlink(<nfrUserDocumentation>).
 
 *End User Criteria*
 User experience is deeply considered in our design. Tutors using Artemis should be able to effortlessly view and interpret all feedback suggestions, aligning with~#nfrlink(<nfrFeedbackAccessibility>). Moreover, the system is developed to be easily configurable, aiming to encourage widespread adoption among educators and institutions, as highlighted in~#nfrlink(<nfrEasyConfiguration>).

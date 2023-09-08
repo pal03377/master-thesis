@@ -583,7 +583,7 @@ According to Bruegge and Dutoit, use cases describe "a function provided by the 
 We will break down the use case model into two separate diagrams for clarity.
 
 #figure(
-  image("figures/use-case-diagram-artemis.svg", width: 100%),
+  image("figures/use-case-artemis.svg", width: 100%),
   caption: [Use Case Diagram for the Artemis system],
 ) <useCaseModelArtemis>
 
@@ -598,7 +598,7 @@ After the tutor has finished grading the submission, they can _submit_ the resul
 Athena uses that feedback to _learn from it_ (#frlink(<frLearnFromPastFeedback>)) and to improve its suggestions for future submissions.
 
 #figure(
-  image("figures/use-case-diagram-athena.svg", width: 60%),
+  image("figures/use-case-athena.svg", width: 60%),
   caption: [Use Case Diagram for the Athena System],
 ) <useCaseModelAthena>
 
@@ -752,7 +752,7 @@ This prioritization strategy aims to establish Athena as a user-centric, maintai
 // - Artemis client: UI, communication with Artemis server
 
 As a distinct subsystem, _Athena_ analyzes exercises, student submissions, and historical feedback to generate targeted suggestions. It operates alongside two other primary subsystems: the _Artemis Client_, the user interface for tutors, and the _Artemis server_, which manages its logic and data.
-As an alternative interface to the Artemis Client, tutors can also use the _Themis Grading App_ to assess submissions. The collaborator Tarlan Ismayilsoy adds the integration of Athena's feedback suggestions into the Themis app in his ongoing Master's Thesis.
+As an alternative interface to the Artemis Client, tutors can also use the _Themis Grading App_ to assess submissions.
 
 The communication between all components in @subsystemDecompositionOverview is facilitated through the respective APIs of the subsystems, using a REST interface with JSON serialization.
 
@@ -768,7 +768,7 @@ We introduce the architecture of Athena in @subsystemDecompositionAthena.
 Placed on the left side of the architecture diagram are various assessment modules. These modules have the primary function of creating feedback suggestions tailored to specific student submissions.
 Importantly, these modules are designed to be interchangeable due to their adherence to a unified interface. For example, both the _CoFee Module_ and the _Text LLM Module_ focus on generating feedback for text-based exercises, whereas the _ThemisML Module_ and the _Programming LLM Module_ specialize in formulating suggestions for programming exercises.
 
-Further details on the CoFee module are provided in the subsequent section. The ThemisML module, on the other hand, is an adaptation of the pre-existing ThemisML system#footnote[https://github.com/ls1intum/Themis-ML, last visited September 5th, 2023], tailored to fit into the Athena framework. The LLM modules -- both Text and Programming -- were developed by collaborator Felix Dietrich, who discusses them extensively in his concurrent Master's Thesis.
+Further details on the CoFee module are provided in the subsequent section. The ThemisML module, on the other hand, is an adaptation of the pre-existing ThemisML system#footnote[https://github.com/ls1intum/Themis-ML, last visited September 5th, 2023], tailored to fit into the Athena framework. The LLM modules -- both Text and Programming -- were by Felix Dietrich~@athenaLLMs.
 
 The _Assessment Module Manager_ serves as the coordinator for all assessment modules. Additionally, it offers an Application Programming Interface (API) to facilitate interactions between external LMSs and Athena.
 
@@ -780,14 +780,14 @@ Lastly, the _Playground_ is a web application created using the Next.js framewor
 ) <subsystemDecompositionAthena>
 
 === CoFee Module
-We largely keep the architecture of the CoFee module as proposed by Bernius and Michel~#cite("cofee", "cofee2", "atheneLoadBalancer"). Notably, Michel contributed a _Load Balancer_ that efficiently distributes incoming requests among the CoFee modules for _Segmentation_, _Embedding_, and _Clustering_~@atheneLoadBalancer.
-Unfortunately, the load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _Module Adapter_ that provides a unified interface for the CoFee module to the Athena system.
+We largely keep the architecture of the CoFee module as proposed by Bernius et al.~#cite("cofee", "cofee2") and Michel~@atheneLoadBalancer. Notably, Michel contributed a _Load Balancer_ that efficiently distributes incoming requests among the CoFee modules for _Segmentation_, _Embedding_, and _Clustering_~@atheneLoadBalancer.
+The load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _Module Adapter_ that provides a unified interface for the CoFee module to the Athena system.
 
 Both the existing CoFee module and the new Module Adapter are based on the FastAPI framework.
 
 #figure(
   image("figures/subsystem-decomposition-cofee-module.svg", width: 80%),
-  caption: [Subsystem decomposition of the CoFee Module, inspired by similar diagrams in @cofee and @atheneLoadBalancer],
+  caption: [Subsystem decomposition of the CoFee Module, inspired by similar diagrams in @cofee and @atheneLoadBalancer. The source code of the Athena-CoFee subsystem is available at https://github.com/ls1intum/Athena-CoFee.], 
 ) <subsystemDecompositionCoFee>
 
 === Artemis Server

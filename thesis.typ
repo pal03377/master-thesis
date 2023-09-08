@@ -397,7 +397,7 @@ Functional requirements are independent of implementation details. They solely d
   an administrator // subject
   can select // action
   which assessment module // object
-  to use for a particular exercise.
+  to use for each type of exercise (e.g., text or programming).
   Only assessment modules that are compatible with the exercise type can be selected. // constraint of action
 ] <frSelectAssessmentModule> // TODO: Say that this one is not fulfilled / half-fulfilled with the Spring config (in the status section)
 
@@ -589,7 +589,7 @@ We will break down the use case model into two separate diagrams for clarity.
 
 In @useCaseModelArtemis we show the use cases of a tutor, an administrator, and Athena in the Artemis system.
 
-The administrator can _select the assessment module_ that is best suited for giving feedback suggestions on the specific exercise to be assessed (#frlink(<frSelectAssessmentModule>)). Examples of the assessment module include the CoFee module for text exercises, ThemisML for programming exercises or one of the two available modules using LLMs for feedback suggestions on both programming and text exercises.
+The administrator can _select the assessment module_ that is best suited for giving feedback suggestions for each specific type of exercise (#frlink(<frSelectAssessmentModule>)). Examples of the assessment module include the CoFee module for text exercises, ThemisML for programming exercises or one of the two available modules using LLMs for feedback suggestions on both programming and text exercises.
 After the administrator has selected an assessment module and after the exercise due date is reached, the tutor can start assessing the submissions. They can _view a given submission_ that is chosen by the current assessment module in Athena. Then, they will directly receive feedback suggestions from Athena (#frlink(<frSuggestNextSubmission>)) and _review_ it in the user interface (#frlink(<frViewFeedbackSuggestionsUI>)).
 
 The tutor can either _accept the suggestions_ or _modify them_ to match their evaluation of the submission (#frlink(<frAcceptFeedbackSuggestions>)). Alternatively, they can also choose to _discard any suggestion_ and to only give manual feedback (#frlink(<frDiscardFeedbackSuggestions>)). Any combination of accepting, modifying and discarding suggestions is possible. If the tutor accidentally discards a suggestion, they can _restore it_ (#frlink(<frRestoreDiscardedFeedbackSuggestions>)).
@@ -606,10 +606,10 @@ Athena uses that feedback to _learn from it_ (#frlink(<frLearnFromPastFeedback>)
 // - The researcher can _inspect usage statistics_ about the acceptance rate of feedback suggestions and more. This enables them to evaluate the effectiveness of the system under evaluation.
 // - The researcher can _test modules independently of the LMS_ to ensure that they work as intended without having to prepare a test exercise in the LMS and go through the process of setting up the exercise and submitting one or multiple submissions.
 The use cases of a researcher within Athena are shown in @useCaseModelAthena.
-Athena enables them to _change the suggestion algorithm_, thereby enabling various approaches for optimizing tutor feedback.
+Athena enables them to _change the suggestion algorithms_, thereby enabling various approaches for optimizing tutor feedback.
 Furthermore, the researcher can _inspect usage statistics_ related to the system's assessment modules to evaluate their effectiveness and how frequently the generated feedback is accepted or modified.
-Lastly, the researcher can _test assessment modules independently of the LMS_, which eliminates the need for test exercise configurations within Artemis. This approach facilitates more efficient verification of module functionality.
-Overall, these capabilities allow the researcher to significantly improve both the effectiveness of the Athena system.
+Lastly, the researcher can _test the suggestion generation independently of the LMS_, which eliminates the need for test exercise configurations within Artemis. This approach facilitates more efficient verification of module functionality.
+Overall, these capabilities allow the researcher to significantly improve the effectiveness of the Athena system.
 
 === Analysis Object Model
 // Note: This subsection should contain a UML Class Diagram showing the most important objects, attributes, methods and relations of your application domain including taxonomies using specification inheritance (see @bruegge2004object). Do not insert objects, attributes or methods of the solution domain. *Important:* Make sure to describe the analysis object model thoroughly in the text so that readers can understand the diagram. Also, write about the rationale about how and why you modeled the concepts like this.
@@ -620,11 +620,13 @@ As described by Bruegge and Dutoit, we use the analysis model to prepare for the
   caption: [Analysis Object Model for the Artemis System concerning feedback suggestions],
 ) <analysisObjectModel>
 
-A *Course* has multiple *Users*, each with a name. These might be *Students*, *Tutors* or *Instructors*.
-There are several *Exercises* in a course, which can be either *Text Exercises* or *Programming Exercises*, with the corresponding type of content. Each exercise has a title, a maximum score, and a due date.
-The course instructors can _select the assessment module_ for any exercise. This way, they can choose between the different approaches for feedback suggestions.
-Students can create a *Submission* for an exercise, which contains the actual content of their solution. Tutors can _view_ these submissions and _assess_ them. Athena will _suggest feedback_ on the submission.
-This feedback is a *Feedback Suggestion*, which the tutor can _accept_, _modify_ or _discard_. There are two other types of feedback: *Manual Feedback*, which is given by the tutor, and *Automatic Feedback*, which is given on programming exercises using the fully automatic tests in Artemis.
+A *Course* has multiple *Users*, each with a name. These might be *Students* or *Tutors*.
+There are several *Exercises* in a course, which can either be *Text Exercises* or *Programming Exercises*, with the corresponding type of content. Each exercise has a title, a maximum score, and a due date.
+Students can create a *Submission* for an exercise, which contains the actual content of their solution. Tutors can _view_ these submissions and _assess_ them.
+A *SuggestionFactory* (Athena) provides *Feedback Suggestions* on the submission. The *Researcher* can change the _suggestion algorithms_ of the suggestion factory, _inspect the statistics_ of the assessment modules, and _test the generation of suggestions_ independently of the LMS. The *Administrator* can _inspect the health_ of the external generation service and _select the assessment module for each exercise type_.
+
+The tutor can _accept_, _modify_ or _discard_ the suggestions generated by the suggestion factory.
+There are two other types of feedback: *Manual Feedback*, which is given by the tutor, and *Automatic Feedback*, which is given on programming exercises using the fully automatic tests in Artemis.
 A *Feedback* consists of the feedback text, an optional reference to the location in the submission that it applies to and a given number of credits, which can also be negative.
 A collection of feedback creates an *Assessment*, which is the result of assessing a submission. It has a given non-negative score and can be _submitted_ by the tutor.
 
@@ -781,9 +783,9 @@ Lastly, the _Playground_ is a web application created using the Next.js framewor
 
 === CoFee Module
 We largely keep the architecture of the CoFee module as proposed by Bernius et al.~#cite("cofee", "cofee2") and Michel~@atheneLoadBalancer. Notably, Michel contributed a _Load Balancer_ that efficiently distributes incoming requests among the CoFee modules for _Segmentation_, _Embedding_, and _Clustering_~@atheneLoadBalancer.
-The load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _Module Adapter_ that provides a unified interface for the CoFee module to the Athena system.
+The load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a CoFee Adapter_ that provides a unified interface for the CoFee module to the Athena system.
 
-Both the existing CoFee module and the new Module Adapter are based on the FastAPI framework.
+Both the existing CoFee module, called "Athena-CoFee", and the new CoFee Adapter are based on the FastAPI framework.
 
 #figure(
   image("figures/subsystem-decomposition-cofee-module.svg", width: 80%),

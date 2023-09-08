@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-08T17:42:08.183Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="PSCvE3Zgu8VwOx4eTq-q" version="21.7.2" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-09-08T19:28:52.481Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="Dzlsjsy9MBu8ydQ6joAX" version="21.7.2" type="github" pages="3">
   <diagram name="artemis" id="QuPIXc7A5ROBVf-9lSRr">
     <mxGraphModel dx="708" dy="472" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -261,12 +261,12 @@
     </mxGraphModel>
   </diagram>
   <diagram name="athena" id="2xga9ToQSgTMNpgdpcHS">
-    <mxGraphModel dx="1026" dy="685" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="489" dy="326" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="OtXgMR-s5QyJ-jvGCxcB-0" />
         <mxCell id="OtXgMR-s5QyJ-jvGCxcB-1" parent="OtXgMR-s5QyJ-jvGCxcB-0" />
         <mxCell id="OtXgMR-s5QyJ-jvGCxcB-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
-          <mxGeometry x="200" y="250" width="200" height="240" as="geometry" />
+          <mxGeometry x="200" y="250" width="210" height="240" as="geometry" />
         </mxCell>
         <mxCell id="OtXgMR-s5QyJ-jvGCxcB-3" value="Athena" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
           <mxGeometry x="275" y="250" width="60" height="30" as="geometry" />
@@ -279,11 +279,11 @@
             <mxPoint x="180" y="377" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OtXgMR-s5QyJ-jvGCxcB-19" value="Change suggestion algorithm" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
-          <mxGeometry x="230" y="294" width="150" height="50" as="geometry" />
+        <mxCell id="OtXgMR-s5QyJ-jvGCxcB-19" value="Change&lt;br&gt;suggestion algorithm" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
+          <mxGeometry x="230" y="294" width="170" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="3iHf4RruntUXMAyih8vR-6" value="Inspect usage&lt;br&gt;statistics" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
-          <mxGeometry x="230" y="352" width="150" height="50" as="geometry" />
+        <mxCell id="3iHf4RruntUXMAyih8vR-6" value="Inspect&lt;br&gt;usage statistics" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
+          <mxGeometry x="230" y="352" width="170" height="50" as="geometry" />
         </mxCell>
         <mxCell id="3iHf4RruntUXMAyih8vR-7" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="OtXgMR-s5QyJ-jvGCxcB-1" source="3iHf4RruntUXMAyih8vR-6" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -291,8 +291,8 @@
             <mxPoint x="180" y="377" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="3iHf4RruntUXMAyih8vR-8" value="Test modules independently of LMS" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
-          <mxGeometry x="230" y="410" width="150" height="50" as="geometry" />
+        <mxCell id="3iHf4RruntUXMAyih8vR-8" value="Test suggestion generation independently of LMS" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
+          <mxGeometry x="230" y="410" width="170" height="50" as="geometry" />
         </mxCell>
         <mxCell id="3iHf4RruntUXMAyih8vR-9" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="OtXgMR-s5QyJ-jvGCxcB-1" source="3iHf4RruntUXMAyih8vR-8" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -301,13 +301,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="RAkuceSAx-I3745TY3T5-10" value="Legend:" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
-          <mxGeometry x="285" y="488" width="60" height="30" as="geometry" />
+          <mxGeometry x="293" y="488" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="RAkuceSAx-I3745TY3T5-11" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
-          <mxGeometry x="345" y="496" width="16" height="16" as="geometry" />
+          <mxGeometry x="353" y="496" width="16" height="16" as="geometry" />
         </mxCell>
         <mxCell id="RAkuceSAx-I3745TY3T5-14" value="Added" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" parent="OtXgMR-s5QyJ-jvGCxcB-1" vertex="1">
-          <mxGeometry x="365" y="488" width="60" height="30" as="geometry" />
+          <mxGeometry x="372" y="488" width="38" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

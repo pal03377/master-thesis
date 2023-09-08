@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-08T21:08:23.952Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="j13fqCzAGzDxTcJkzYK5" version="21.7.2" type="github" pages="10">
+<mxfile host="app.diagrams.net" modified="2023-09-08T21:18:30.075Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="m8rBYhhu-Y9d38CEi973" version="21.7.2" type="github" pages="10">
   <diagram id="X4kem564SLTs1Nk-HANL" name="proposal">
     <mxGraphModel dx="1876" dy="685" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -608,7 +608,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="artemis-server" id="9VrD92cQmXWGseLqu0Ha">
-    <mxGraphModel dx="1876" dy="685" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1876" dy="685" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="XsicTHWBha800dHY2qtd-0" />
         <mxCell id="XsicTHWBha800dHY2qtd-1" parent="XsicTHWBha800dHY2qtd-0" />
@@ -881,10 +881,14 @@
         <mxCell id="EgQPNqjIao4d2u_G7QmE-49" value="Existing" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" parent="EgQPNqjIao4d2u_G7QmE-50" vertex="1">
           <mxGeometry x="23" y="76" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="IXZxMjouBP676wv1Vg-m-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=blockThin;endFill=1;" parent="XsicTHWBha800dHY2qtd-1" edge="1">
+        <mxCell id="IXZxMjouBP676wv1Vg-m-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.374;exitY=1.006;exitDx=0;exitDy=0;endArrow=blockThin;endFill=1;entryX=0.952;entryY=0.001;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" parent="XsicTHWBha800dHY2qtd-1" edge="1" target="M6m9eIB5VfzdFGpwfGMT-33" source="IXZxMjouBP676wv1Vg-m-0">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="167.5" y="630" as="sourcePoint" />
             <mxPoint x="169" y="650" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="145" y="774" />
+              <mxPoint x="-308" y="774" />
+            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="IXZxMjouBP676wv1Vg-m-0" value="&lt;b&gt;Athena Repository&lt;br&gt;Export Service&lt;br&gt;&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;align=left;spacingLeft=7;fillColor=#d5e8d4;strokeColor=#82b366;" parent="XsicTHWBha800dHY2qtd-1" vertex="1">
@@ -894,9 +898,6 @@
           <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
             <mxPoint x="-27" y="7" as="offset" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="IXZxMjouBP676wv1Vg-m-4" value="..." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="XsicTHWBha800dHY2qtd-1" vertex="1">
-          <mxGeometry x="138.5" y="639" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

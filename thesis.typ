@@ -518,7 +518,7 @@ Functional requirements are independent of implementation details. They solely d
 ] <nfrMutualAuthentication>
 #nfr[
   *Data Leakage Prevention*
-  Access to sensitive data should be restricted to authorized personnel only. Audit logs should report unauthorized access attempts.
+  Access to sensitive data should be restricted to authorized personnel only.
 ] <nfrDataLeakagePrevention>
 
 *Reliability*
@@ -783,7 +783,7 @@ Lastly, the _Playground_ is a web application created using the Next.js framewor
 
 === CoFee Module
 We largely keep the architecture of the CoFee module as proposed by Bernius et al.~#cite("cofee", "cofee2") and Michel~@atheneLoadBalancer. Notably, Michel contributed a _Load Balancer_ that efficiently distributes incoming requests among the CoFee modules for _Segmentation_, _Embedding_, and _Clustering_~@atheneLoadBalancer.
-The load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a CoFee Adapter_ that provides a unified interface for the CoFee module to the Athena system.
+The load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _CoFee Adapter_ that provides a unified interface for the CoFee module to the Athena system.
 
 Both the existing CoFee module, called "Athena-CoFee", and the new CoFee Adapter are based on the FastAPI framework.
 
@@ -935,16 +935,61 @@ This approach reduces the interdependence between Athena and Artemis, simplifyin
 ) <classDiagramAthenaCoFee>
 
 == Access Control
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Optional section describing the access control and security issues based on the nonfunctional requirements in the requirements analysis. It also describes the implementation of the access matrix based on capabilities or access control lists, the selection of authentication mechanisms and the use of encryption algorithms.
-]
-// - Access control in Artemis (only tutors can access feedback suggestions)
-// - Access control between Artemis and Athena
+// Note: Optional section describing the access control and security issues based on the nonfunctional requirements in the requirements analysis. It also describes the implementation of the access matrix based on capabilities or access control lists, the selection of authentication mechanisms and the use of encryption algorithms.
+As Athena integrates into Artemis, ensuring robust and secure communication stands paramount. This section sheds light on the architecture and rationale of the implemented access control mechanisms.
+
+=== Athena
+
+*Communication Security Between Artemis and Athena*
+// - All communication between Artemis and Athena goes through https (except in local development).
+// - There is a secret string shared between Artemis and Athena that is used to authenticate requests.
+// - This is how it was with the CoFee system before as well, and it worked well and was simple, so we kept it.
+// Athena checks that the secret is correct on every request. If it is not, the request is rejected.
+All communication between Artemis and Athena happens over HTTPS for secure transit, except in local development scenarios. Drawing from prior experiences with the CoFee system, we adopted a straightforward authentication method: a shared secret string between Artemis and Athena. For every incoming request, Athena validates the correctness of this secret. Any mismatch in the secret results in a rejection of the request.
+
+*Playground Secret Management*
+// - The Athena secret can be entered on the Playground web interface
+// - The Playground will authenticate against Athena using this secret, just like an LMS
+The Playground interface allows users to input the Athena secret. Similar to an LMS, the Playground uses this secret to authenticate itself with Athena.
+
+*Internal Communication Within Athena*
+// - Each of the assessment modules has its own secret that is used to authenticate requests from the Assessment Module Manager
+// - These secrets are separate from the Artemis-Athena secret because they are only used internally in Athena. This promoted the principle of least privilege.
+// We opt for a simple secret that is not encrypted (other than https in transit) because it is easy to implement (no need for asynchronous encryption infrastructure and more complicated code) and it is sufficient for our use case.
+// An alternative we considered was to have the assessment modules register themselves with the Assessment Module Manager and then agree upon a shared secret. We decided against this because we did not see the need for this more complex infrastructure and because this way, server startup order matters. This would complicate the deployment. We also rejected the idea of a central key distribution server, because this would have similar problems.
+Distinct from the Artemis-Athena secret string, each assessment module within Athena has its dedicated secret. This secret authenticates requests from the Assessment Module Manager. Adopting this separation emphasizes the principle of least privilege, ensuring modules only access what they strictly need.
+
+We considered alternatives, such as having assessment modules register themselves and negotiate a shared secret or establishing a central key distribution server. However, we dismissed these options. Both approaches would introduce complexities with server startup order, and make the deployment of Athena more challenging.
+
+*Environment Configuration Via Variables*
+// We decided to use environment variables to configure the assessment modules and the assessment module manager for the following reasons:
+// - Very standard
+// - very simple & well-understood
+// - automatically loaded by docker-compose when running docker-compose up
+// - can also be easily set up with a more powerful tool like Kubernetes
+// Why use multiple .env files, one per module (and one for the Assessment Module Manager)?
+// → This way, it's easy to provide just the secrets each module needs to each individual module. For example, the module_cofee can't read the OpenAI keys, which is good for security.
+We use environment variables to configure both the assessment modules and the assessment module manager for several reasons: they're standard, simple, and well-understood; and they integrate seamlessly with docker-compose.
+Systems like Kubernetes can also easily adopt this setup in the future. We employed multiple '.env' files—one for each module—to enhance security. This strategy ensures that, for instance, the `text_cofee` module cannot access the OpenAI keys of the `text_llm` module. This, again, aligns with the principle of least privilege.
+
+*Playground Hosting Guidelines*
+// - The playground is not meant to be used in production
+// - It is meant to be used by researchers to test their assessment modules
+// - It should not be deployed onto a production. We did not put special consideration into securing the playground. To enable sending requests to Athena servers that potentially are on different domain origins, the Playground server can proxy such requests. If there should ever be a UI to Athena (which there currently is not), there might be a need to implement CORS protection.
+We strongly advise against hosting the Playground on a production server. We designed it specifically for researchers to test their assessment modules, and we did not design its security for production deployments. While the Playground can forward requests to Athena servers across different domain origins, if Athena ever requires a user interface, implementing CORS protection might become necessary.
+
+=== Artemis
+
+*Feedback Suggestion Access Control in Artemis*
+// - We follow the standard procedures in Artemis to only allow users with at least tutor-level access to the exercise in question access to the feedback suggestions. More about this can be found in the Artemis documentation: https://ls1intum.github.io/Artemis/dev/guidelines/server/#rest-endpoint-best-practices-for-authorization
+Following Artemis's established protocols, only users with at least tutor-level access to the related exercise can view these feedback suggestions. For a deeper understanding of these protocols, a reference is available in the official Artemis documentation#footnote[https://ls1intum.github.io/Artemis/dev/guidelines/server/#rest-endpoint-best-practices-for-authorization (last visited September 9th, 2023)].
+
+*Repository Endpoints and Access Control*
+// Access control for repository endpoints
+// - Artemis provides new endpoints to download programming submissions from Athena. Only Athena itself can authenticate against these endpoints. This is done using the same secret that is used for all other communication between Artemis and Athena.
+// To avoid duplicating configurations, this secret is only in the Assessment Module Manager config and is passed to programming modules if necessary.
+We introduce new endpoints in Artemis to download programming submissions from Athena. Importantly, only Athena can authenticate with these endpoints, using the shared secret.
+To maintain streamlined configurations, we store this secret within the Assessment Module Manager config and relay it to programming modules when essential.
 
 == Global Software Control
 #rect(

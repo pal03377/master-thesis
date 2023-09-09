@@ -1030,12 +1030,26 @@ If the Assessment Module Manager or a module is not running, the logs of the res
 = Object Design
 // Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
 
-// -> Maybe also include screenshots
+// == Local Setup // Skip for now
+// Local Docker-Compose Setup
+// How to start it locally using Docker?
 
-== ThemisML Module
-// How does it work?
+// Local Development Setup
+// How to start it locally using poetry? Why this way and not always Docker?
+// We do not recommend to use the CoFee module on Mac with M1, see Obsidian page "Why is CoFee so slow on my Mac with an M1 processor?"
 
-== Athena Repository Export Service in Artemis
+
+== Artemis Client UI: Feedback Suggestions
+// TextBlock Conflict Resolution Algorithm
+// Because TextBlocks cannot overlap in Artemis, we need to resolve conflicts when merging TextBlocks from different submissions. => Look up algorithm and describe it here
+
+// TODO: include screenshots
+
+== Communication between Artemis and Athena
+// JSON Schema for Data Transmission
+// Why did we use JSON and not Protobuf like Athena-CoFee before? -> Obsidian page "Why use a JSON interface for Athena (not ProtoBuf)?"
+
+// Athena Repository Export Service in Artemis
 // Why does Artemis not directly send programming submissions to Athena and Athena has to download them?
 // - Too large payload with lots of ZIP files of repositories
 // - Transmission format would be a bit unclear: ZIP content does not fit into JSON; providing files directly inline in JSON does not feel right either (too much and too coupled)
@@ -1045,43 +1059,39 @@ If the Assessment Module Manager or a module is not running, the logs of the res
 // - Authentication needs to be separate because it has to work with the Athena secret (We don't want a separate admin user or something like that)
 // - It should be turned off if Athena is not used, i.e., the `athena` Spring profile is not active
 
+// Performance Considerations
+// - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
+// - The highest number of simultaneous `SEMI_AUTOMATIC` text exercises at once with `release_date < current_date < due_date` was in May of 2020: 4 exercises. I don't think we need paging for the running exercises in Artemis. For reference, I used this script to find out: [https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa](https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa)
+
 == Playground
 // Structure
 // Example data
-
-== Adding a New Assessment Module
-// How to add one? -> NFR Extensibility
+// Screenshots
 
 == API Interface of Athena
 // Why did we choose to have it like that?
 // -> Obsidian page "New Athena API"
 
-== The Athena Framework
+// Performance Considerations
+// - Improvement: for submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way
+
+== Athena Framework for Assessment Modules
 // Why do we have an `athena` Python package? Why is the Assessment Module Manager designed as it is? Why do we use Decorators in assessment modules?
 // -> Obsidian page "Athena Framework and AMM Design"
+
+== Adding a New Assessment Module
+// How to add one? -> NFR Extensibility
+// For writing, see documentation entry
 
 == CoFee Adapter
 // How does it work? What does it do exactly?
 // Maybe the Obsidian page "How Submission Selection by Information Gain worked (also now works) in Athena" is helpful
+// Explain functionality that we re-implemented in Python
 // Explain check for English language: Also see Obsidian page "Text Submission Language Detection"
 
-== Local Docker-Compose Setup
-// How to start it locally using Docker?
+== ThemisML Module
+// How does it work?
 
-== Local Development Setup
-// How to start it locally using poetry? Why this way and not always Docker?
-// We do not recommend to use the CoFee module on Mac with M1, see Obsidian page "Why is CoFee so slow on my Mac with an M1 processor?"
-
-== Additional Performance Considerations
-// - Improvement: for submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way
-// - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
-// - The highest number of simultaneous `SEMI_AUTOMATIC` text exercises at once with `release_date < current_date < due_date` was in May of 2020: 4 exercises. I don't think we need paging for the running exercises in Artemis. For reference, I used this script to find out: [https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa](https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa)
-
-== TextBlock Conflict Resolution Algorithm
-// Because TextBlocks cannot overlap in Artemis, we need to resolve conflicts when merging TextBlocks from different submissions. => Look up algorithm and describe it here
-
-== JSON Schema for Data Transmission
-// Why did we use JSON and not Protobuf like Athena-CoFee before? -> Obsidian page "Why use a JSON interface for Athena (not ProtoBuf)?"
 
 = Case Study / Evaluation
 #rect(

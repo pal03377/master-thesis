@@ -1001,23 +1001,22 @@ To maintain streamlined configurations, we store this secret within the Assessme
 //   * Feedback suggestion generation is initiated after a tutor requests a submission
 // - There could be synchronization issues for example if the submission selection takes too long and another tutor starts the assessment in the meantime, getting the response from Athena faster and therefore two tutors would assess the same submission. We prevented that by introducing an additional check in the Artemis server that checks if the submission is already being assessed by another tutor. If that is the case, the tutor gets a new random submission to assess.
 The integration of Athena into Artemis demands a robust global software control mechanism to ensure a smooth operation between the two systems.
-By choosing to keep Athena independent and adopting a microservice architecture, we can enjoy the benefits of flexibility, scalability, and focused development. This independence ensures that changes or updates to Athena don't inadvertently impact Artemis's core functions.
+By choosing to keep Athena independent, we ensure that changes or updates to Athena don't inadvertently impact Artemis's core functions.
 
 We adopt an event-driven design where events in Artemis trigger activities in Athena.
 For instance, when an exercise's due date arrives, Athena's submission processing is initiated, ensuring timely feedback.
 
-Synchronization conflicts present a notable challenge, especially with the potential of two tutors attempting to review the same submission simultaneously. In this case, the submission selection in Athena might suggest the same submission to assess to both tutors, resulting in a conflict.
+Synchronization conflicts present a notable challenge, especially with the potential of two tutors attempting to review the same submission simultaneously. In this case, the submission selection in Athena might suggest the same submission to both tutors, resulting in a conflict.
 To counteract this, we have implemented an extra verification step in the Artemis server. This verification confirms that no other tutor is currently assessing the chosen submission. Should the verification detect an overlap, the system promptly assigns a different, random submission to the tutor.
 
 == Boundry Conditions
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Optional section describing the use cases how to start up the separate components of the system, how to shut them down, and what to do if a component or the system fails.
-]
+// Note: Optional section describing the use cases how to start up the separate components of the system, how to shut them down, and what to do if a component or the system fails.
+Athena runs as a separate system from the LMS that it is used with. This section describes how to start up and shut down the Athena system and what to do if a component or the system fails.
+
+Both the Assessment Module Manager and all assessment modules are available as a Docker image on Docker Hub#footnote[https://hub.docker.com/u/ls1tum, last visited September 9th, 2023]. The Assessment Module Manager has to be configured to use the correct URLs of the assessment modules. 
+The Assessment Module Manager is the entry point to Athena. It provides an endpoint at `/health` that can be used to check if the modules are successfully connected and running.
+
+If the Assessment Module Manager or a module is not running, the logs of the respective Docker container can be checked to see if there are any errors. A failure of one of the modules does not affect the other modules or the Assessment Module Manager.
 
 = Object Design
 #rect(
@@ -1028,12 +1027,15 @@ To counteract this, we have implemented an extra verification step in the Artemi
 )[
   Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
 ]
+// Maybe also include screenshots
 
 Why does Artemis not directly send programming submissions to Athena and Athena has to download them?
 - Too large payload with lots of ZIP files of repositories
 - Transmission format would be a bit unclear: ZIP content does not fit into JSON; providing files directly inline in JSON does not feel right either (too much and too coupled)
 - Athena can access the repositories as needed and cache them easily
 - More general: Other LMSses probably already have a way to access a repository as well and can provide the URL instead of having to encode it in some way in the request
+
+// Playground
 
 == Feature 1
 

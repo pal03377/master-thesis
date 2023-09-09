@@ -1106,23 +1106,34 @@ In this chapter, we explain how our system design from @systemDesign fits into t
 
 == Athena Framework for Assessment Modules
 // Why do we have an `athena` Python package? Why is the Assessment Module Manager designed as it is? Why do we use Decorators in assessment modules?
-// -> Obsidian page "Athena Framework and AMM Design"
+// - We want to make it as easy as possible to write assessment modules for Athena.
+// - We also recognized that a lot of the communication logic between the assessment module manager and the assessment modules is the same for all assessment modules. We wanted to avoid code duplication and make it easy to change the communication logic in the future.
+// - Therefore, we provided a library called `athena` that takes care of all the boilerplate code and allows the researcher to focus on the actual assessment module logic. It works for assessment modules written in Python (which currently are all existing assessment modules).
+// - The `athena` library is maintained within the Athena repository. It is currently not a separate package on PyPI because it is not meant to be used by anyone else than the Athena developers.
+// - The `athena` library provides Python decorators to annotate functions that will be called by the assessment module manager. The decorators take care of the communication logic and the researcher only has to implement the actual assessment module logic.
+// - It also provides helper functions to store and load data from the Athena database, and to download programming submissions from Artemis.
 
 == Adding a New Assessment Module
-// How to add one? -> NFR Extensibility
+// How to add a new assessment module?
+// - Creating a new assessment module easily is important for our NFR of extensibility~@nfrNewModuleDevelopment.
+// - We provide a module called `module_programming_example` as a template for new assessment modules. It contains all the boilerplate code that is needed to communicate with the Assessment Module Manager, using the `athena` library.
+// - We added more detailed and technical instructions on how to add a new assessment module to the Athena documentation#footnote[https://ls1intum.github.io/Athena/module/create, last visited September 9th, 2023].
+
 // For writing, see documentation entry
 
 == CoFee Adapter
 // How does it work? What does it do exactly?
 // Maybe the Obsidian page "How Submission Selection by Information Gain worked (also now works) in Athena" is helpful
 // Explain functionality that we re-implemented in Python
+// * Submission Selection
+// * Feedback Suggestion Generation
 // Explain check for English language: Also see Obsidian page "Text Submission Language Detection"
 
 == ThemisML Module
 // How does it work?
 
 
-= Case Study / Evaluation
+= Evaluation of ThemisML
 #rect(
   width: 100%,
   radius: 10%,

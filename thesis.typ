@@ -992,14 +992,22 @@ We introduce new endpoints in Artemis to download programming submissions from A
 To maintain streamlined configurations, we store this secret within the Assessment Module Manager config and relay it to programming modules when essential.
 
 == Global Software Control
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Optional section describing the control flow of the system, in particular, whether a monolithic, event-driven control flow or concurrent processes have been selected, how requests are initiated and specific synchronization issues
-]
+// Note: Optional section describing the control flow of the system, in particular, whether a monolithic, event-driven control flow or concurrent processes have been selected, how requests are initiated and specific synchronization issues
+// - We decided to keep Athena independent from Artemis and adopt a microservice architecture.
+// - All activity in Athena is initiated by events in Artemis / the LMS in general:
+//   * Submission processing is initiated at the due date of an exercise
+//   * Submission selection is initiated when a tutor requests a new submission to assess
+//   * Feedback sending is initiated when a tutor adds feedback to a submission and submits the assessment
+//   * Feedback suggestion generation is initiated after a tutor requests a submission
+// - There could be synchronization issues for example if the submission selection takes too long and another tutor starts the assessment in the meantime, getting the response from Athena faster and therefore two tutors would assess the same submission. We prevented that by introducing an additional check in the Artemis server that checks if the submission is already being assessed by another tutor. If that is the case, the tutor gets a new random submission to assess.
+The integration of Athena into Artemis demands a robust global software control mechanism to ensure a smooth operation between the two systems.
+By choosing to keep Athena independent and adopting a microservice architecture, we can enjoy the benefits of flexibility, scalability, and focused development. This independence ensures that changes or updates to Athena don't inadvertently impact Artemis's core functions.
+
+We adopt an event-driven design where events in Artemis trigger activities in Athena.
+For instance, when an exercise's due date arrives, Athena's submission processing is initiated, ensuring timely feedback.
+
+Synchronization conflicts present a notable challenge, especially with the potential of two tutors attempting to review the same submission simultaneously. In this case, the submission selection in Athena might suggest the same submission to assess to both tutors, resulting in a conflict.
+To counteract this, we have implemented an extra verification step in the Artemis server. This verification confirms that no other tutor is currently assessing the chosen submission. Should the verification detect an overlap, the system promptly assigns a different, random submission to the tutor.
 
 == Boundry Conditions
 #rect(
@@ -1020,6 +1028,12 @@ To maintain streamlined configurations, we store this secret within the Assessme
 )[
   Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
 ]
+
+Why does Artemis not directly send programming submissions to Athena and Athena has to download them?
+- Too large payload with lots of ZIP files of repositories
+- Transmission format would be a bit unclear: ZIP content does not fit into JSON; providing files directly inline in JSON does not feel right either (too much and too coupled)
+- Athena can access the repositories as needed and cache them easily
+- More general: Other LMSses probably already have a way to access a repository as well and can provide the URL instead of having to encode it in some way in the request
 
 == Feature 1
 

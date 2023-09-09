@@ -1020,12 +1020,12 @@ We send the feedback to Athena directly from the cluster instance where the tuto
 
 == Boundry Conditions
 // Note: Optional section describing the use cases how to start up the separate components of the system, how to shut them down, and what to do if a component or the system fails.
-Athena runs as a separate system from the LMS that it is used with. This section describes how to start up and shut down the Athena system and what to do if a component or the system fails.
-
+Athena runs separately from the LMS that it is used with.
+//
 Both the Assessment Module Manager and all assessment modules are available as a Docker image on Docker Hub#footnote[https://hub.docker.com/u/ls1tum, last visited September 9th, 2023]. The Assessment Module Manager has to be configured to use the correct URLs of the assessment modules. 
 The Assessment Module Manager is the entry point to Athena. It provides an endpoint at `/health` that can be used to check if the modules are successfully connected and running.
 
-If the Assessment Module Manager or a module is not running, the logs of the respective Docker container can be checked to see if there are any errors. A failure of one of the modules does not affect the other modules or the Assessment Module Manager.
+If the Assessment Module Manager or a module is not running, the logs of the respective Docker container contain all available information about potential errors. A failure of one of the modules does not affect the other modules or the Assessment Module Manager.
 
 = Object Design
 // Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.

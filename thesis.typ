@@ -1147,10 +1147,37 @@ In this chapter, we explain how our system design from @systemDesign fits into t
 // (Maybe the Obsidian page "How Submission Selection by Information Gain worked (also now works) in Athena" is helpful )
 
 == ThemisML Module
+// ThemisML is an assessment module that uses machine learning to generate feedback suggestions for programming exercises. The approach and basic prototype were developed in the iPraktikum course at the Technical University of Munich in the winter semester 2022. Currently, only programming exercises in Java are supported. However, ThemisML is architected to be easily extensible to other programming languages.
+
 // How does it work?
+// - The Submission Processing is not needed.
+// - The Feedback Processing endpoint directly generates new feedback suggestions for all submissions of an exercise.
+// - The Feedback Suggestions endpoint finds the stored suggestions, applies an additional filter to the list of suggestions and returns them.
+// - The Submission Selection endpoint is currently not supported.
 
+// Feedback Processing in Detail: ThemisML performs the following steps to generate new feedback suggestions based on incoming manual feedback:
+// 1. ThemisML uses an AST parser to parse the source code of the submission into an abstract syntax tree (AST). Concretely, we use the `antlr4` Python package~@antlr4#footnote[https://www.antlr.org, last visited September 9th, 2023] to find the methods in the code that the feedback was given on. If feedback was given within a method, we associate it with the whole method.
+// 2. For each such method, ThemisML finds the corresponding method in all other submissions on the exercise (skipping a submission if it does not include that method in a file of the same name).
+// 3. Using vectorization, ThemisML uses CodeBERT~@codeBERT to compute the similarity scores between the feedback methods and the methods in other submissions. These scores are on a scale from 0 to 1. After initial evaluations, we added the optimization to automatically give a similarity score of 1 to code comparisons that are identical ignoring whitespace. This allows us to save a lot of processing power with CodeBERT.
+// 4. ThemisML creates a suggestion for each method in another submission where the similarity score to a given feedback item is above a certain threshold. The suggestion has the same text as the given feedback and includes additional information about the similarity score and the method it was generated for.
 
-= Evaluation of ThemisML
+// Feedback Suggestion Generation in Detail: ThemisML performs the following steps to find feedback suggestions for a submission:
+// 1. ThemisML loads the previously generated feedback suggestions from its database.
+// 2. ThemisML removes "suspicious" suggestions (explanation follows below)
+// 3. ThemisML removes overlapping suggestions, to make sure that in such a case the suggestion that ThemisML is more "sure" about (higher similarity score) is kept.
+
+// "Suspicious" feedback suggestions:
+// When evaluating ThemisML, we found the following problems with the suggestions:
+//   (1) Sometimes, there was a feedback item on something banal like a getter, which was actually meant for another method.
+//     This caused suggestions for almost all the other submissions, which were not helpful.
+//     We therefore classify a suggestion as "suspicious" if it affects too many other submissions (> 10%).
+//   (2) However, this would also sometimes classify a suggestion as suspicious if it is actually helpful.
+//     Therefore, we make a suggestion non-suspicious if there are at least 3 other suggestions for the same method.
+//     This makes a mistake like described above unlikely.
+//   (3) Suggestions are also suspicious if they include words that hint at other parts of the code, like
+//     "again", "consequential error", "previous", "later", "earlier", "above", "below" and German equivalents of these words.
+
+= Evaluation of the ThemisML Assessment Module
 #rect(
   width: 100%,
   radius: 10%,

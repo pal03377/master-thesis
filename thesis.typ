@@ -1009,6 +1009,15 @@ For instance, when an exercise's due date arrives, Athena's submission processin
 Synchronization conflicts present a notable challenge, especially with the potential of two tutors attempting to review the same submission simultaneously. In this case, the submission selection in Athena might suggest the same submission to both tutors, resulting in a conflict.
 To counteract this, we have implemented an extra verification step in the Artemis server. This verification confirms that no other tutor is currently assessing the chosen submission. Should the verification detect an overlap, the system promptly assigns a different, random submission to the tutor.
 
+// Because the Artemis server runs on multiple clusters, we have to ensure that the submission sending and feedback sending services are only running on one instance of the cluster to avoid sending the data twice. We adopted the existing approach chosen by Bernius et al.~@cofee2:
+// - We only schedule submission sending on the instance in the cluster where the `scheduling` profile is active. This is always the case for exactly one instance in the cluster, according to the documentation#footnote[https://ls1intum.github.io/Artemis/dev/setup/#scheduling, last visited September 9th, 2023].
+// - We perform the feedback sending directly on the instance in the cluster where the tutor submits their assessment. We do this asynchronously to avoid blocking the request. This means that if the server instance crashes before the feedback sending is complete, the feedback will not be sent. This is acceptable because the feedback only improves the suggestions made by Athena and is not required for the system to work.
+
+Within Artemis, we designate the task of submission sending exclusively to the cluster instance where the `scheduling` profile is activated. This approach is kept from the integration of the Athena-CoFee system by Bernius et al~@cofee2.
+The Artemis documentation mentions that this activation is consistently limited to a singular instance in the cluster#footnote[https://ls1intum.github.io/Artemis/dev/setup/#scheduling, last visited September 9th, 2023].
+
+We send the feedback to Athena directly from the cluster instance where the tutor finalizes their assessment. This procedure operates asynchronously, ensuring that there's no undue delay in the request processing. While there exists a possibility that a server instance might crash before the feedback is fully sent, this is an acceptable risk. The feedback is not essential for the system to function and only serves to improve Athena's suggestions.
+
 == Boundry Conditions
 // Note: Optional section describing the use cases how to start up the separate components of the system, how to shut them down, and what to do if a component or the system fails.
 Athena runs as a separate system from the LMS that it is used with. This section describes how to start up and shut down the Athena system and what to do if a component or the system fails.
@@ -1019,27 +1028,60 @@ The Assessment Module Manager is the entry point to Athena. It provides an endpo
 If the Assessment Module Manager or a module is not running, the logs of the respective Docker container can be checked to see if there are any errors. A failure of one of the modules does not affect the other modules or the Assessment Module Manager.
 
 = Object Design
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
-]
-// Maybe also include screenshots
+// Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
 
-Why does Artemis not directly send programming submissions to Athena and Athena has to download them?
-- Too large payload with lots of ZIP files of repositories
-- Transmission format would be a bit unclear: ZIP content does not fit into JSON; providing files directly inline in JSON does not feel right either (too much and too coupled)
-- Athena can access the repositories as needed and cache them easily
-- More general: Other LMSses probably already have a way to access a repository as well and can provide the URL instead of having to encode it in some way in the request
+// -> Maybe also include screenshots
 
-// Playground
+== ThemisML Module
+// How does it work?
 
-== Feature 1
+== Athena Repository Export Service in Artemis
+// Why does Artemis not directly send programming submissions to Athena and Athena has to download them?
+// - Too large payload with lots of ZIP files of repositories
+// - Transmission format would be a bit unclear: ZIP content does not fit into JSON; providing files directly inline in JSON does not feel right either (too much and too coupled)
+// - Athena can access the repositories as needed and cache them easily
+// - More general: Other LMSses probably already have a way to access a repository as well and can provide the URL instead of having to encode it in some way in the request
+// Why not use an existing endpoint in Artemis?
+// - Authentication needs to be separate because it has to work with the Athena secret (We don't want a separate admin user or something like that)
+// - It should be turned off if Athena is not used, i.e., the `athena` Spring profile is not active
 
-== Feature 2
+== Playground
+// Structure
+// Example data
+
+== Adding a New Assessment Module
+// How to add one? -> NFR Extensibility
+
+== API Interface of Athena
+// Why did we choose to have it like that?
+// -> Obsidian page "New Athena API"
+
+== The Athena Framework
+// Why do we have an `athena` Python package? Why is the Assessment Module Manager designed as it is? Why do we use Decorators in assessment modules?
+// -> Obsidian page "Athena Framework and AMM Design"
+
+== CoFee Adapter
+// How does it work? What does it do exactly?
+// Maybe the Obsidian page "How Submission Selection by Information Gain worked (also now works) in Athena" is helpful
+// Explain check for English language: Also see Obsidian page "Text Submission Language Detection"
+
+== Local Docker-Compose Setup
+// How to start it locally using Docker?
+
+== Local Development Setup
+// How to start it locally using poetry? Why this way and not always Docker?
+// We do not recommend to use the CoFee module on Mac with M1, see Obsidian page "Why is CoFee so slow on my Mac with an M1 processor?"
+
+== Additional Performance Considerations
+// - Improvement: for submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way
+// - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
+// - The highest number of simultaneous `SEMI_AUTOMATIC` text exercises at once with `release_date < current_date < due_date` was in May of 2020: 4 exercises. I don't think we need paging for the running exercises in Artemis. For reference, I used this script to find out: [https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa](https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa)
+
+== TextBlock Conflict Resolution Algorithm
+// Because TextBlocks cannot overlap in Artemis, we need to resolve conflicts when merging TextBlocks from different submissions. => Look up algorithm and describe it here
+
+== JSON Schema for Data Transmission
+// Why did we use JSON and not Protobuf like Athena-CoFee before? -> Obsidian page "Why use a JSON interface for Athena (not ProtoBuf)?"
 
 = Case Study / Evaluation
 #rect(

@@ -647,7 +647,7 @@ After this step, the assessment workflow is finished, and the tutor can start as
   caption: [Activity Diagram showing the assessment workflow with Athena],
 ) <activityDiagram>
 
-=== User Interface
+=== User Interface <userInterface>
 // Note: Show mockups of the user interface of the software you develop and their connections/transitions. You can also create a storyboard. *Important:* Describe the mockups and their rationale in the text.
 In this section, we present the user interface mockups that illustrate how Athena integrates into Artemis, first for text exercises and then for programming exercises.
 
@@ -691,7 +691,7 @@ To simplify navigation within the assessment, files containing feedback suggesti
 Feedback suggestions are loaded once the assessment interface is opened. If there is a conflict between pre-existing tutor feedback and suggestions (e.g. because the assessment was saved before and is being continued now), the system prioritizes the tutor's feedback. This ensures that tutors can always see and build upon their feedback while grading.
 
 
-= System Design
+= System Design <systemDesign>
 // Note: This chapter follows the System Design Document Template in @bruegge2004object. You describe in this chapter how you map the concepts of the application domain to the solution domain. Some sections are optional if they do not apply to your problem. Cite @bruegge2004object several times in this chapter.
 In the following sections, we present our system design, which is informed by the requirements and system models specified earlier. We start by identifying design goals based on our non-functional requirements and then move on to discuss our approach to subsystem decomposition, hardware-software mapping, data management strategies, and access control policies~@bruegge2004object.
 
@@ -705,7 +705,7 @@ In the following sections, we present our system design, which is informed by th
   Note: Provide a brief overview of the software architecture and references to other chapters (e.g. requirements analysis), references to existing systems, constraints impacting the software architecture.
 ]
 
-== Design Goals
+== Design Goals <designGoals>
 // Note: Derive design goals from your nonfunctional requirements, prioritize them (as they might conflict with each other) and describe the rationale of your prioritization. Any trade-offs between design goals (e.g., build vs. buy, memory space vs. response time), and the rationale behind the specific solution should be described in this section
 We begin by establishing clear design goals for our proposed system, building on the nonfunctional requirements outlined in @nfr. Following this, we prioritize these goals and engage in a detailed discussion regarding the reasoning behind this ranking, as well as the possible trade-offs that may arise. To organize our approach, we use a set of design criteria suggested by Bruegge and Dutoit, systematically categorizing our design goals into five distinct and purposeful groups~@bruegge2004object.
 
@@ -1016,7 +1016,7 @@ To counteract this, we have implemented an extra verification step in the Artemi
 Within Artemis, we designate the task of submission sending exclusively to the cluster instance where the `scheduling` profile is activated. This approach is kept from the integration of the Athena-CoFee system by Bernius et al~@cofee2.
 The Artemis documentation mentions that this activation is consistently limited to a singular instance in the cluster#footnote[https://ls1intum.github.io/Artemis/dev/setup/#scheduling, last visited September 9th, 2023].
 
-We send the feedback to Athena directly from the cluster instance where the tutor finalizes their assessment. This procedure operates asynchronously, ensuring that there's no undue delay in the request processing. While there exists a possibility that a server instance might crash before the feedback is fully sent, this is an acceptable risk. The feedback is not essential for the system to function and only serves to improve Athena's suggestions.
+We send the feedback to Athena directly from the cluster instance where the tutor finalizes their assessment. This procedure operates asynchronously, ensuring no undue delay in the request processing. While there exists a possibility that a server instance might crash before the feedback is fully sent, this is an acceptable risk. The feedback is not essential for the system to function and only improves Athena's suggestions.
 
 == Boundry Conditions
 // Note: Optional section describing the use cases how to start up the separate components of the system, how to shut them down, and what to do if a component or the system fails.
@@ -1033,21 +1033,40 @@ If the Assessment Module Manager or a module is not running, the logs of the res
 // == Local Setup // Skip for now
 // Local Docker-Compose Setup
 // How to start it locally using Docker?
-
+// 
 // Local Development Setup
 // How to start it locally using poetry? Why this way and not always Docker?
 // We do not recommend to use the CoFee module on Mac with M1, see Obsidian page "Why is CoFee so slow on my Mac with an M1 processor?"
+In this chapter, we explain how our system design from @systemDesign fits into the Artemis learning platform and the Athena feedback suggestion provider within the solution domain.
 
+// TODO: Make sure to use lots of UML diagrams
 
 == Artemis Client UI: Feedback Suggestions
-// TextBlock Conflict Resolution Algorithm
-// Because TextBlocks cannot overlap in Artemis, we need to resolve conflicts when merging TextBlocks from different submissions. => Look up algorithm and describe it here
+// Feedback Suggestions UI in Artemis
+// - For text exercises, we kept the existing UI as-is, but changed the "Automatic" badge showing a robot icon to a "Suggestion" badge showing a lightbulb icon. This way, the UI is clearer and consistent with the programming exercise UI.
+// - For programming exercises, we strictly followed the UI mockups shown in @userInterface. 
+// - To make it more clear that the feedback suggestions on programming exercises are not included in the final assessment if they are not explicitly accepted, we use the text "Suggestion (not applied)" instead of just "Suggestion" for the badge.
+// - We also included tooltips for all badges to explain what they mean. (-> screenshot)
 
 // TODO: include screenshots
 
+// TextBlock Conflict Resolution Algorithm
+// - A list of TextBlocks in Artemis is a partition of a text submission in Artemis. The concept of TextBlocks does not fundamentally exist in the context of Athena and there is no contract for assessment modules to only provide non-overlapping feedback suggestions. However, because TextBlocks cannot overlap in Artemis, we need to resolve conflicts when adding new TextBlocks for a range of text given by a feedback suggestion. The corresponding algorithm runs on the client after the feedback suggestions are received from Athena.
+// - It adds the feedback suggestions one after another, following the rules shown in @textBlockConflictResolutionAlgorithm.
+// - Our main objective with this algorithm was to never destroy TextBlocks with potentially existing manual feedback.
+
+#figure(
+  image("figures/text-block-resolution.svg", width: 100%),
+  caption: [The behavior of TextBlock conflict resolution algorithm given an existing and a new TextBlock. 1: Full overlap; 2: No overlap; 3: New included in old TextBlock; 4: Partial overlap. The behavior in situations 2 and 4 also applies to the horizontally mirrored situation.],
+) <textBlockConflictResolutionAlgorithm>
+
 == Communication between Artemis and Athena
 // JSON Schema for Data Transmission
-// Why did we use JSON and not Protobuf like Athena-CoFee before? -> Obsidian page "Why use a JSON interface for Athena (not ProtoBuf)?"
+// - The previous system Athena-CoFee used ProtoBuf#footnote[https://protobuf.dev/, last visited September 9th, 2023] as the data transmission format. This slightly increased the performance because ProtoBuf is more compact than JSON.
+// - We decided to use JSON instead, for the following reasons:
+//   * Simplified build steps and maintenance: We don't have to compile the ProtoBuf files into Python code and we don't have to maintain the ProtoBuf files. When first setting up Athena-CoFee by Bernius et al.~@cofee2, we had to spend a lot of time figuring out how to compile the ProtoBuf files into Python code and how to integrate it into the build process. This way, we can simply use the built-in JSON support of Python and the automatic serialization features of Spring Boot in Artemis. Also, we removed Protobuf as a server dependency from Artemis, which previously had to be continuously updated.
+//   * We decided that the slight performance improvement of using Protobuf is not worth the additional complexity. This is consistent with our prioritization of the NFRs in @designGoals.
+//   * All existing APIs in Artemis, which we want to integrate Athena into, use JSON. We want to keep the communication between Artemis and Athena consistent with the communication between Artemis and the web client. Although we want to keep Athena independent from Artemis, integrating into Artemis is the first step.
 
 // Athena Repository Export Service in Artemis
 // Why does Artemis not directly send programming submissions to Athena and Athena has to download them?
@@ -1056,24 +1075,34 @@ If the Assessment Module Manager or a module is not running, the logs of the res
 // - Athena can access the repositories as needed and cache them easily
 // - More general: Other LMSses probably already have a way to access a repository as well and can provide the URL instead of having to encode it in some way in the request
 // Why not use an existing endpoint in Artemis?
-// - Authentication needs to be separate because it has to work with the Athena secret (We don't want a separate admin user or something like that)
-// - It should be turned off if Athena is not used, i.e., the `athena` Spring profile is not active
+// - Authentication needs to be separate because it has to work with the Athena API secret (We don't want a separate admin user or something like that)
+// - The Athena Repository Export Service in Artemis should be turned off if Athena is not used, i.e., the `athena` Spring profile is not active
 
 // Performance Considerations
 // - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
-// - The highest number of simultaneous `SEMI_AUTOMATIC` text exercises at once with `release_date < current_date < due_date` was in May of 2020: 4 exercises. I don't think we need paging for the running exercises in Artemis. For reference, I used this script to find out: [https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa](https://gist.github.com/pal03377/7f5eafa6c4e2900955e61713abf038fa)
 
 == Playground
 // Structure
-// Example data
-// Screenshots
+// - Overview section
+//   * URL of Athena instance
+//   * Health overview: Online status of Assessment Module Manager and all assessment modules
+//   * Input for Athena API secret: Only needed in production. In local development, API secret checking is disabled.
+//   * Data source for example data: There are two potential data sources: The built-in example data and exported evaluation data from Artemis. The user can choose between them. This feature was contributed by Dietrich~@athenaLLMs.
+//   * Playground mode: There are two modes: "Module Requests" to test assessment modules step by step with pre-defined requests and "Evaluation Mode" to compare assessment module outputs to other assessment module outputs, and to real tutor feedback. The latter feature is discussed in detail by Dietrich~@athenaLLMs.
+// - Module Requests: After choosing an assessment module, the researcher can choose to access different endpoints of the assessment module:
+//   * Get Config Schema: The researcher can configure the assessment module with a special config schema. For example, this is used by the LLM assessment modules to specify the LLM model to use~@athenaLLMs.
+//   * Send Submissions: The researcher can send submissions to Athena. They can choose an example exercise and send all submissions for that exercise.
+//   * Request Submission Selection: The researcher can request a submission selection for a specific exercise. They can choose an example exercise and send the request. The endpoint only works after submissions have been sent for the exercise because the submission selection only operates on submission IDs for performance reasons.
+//   * Send Feedback: The researcher can send feedback to Athena. They can choose an example exercise and send all feedback for that exercise, or choose a specific submission within the exercise to only send feedback for that submission.
+//   * Request Feedback Suggestions: The researcher can request feedback suggestions for a specific exercise. They can choose an example exercise and a submission to get suggestions for that submission.
+// TODO: Screenshots of the Playground
 
-== API Interface of Athena
+// == API Interface of Athena // skip for now => TODO: add this section or remove it completely
 // Why did we choose to have it like that?
 // -> Obsidian page "New Athena API"
 
 // Performance Considerations
-// - Improvement: for submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way
+// - Improvement: For submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way. The submission selection request needs to be fast because it is blocking the tutor from assessing a submission.
 
 == Athena Framework for Assessment Modules
 // Why do we have an `athena` Python package? Why is the Assessment Module Manager designed as it is? Why do we use Decorators in assessment modules?

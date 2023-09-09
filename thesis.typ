@@ -455,7 +455,26 @@ Functional requirements are independent of implementation details. They solely d
 //  The replacement should not affect the functionality of the Themis grading app. // constraint of action
 //] <frReplaceThemisGradingAppIntegration>
 
-// TODO: Do I need to make the FRs more granular? Moritz has 15. Here are 11.
+#v(1em)
+*Research on Athena*
+#fr[
+  *Inspect Usage Statistics*
+  During the operation of Athena, // condition
+  a researcher // subject
+  can get insight into // action
+  the usage statistics of the system, // object
+  directly from Athena.
+  The usage statistics should be accessible only to authorized researchers. // constraint of action
+] <frInspectUsageStatistics>
+#fr[
+  *Test Suggestion Generation*
+  During the development and improvement of an assessment module, // condition
+  a researcher // subject
+  can test // action
+  the suggestion generation // object
+  of the assessment modules module, directly from Athena.
+  The test interface should be accessible only to authorized researchers. // constraint of action
+] <frTestSuggestionGeneration>
 
 
 === Nonfunctional Requirements <nfr>
@@ -605,13 +624,11 @@ Athena uses that feedback to _learn from it_ (#frlink(<frLearnFromPastFeedback>)
   caption: [Use Case Diagram for the Athena System],
 ) <useCaseModelAthena>
 
-// - The researcher can easily _change the suggestion algorithm_ to explore different approaches to generating feedback suggestions.
 // - The researcher can _inspect usage statistics_ about the acceptance rate of feedback suggestions and more. This enables them to evaluate the effectiveness of the system under evaluation.
 // - The researcher can _test modules independently of the LMS_ to ensure that they work as intended without having to prepare a test exercise in the LMS and go through the process of setting up the exercise and submitting one or multiple submissions.
 The use cases of a researcher within Athena are shown in @useCaseModelAthena.
-Athena enables them to _change the suggestion algorithms_, thereby enabling various approaches for optimizing tutor feedback.
-Furthermore, the researcher can _inspect usage statistics_ related to the system's assessment modules to evaluate their effectiveness and how frequently the generated feedback is accepted or modified.
-Lastly, the researcher can _test the suggestion generation independently of the LMS_, which eliminates the need for test exercise configurations within Artemis. This approach facilitates more efficient verification of module functionality.
+Athena enables them to _inspect usage statistics_ related to the system's assessment modules to evaluate their effectiveness and how frequently the generated feedback is accepted or modified (#frlink(<frInspectUsageStatistics>))
+Also, the researcher can _test the suggestion generation independently of the LMS_, which eliminates the need for test exercise configurations within Artemis. This approach facilitates more efficient verification of module functionality (#frlink(<frTestSuggestionGeneration>)).
 Overall, these capabilities allow the researcher to significantly improve the effectiveness of the Athena system.
 
 === Analysis Object Model
@@ -1044,38 +1061,53 @@ In this chapter, we explain how our system design from @systemDesign fits into t
 
 // TODO: Make sure to use lots of UML diagrams
 
-== Artemis Client UI: Feedback Suggestions
+== Artemis Client: Feedback Suggestions
 // Feedback Suggestions UI in Artemis
 // - For text exercises, we kept the existing UI as-is, but changed the "Automatic" badge showing a robot icon to a "Suggestion" badge showing a lightbulb icon. This way, the UI is clearer and consistent with the programming exercise UI.
 // - For programming exercises, we strictly followed the UI mockups shown in @userInterface. 
 // - To make it more clear that the feedback suggestions on programming exercises are not included in the final assessment if they are not explicitly accepted, we use the text "Suggestion (not applied)" instead of just "Suggestion" for the badge.
 // - We also included tooltips for all badges to explain what they mean. (-> screenshot)
 
-// TODO: include screenshots
+// Feedback Suggestions UI
+For text exercises in Artemis, we made minor adjustments. We replaced the previous "Automatic" badge with a "Suggestion" badge featuring a lightbulb icon. This keeps the UI consistent with the programming exercise UI. // TODO: screenshot
 
+In the context of programming exercises, the design closely follows the UI mockups from @userInterface.
+To assist tutors, we added tooltips explaining each badge. // TODO: screenshot
+
+/* TODO: Do we even want to have this section? vvvv
 // TextBlock Conflict Resolution Algorithm
 // - A list of TextBlocks in Artemis is a partition of a text submission in Artemis. The concept of TextBlocks does not fundamentally exist in the context of Athena and there is no contract for assessment modules to only provide non-overlapping feedback suggestions. However, because TextBlocks cannot overlap in Artemis, we need to resolve conflicts when adding new TextBlocks for a range of text given by a feedback suggestion. The corresponding algorithm runs on the client after the feedback suggestions are received from Athena.
 // - It adds the feedback suggestions one after another, following the rules shown in @textBlockConflictResolutionAlgorithm.
 // - Our main objective with this algorithm was to never destroy TextBlocks with potentially existing manual feedback.
+Text submissions in Artemis are partitioned into `TextBlocks`. Given that Athena might suggest feedback overlapping with these segments, we devised an algorithm to handle such situations.
+It creates new text blocks from the feedback suggestions and adds them one after another, following the rules shown in @textBlockConflictResolutionAlgorithm and giving precedence to preserving manual feedback.
+
+#figure(
+  image("figures/text-block-resolution.svg", width: 100%),
+  caption: [The behavior of TextBlock conflict resolution algorithm given an existing and a new TextBlock. 1: Full overlap, the existing TextBlock is preserved; 2: No overlap, the TextBlock is added; 3: New included in old TextBlock, we shorten the existing TextBlock and introduce a new one; 4: Partial overlap, we shorten the existing TextBlock. The behavior in situations 2 and 4 also applies to the horizontally mirrored situation.],
+) <textBlockConflictResolutionAlgorithm>
+*/
 
 // Fetching Feedback Suggestions
 // - Previously, text feedback suggestions were generated by Artemis before allowing the tutor to start a new assessment: The suggestions were included in the initial response for starting the assessment.
 // - We changed this behavior to fetch the feedback suggestions from Athena after the tutor starts the assessment. This is because of performance and reliability concerns (see #nfrlink("nfrImmediateGrading") and #nfrlink("nfrLMSIndependence"))
-
-#figure(
-  image("figures/text-block-resolution.svg", width: 100%),
-  caption: [The behavior of TextBlock conflict resolution algorithm given an existing and a new TextBlock. 1: Full overlap; 2: No overlap; 3: New included in old TextBlock; 4: Partial overlap. The behavior in situations 2 and 4 also applies to the horizontally mirrored situation.],
-) <textBlockConflictResolutionAlgorithm>
+We have moved away from Artemis preemptively generating feedback suggestions. Now, only when a tutor begins an assessment, the system fetches these suggestions from Athena. This modification aims to enhance both system performance and reliability, with detailed discussions on these issues found in #nfrlink(<nfrImmediateGrading>) and #nfrlink(<nfrLMSIndependence>).
 
 == Communication between Artemis and Athena
-// JSON Schema for Data Transmission
+=== JSON Schema for Data Transmission
 // - The previous system Athena-CoFee used ProtoBuf#footnote[https://protobuf.dev/, last visited September 9th, 2023] as the data transmission format. This slightly increased the performance because ProtoBuf is more compact than JSON.
 // - We decided to use JSON instead, for the following reasons:
 //   * Simplified build steps and maintenance: We don't have to compile the ProtoBuf files into Python code and we don't have to maintain the ProtoBuf files. When first setting up Athena-CoFee by Bernius et al.~@cofee2, we had to spend a lot of time figuring out how to compile the ProtoBuf files into Python code and how to integrate it into the build process. This way, we can simply use the built-in JSON support of Python and the automatic serialization features of Spring Boot in Artemis. Also, we removed Protobuf as a server dependency from Artemis, which previously had to be continuously updated.
 //   * We decided that the slight performance improvement of using Protobuf is not worth the additional complexity. This is consistent with our prioritization of the NFRs in @designGoals.
 //   * All existing APIs in Artemis, which we want to integrate Athena into, use JSON. We want to keep the communication between Artemis and Athena consistent with the communication between Artemis and the web client. Although we want to keep Athena independent from Artemis, integrating into Artemis is the first step.
+While the previous system, Athena-CoFee~@cofee2, employed ProtoBuf as its data transmission format for improved performance, we decided to switch to JSON for several reasons.
 
-// Athena Repository Export Service in Artemis
+Firstly, using JSON simplifies build steps and maintenance. Unlike ProtoBuf, which requires compilation into Python code, JSON enjoys native support from Python as well as automatic serialization features from Spring Boot in Artemis. This approach eliminates the need to constantly update ProtoBuf as a server dependency within Artemis, a challenge we encountered during the initial setup of Athena-CoFee by Bernius et al.~@cofee2.
+Our decision aligns with the prioritization of NFRs in @designGoals.
+
+Additionally, existing APIs in Artemis already utilize JSON. This uniformity in communication protocols facilitates the smooth integration of Athena into Artemis, aligning with our aim for Athena to operate independently in the long term.
+
+=== Athena Repository Export Service in Artemis
 // Why does Artemis not directly send programming submissions to Athena and Athena has to download them?
 // - Too large payload with lots of ZIP files of repositories
 // - Transmission format would be a bit unclear: ZIP content does not fit into JSON; providing files directly inline in JSON does not feel right either (too much and too coupled)
@@ -1084,34 +1116,70 @@ In this chapter, we explain how our system design from @systemDesign fits into t
 // Why not use an existing endpoint in Artemis?
 // - Authentication needs to be separate because it has to work with the Athena API secret (We don't want a separate admin user or something like that)
 // - The Athena Repository Export Service in Artemis should be turned off if Athena is not used, i.e., the `athena` Spring profile is not active
-
 // Performance Considerations
-// - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
+Athena is designed to access repositories from the LMS as needed, offering greater flexibility in data transfers and caching options. This approach makes Athena adaptable for future integration with other LMSs than Artemis, which can provide a URL for data access instead of embedding the data in the request payload.
+
+We intend the usage of Athena to be optional within Artemis. Therefore, we have implemented a separate endpoint for the Athena Repository Export Service in Artemis. This endpoint is only accessible if the `athena` Spring profile is active.
 
 == Playground
-// Structure
+=== Structure and Features of the Playground
 // - Overview section
 //   * URL of Athena instance
 //   * Health overview: Online status of Assessment Module Manager and all assessment modules
 //   * Input for Athena API secret: Only needed in production. In local development, API secret checking is disabled.
 //   * Data source for example data: There are two potential data sources: The built-in example data and exported evaluation data from Artemis. The user can choose between them. This feature was contributed by Dietrich~@athenaLLMs.
 //   * Playground mode: There are two modes: "Module Requests" to test assessment modules step by step with pre-defined requests and "Evaluation Mode" to compare assessment module outputs to other assessment module outputs, and to real tutor feedback. The latter feature is discussed in detail by Dietrich~@athenaLLMs.
+The Playground in Athena is designed for research and testing purposes. It is shown in @playgroundOverview, in a local development environment with only the Assessment Module Manager and the ThemisML module running.
+
+#figure(
+  image("figures/playground-overview.png", width: 100%),
+  caption: [Overview of the initial screen in the Athena Playground],
+) <playgroundOverview>
+
+Within this environment, the first elements users encounter include a URL input for the active Athena instance and a real-time health overview that shows the status of the Assessment Module Manager as well as the connected assessment modules.
+For accessing Athena in a production setting, a field for API secret entry is available, but this can be ignored in a local development context.
+Researchers also have the option to choose between built-in example data and evaluation data exported from Artemis for their tests, a feature contributed by Dietrich~@athenaLLMs.
+Moreover, the Playground offers two operational modes: one for the testing of individual assessment modules, known as "Module Requests," and another for comparative evaluations called "Evaluation Mode," further discussed by Dietrich~@athenaLLMs.
+
+=== Module Requests Mode
 // - Module Requests: After choosing an assessment module, the researcher can choose to access different endpoints of the assessment module:
 //   * Get Config Schema: The researcher can configure the assessment module with a special config schema. For example, this is used by the LLM assessment modules to specify the LLM model to use~@athenaLLMs.
 //   * Send Submissions: The researcher can send submissions to Athena. They can choose an example exercise and send all submissions for that exercise.
 //   * Request Submission Selection: The researcher can request a submission selection for a specific exercise. They can choose an example exercise and send the request. The endpoint only works after submissions have been sent for the exercise because the submission selection only operates on submission IDs for performance reasons.
 //   * Send Feedback: The researcher can send feedback to Athena. They can choose an example exercise and send all feedback for that exercise, or choose a specific submission within the exercise to only send feedback for that submission.
 //   * Request Feedback Suggestions: The researcher can request feedback suggestions for a specific exercise. They can choose an example exercise and a submission to get suggestions for that submission.
+Within the "Module Requests" mode, the Playground interface presents a streamlined way to interact with the assessment modules' various functionalities.
+
+The "Get Config Schema" option in the interface provides a straightforward method for accessing the configuration schema of any selected assessment module, which is currently used by the LLM assessment modules to specify the specific LLM model~@athenaLLMs.
+
+The Playground interface streamlines accessing multiple functionalities, including "Send Submissions" for chosen exercises, "Request Submission Selection" available only after submissions have been sent, "Send Feedback" for specific exercises or submissions, and "Request Feedback Suggestions" for automated suggestions on selected exercises and submissions.
+
+We show one such section in the Playground interface in @playgroundModuleRequestsFeedbackSending.
+The "Send Feedback" section is special in that it allows the researcher to choose between sending feedback on all submissions for the exercise or only for a specific submission. This way, a researcher can experiment with only providing some initial feedback to the assessment module, and then sending more feedback later.
+
+#figure(
+  image("figures/playground-module-requests-feedback-sending.png", width: 90%),
+  caption: [The "Send Feedback" section in the Playground interface],
+) <playgroundModuleRequestsFeedbackSending>
+
+#v(1em)
+With the Playground, Athena provides an effective and user-friendly means for researchers and developers to engage in real-time testing and evaluation, aligning with #frlink(<frTestSuggestionGeneration>).
+
 // TODO: Screenshots of the Playground
 
 // == API Interface of Athena // skip for now => TODO: add this section or remove it completely
 // Why did we choose to have it like that?
 // -> Obsidian page "New Athena API"
 
-// Performance Considerations
-// - Improvement: For submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way. The submission selection request needs to be fast because it is blocking the tutor from assessing a submission.
+== Performance Considerations
+// - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
+To further optimize performance, we implemented a batching mechanism in Artemis.
+This splits the outgoing submissions into smaller batches of 100 each, effectively reducing payload size and minimizing the risk of data transfer timeouts.
 
-== Athena Framework for Assessment Modules
+// - Improvement: For submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way. The submission selection request needs to be fast because it is blocking the tutor from assessing a submission.
+The efficiency of the "Submission Selection" process is crucial for Athena, especially to minimize tutor wait times. Rather than transferring complete submissions, the LMS sends only the submission IDs to Athena. This approach speeds up the process by reducing data transfer, making it both server-efficient and user-friendly.
+
+== Athena Package for Assessment Modules
 // Why do we have an `athena` Python package? Why is the Assessment Module Manager designed as it is? Why do we use Decorators in assessment modules?
 // - We want to make it as easy as possible to write assessment modules for Athena.
 // - We also recognized that a lot of the communication logic between the assessment module manager and the assessment modules is the same for all assessment modules. We wanted to avoid code duplication and make it easy to change the communication logic in the future.
@@ -1119,47 +1187,83 @@ In this chapter, we explain how our system design from @systemDesign fits into t
 // - The `athena` library is maintained within the Athena repository. It is currently not a separate package on PyPI because it is not meant to be used by anyone else than the Athena developers.
 // - The `athena` library provides Python decorators to annotate functions that will be called by the assessment module manager. The decorators take care of the communication logic and the researcher only has to implement the actual assessment module logic.
 // - It also provides helper functions to store and load data from the Athena database, and to download programming submissions from Artemis.
+We created a Python package called `athena` to simplify the development of assessment modules for Athena. We maintain the package within the Athena repository and do not distribute it through platforms like PyPI, since its utility is exclusive to Athena's ecosystem.
+
+The package addresses the need for standardized communication between the Assessment Module Manager and the individual assessment modules. By doing so, it reduces code duplication and allows for easy modifications in future communication logic.
+
+Developers benefit from the package's use of Python decorators#footnote[When decorating a function, Python technically wraps it by passing it to another function, the _decorator_, and replacing it with the return value of the decorator, the _wrapper_.], which annotate functions that will interact with the Assessment Module Manager. These decorators handle the underlying communication logic, enabling developers to focus on the actual assessment module logic.
+Additionally, the package offers utility functions to facilitate data storage in Athena's database and to download programming submissions from Artemis.
 
 == Adding a New Assessment Module
 // How to add a new assessment module?
 // - Creating a new assessment module easily is important for our NFR of extensibility~@nfrNewModuleDevelopment.
-// - We provide a module called `module_programming_example` as a template for new assessment modules. It contains all the boilerplate code that is needed to communicate with the Assessment Module Manager, using the `athena` library.
+// - We provide a module called `module_example` as a template for new assessment modules. It contains all the boilerplate code that is needed to communicate with the Assessment Module Manager, using the `athena` library.
 // - We added more detailed and technical instructions on how to add a new assessment module to the Athena documentation#footnote[https://ls1intum.github.io/Athena/module/create, last visited September 9th, 2023].
+Ensuring extensibility is an important NFR in Athena (#nfrlink(<nfrNewModuleDevelopment>)), as indicated by our focus on ease of new module development. In line with this, we have created a sample module named `module_example` that serves as a template for developers looking to add new assessment modules.
+This example module encapsulates all the necessary boilerplate code to interact seamlessly with the Assessment Module Manager via the `athena` package.
 
-// For writing, see documentation entry
+We have elaborated on the specific process in Athena's official documentation#footnote[https://ls1intum.github.io/Athena, last visited September 10th, 2023]. There, developers can find detailed instructions that outline the steps to add a new assessment module effectively.
 
 == CoFee Adapter
 // What does it do?
 // - We wanted to keep the existing load balancer by Michel~@atheneLoadBalancer as-is in order not to break existing functionality.
 // - Athena-CoFee by itself is "only" a segmentation and clustering service for text submissions. The actual feedback suggestion generation as well as the submission selection were previously done directly in Artemis.
 // - Because of this, we had to keep the existing Athena-CoFee server running and integrate it into the new Athena system, using the adapter pattern.
+The CoFee Adapter is a key part that connects Athena-CoFee's specialized services for text submissions to the broader Athena system. We designed this to keep the existing load balancer and Athena-CoFee functions running smoothly without any interruptions.
+The CoFee Adapter operates separately from the Athena-CoFee server, each initiated individually. 
 
 // How does it work?
 // - The Athena-CoFee server is started separately from the CoFee Adapter.
 // - When the CoFee Adapter receives a request, it forwards it to the Athena-CoFee server to process it.
 // - After the submissions are segmented and clustered by the Athena-CoFee server as implemented by Bernius et al.~#cite("cofee", "cofee2"), the CoFee Adapter receives a list of TextBlocks and Clusters from it. It stores them in its database. This information was previously stored in the Artemis database.
 // - When the CoFee Adapter receives new manual feedback from Artemis, it stores it in its database.
-// - When the CoFee Adapter receives a request for selecting the optimal submission to assess next, it retrieves the TextBlocks and Clusters from its database and generates a submission selection from them. It follows the algorithm previously implemented by Bernius et al.~#cite("cofee", "cofee2"). We re-implemented the selection code from Java (in Artemis) to Python (in Athena). Essentially, it calculates a metric called "information gain" for each submission and returns the submission with the highest information gain. Details can be found in the CoFee papers~#cite("cofee", "cofee2").
+// - When the CoFee Adapter receives a request for selecting the optimal submission to assess next, it retrieves the TextBlocks and Clusters from its database and generates a submission selection from them. It follows the algorithm previously implemented by Ziegltrum~@atheneSubmissionSelection. We re-implemented the selection code from Java (in Artemis) to Python (in Athena). Essentially, it calculates a metric called "information gain" for each submission and returns the submission with the highest information gain. Details can be found in~@atheneSubmissionSelection.
 // - When the CoFee Adapter receives a request for feedback suggestions from Artemis, it retrieves the TextBlocks and Clusters from its database and generates feedback suggestions from them. It follows the algorithm previously implemented by Bernius et al.~#cite("cofee", "cofee2"). We re-implemented the generation code from Java (in Artemis) to Python (in Athena). Essentially, it takes the TextBlocks in the given submission that are closest to the TextBlocks in the clusters and generates feedback suggestions from them by copying the existing feedback. Details can be found in the CoFee papers~#cite("cofee", "cofee2").
 // - We also transferred an additional check in the feedback suggestion generation from Artemis to Athena. In Artemis, the feedback suggestions were only generated if there were at least 10 submissions available in English. According to an old comment in Artemis, non-English submissions are ignored because otherwise the clusters would be corrupted#footnote[https://github.com/ls1intum/Artemis/pull/6861/files#diff-c991a8c31e27a496b18e6f1541d635f623481d598658bbaf9c190898ef09ec85L151, last visited September 9th, 2023]. We wanted to keep the functionality of CoFee exactly as-is and therefore implemented this check in Athena as well.
 // - The language detection is (as previously) still performed within Artemis, using the `franc-min` package#footnote[https://www.npmjs.com/package/franc-min, last visited September 9th, 2023].
+When the CoFee Adapter gets a request, it forwards it to the Athena-CoFee server for processing based on algorithms developed by Bernius et al.~#cite("cofee", "cofee2").
+After Athena-CoFee sends back segmented and clustered text submissions, the CoFee Adapter retains the processed data in its own database, a task previously managed by Artemis.
+
+Manual feedback received from Artemis is stored in this database as well, augmenting the data pool. When called upon to select the next optimal submission for assessment, the adapter employs an "information gain" algorithm that is a Python adaptation of the original Java code in Artemis developed by Ziegltrum~@atheneSubmissionSelection.
+
+The CoFee Adapter uses its database to generate feedback suggestions as well. It identifies TextBlocks in a given submission that closely match those in the clusters stored in its database and generates feedback based on this comparison. This process adheres to the same methodology developed by Bernius et al.~#cite("cofee", "cofee2"), which we have re-implemented in Python for Athena.
+
+Moreover, an additional validation step has been transferred from Artemis to Athena: the system verifies the availability of at least 10 English-language submissions before proceeding with the generation of feedback suggestions. This check is intended to prevent the potential corruption of clusters due to non-English submissions and is preserved from the original CoFee system.
+Language detection continues to be managed by Artemis using the `franc-min` package.
+
+In summary, the CoFee Adapter successfully integrates Athena and Athena-CoFee while preserving the unique functionalities of both, thereby making the unified system more robust and extensible.
+
+// TODO: Class diagram for CoFee adapter?
 
 // (Maybe the Obsidian page "How Submission Selection by Information Gain worked (also now works) in Athena" is helpful )
 
 == ThemisML Module
 // ThemisML is an assessment module that uses machine learning to generate feedback suggestions for programming exercises. The approach and basic prototype were developed in the iPraktikum course at the Technical University of Munich in the winter semester 2022. Currently, only programming exercises in Java are supported. However, ThemisML is architected to be easily extensible to other programming languages.
+ThemisML is an assessment module within the Athena ecosystem, initially developed as a prototype during the iPraktikum course at the Technical University of Munich in 2023/2023.
+While currently focused on programming exercises in Java, ThemisML is designed to be extensible to additional programming languages.
 
 // How does it work?
 // - The Submission Processing is not needed.
 // - The Feedback Processing endpoint directly generates new feedback suggestions for all submissions of an exercise.
 // - The Feedback Suggestions endpoint finds the stored suggestions, applies an additional filter to the list of suggestions and returns them.
 // - The Submission Selection endpoint is currently not supported.
+Compared to other modules that need to process submissions first, ThemisML generates new feedback suggestions whenever new manual feedback is added to the database. When queried for feedback suggestions, it consults its database, applies additional filters to pre-existing suggestions, and returns the refined list. Currently, ThemisML does not support the submission selection endpoint.
+We will describe the two main endpoints for feedback processing and feedback suggestions in more detail in the following sections.
 
 // Feedback Processing in Detail: ThemisML performs the following steps to generate new feedback suggestions based on incoming manual feedback:
 // 1. ThemisML uses an AST parser to parse the source code of the submission into an abstract syntax tree (AST). Concretely, we use the `antlr4` Python package~@antlr4#footnote[https://www.antlr.org, last visited September 9th, 2023] to find the methods in the code that the feedback was given on. If feedback was given within a method, we associate it with the whole method.
 // 2. For each such method, ThemisML finds the corresponding method in all other submissions on the exercise (skipping a submission if it does not include that method in a file of the same name).
 // 3. Using vectorization, ThemisML uses CodeBERT~@codeBERT to compute the similarity scores between the feedback methods and the methods in other submissions. These scores are on a scale from 0 to 1. After initial evaluations, we added the optimization to automatically give a similarity score of 1 to code comparisons that are identical ignoring whitespace. This allows us to save a lot of processing power with CodeBERT.
 // 4. ThemisML creates a suggestion for each method in another submission where the similarity score to a given feedback item is above a certain threshold. The suggestion has the same text as the given feedback and includes additional information about the similarity score and the method it was generated for.
+=== Feedback Processing
+To generate new feedback suggestions based on incoming manual feedback, ThemisML goes through these steps:
+  1. *Parsing*: Using an Abstract Syntax Tree parser, specifically the `antlr4` Python package#footnote[https://www.antlr.org, last visited September 9th, 2023]~@antlr4, ThemisML parses the source code of the submission to identify methods that received feedback. Feedback given within a method is associated with that entire method.
+  2. *Method Matching*: ThemisML identifies the same method across all other submissions for the exercise. It skips any submission that lacks the method in a file with the same name.
+  3. *Similarity Scoring*: ThemisML utilizes CodeBERT to compute similarity scores between the methods that received feedback and methods in other submissions. The resulting similarity scores range from 0 to 1. We vectorize the input of CodeBERT to improve performance. Another processing optimization we apply is to assign an automatic score of 1 to identical code comparisons, excluding whitespace differences, and to cache code comparison results in memory.
+  4. *Suggestion Generation*: For each method in other submissions that has a similarity score above a set threshold when compared to a given feedback item, ThemisML generates a suggestion. This suggestion retains the original feedback text and adds information about the similarity score and the specific method for which it was created.
+
+Based on insights from initial evaluations, we chose the threshold in step 4 to be 95%, meaning that only almost identical methods can result in feedback suggestions.
+We decided on a high value to aim for a high precision of the suggestions, accepting that this might lead to a lower number of suggestions.
 
 // Feedback Suggestion Generation in Detail: ThemisML performs the following steps to find feedback suggestions for a submission:
 // 1. ThemisML loads the previously generated feedback suggestions from its database.

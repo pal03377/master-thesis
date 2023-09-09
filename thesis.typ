@@ -1039,7 +1039,7 @@ If the Assessment Module Manager or a module is not running, the logs of the res
 // 
 // Local Development Setup
 // How to start it locally using poetry? Why this way and not always Docker?
-// We do not recommend to use the CoFee module on Mac with M1, see Obsidian page "Why is CoFee so slow on my Mac with an M1 processor?"
+// We do not recommend using the CoFee module on Mac with M1, see Obsidian page "Why is CoFee so slow on my Mac with an M1 processor?"
 In this chapter, we explain how our system design from @systemDesign fits into the Artemis learning platform and the Athena feedback suggestion provider within the solution domain.
 
 // TODO: Make sure to use lots of UML diagrams
@@ -1177,7 +1177,7 @@ In this chapter, we explain how our system design from @systemDesign fits into t
 //   (3) Suggestions are also suspicious if they include words that hint at other parts of the code, like
 //     "again", "consequential error", "previous", "later", "earlier", "above", "below" and German equivalents of these words.
 
-= Evaluation of the ThemisML Assessment Module
+= Evaluation of ThemisML
 #rect(
   width: 100%,
   radius: 10%,

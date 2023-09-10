@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-09T21:42:21.079Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="zXbX6M_BY90RKVDG_74T" version="21.7.4" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-09-10T00:53:39.128Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="k4aSL0qcjiw_xVxuPpTa" version="21.7.4" type="github" pages="3">
   <diagram name="artemis" id="QuPIXc7A5ROBVf-9lSRr">
     <mxGraphModel dx="1434" dy="796" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -149,14 +149,6 @@
         <mxCell id="e5jwP_a_76WiL1a_9zan-3" value="Artemis" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="e5jwP_a_76WiL1a_9zan-1" vertex="1">
           <mxGeometry x="410" y="210" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="e5jwP_a_76WiL1a_9zan-4" value="Tutor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="e5jwP_a_76WiL1a_9zan-1" vertex="1">
-          <mxGeometry x="140" y="310" width="30" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="e5jwP_a_76WiL1a_9zan-5" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="e5jwP_a_76WiL1a_9zan-1" source="e5jwP_a_76WiL1a_9zan-6" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="180" y="340" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="e5jwP_a_76WiL1a_9zan-6" value="View Submission" style="ellipse;whiteSpace=wrap;html=1;" parent="e5jwP_a_76WiL1a_9zan-1" vertex="1">
           <mxGeometry x="220" y="255" width="130" height="50" as="geometry" />
         </mxCell>
@@ -165,24 +157,6 @@
         </mxCell>
         <mxCell id="e5jwP_a_76WiL1a_9zan-8" value="Submit Assessment" style="ellipse;whiteSpace=wrap;html=1;" parent="e5jwP_a_76WiL1a_9zan-1" vertex="1">
           <mxGeometry x="220" y="375" width="130" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="e5jwP_a_76WiL1a_9zan-9" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="e5jwP_a_76WiL1a_9zan-1" source="e5jwP_a_76WiL1a_9zan-7" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="180" y="340" as="targetPoint" />
-            <mxPoint x="230" y="295" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="e5jwP_a_76WiL1a_9zan-10" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="e5jwP_a_76WiL1a_9zan-1" source="e5jwP_a_76WiL1a_9zan-8" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="180" y="340" as="targetPoint" />
-            <mxPoint x="230" y="355" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="e5jwP_a_76WiL1a_9zan-11" value="Athena" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="e5jwP_a_76WiL1a_9zan-1" vertex="1">
-          <mxGeometry x="710" y="310" width="30" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="e5jwP_a_76WiL1a_9zan-12" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" parent="e5jwP_a_76WiL1a_9zan-1" source="e5jwP_a_76WiL1a_9zan-13" target="e5jwP_a_76WiL1a_9zan-11" edge="1">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e5jwP_a_76WiL1a_9zan-13" value="Learn from past feedback" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="e5jwP_a_76WiL1a_9zan-1" vertex="1">
           <mxGeometry x="535" y="315" width="130" height="50" as="geometry" />

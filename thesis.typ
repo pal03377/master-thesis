@@ -247,7 +247,7 @@ Athena has been designed with adaptability in mind. In the future, findings from
 = Requirements Analysis
 // Note: This chapter follows the Requirements Analysis Document Template in @bruegge2004object. Important: Make sure that the whole chapter is independent of the chosen technology and development platform. The idea is that you illustrate concepts, taxonomies and relationships of the application domain independent of the solution domain! Cite @bruegge2004object several times in this chapter.
 
-== Overview
+== Overview <requirementsAnalysisOverview>
 // Note: Provide a short overview about the purpose, scope, objectives and success criteria of the system that you like to develop.
 // TODO: Make it sound less like two people are working on the specific thesis topic, just on the whole system in general
 Despite our intentions to plan and detail it meticulously, we anticipate that we will only be able to fulfill some specifications for the new semi-automatic grading system. With the limitation of only two people working on this project for only six months in mind, our strategy leans toward the progressive delivery of a scaled-down system. Prioritizing high-quality code and thorough documentation, we opt for this approach over rushing the development of an expansive yet potentially flawed prototype.
@@ -1453,30 +1453,29 @@ To wrap up, we highlight our contributions and explore potential directions for 
     [
       #frlink(<frTestSuggestionGeneration>)
     ],
-    
   ),
   caption: [Status of the use cases associated with functional requirements.],
 ) <statusTable>
 
 === Realized Goals
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Summarize the achieved goals by repeating the realized requirements or use cases stating how you realized them.
-]
+// Note: Summarize the achieved goals by repeating the realized requirements or use cases stating how you realized them.
+We successfully implemented Athena, a system that receives submissions and existing feedback on both programming and text exercises from an LMS (specifically, Artemis) (#frlink(<frReceiveSubmissions>), #frlink(<frMoreGeneralSubmissionsAndFeedbackReceive>)), suggests the next submission to assess (#frlink(<frSuggestNextSubmission>)), and then provides feedback suggestions to the LMS on the assessment (#frlink(<frProvideFeedbackSuggestions>)). These suggestions are shown in Artemis (#frlink(<frViewFeedbackSuggestionsUI>)) and can be accepted, modified, or discarded by the tutor (#frlink(<frAcceptFeedbackSuggestions>), #frlink(<frModifyFeedbackSuggestions>), #frlink(<frDiscardFeedbackSuggestions>)). 
+We added the general capability to suggest feedback on programming exercises to Athena (#frlink(<frIncludeNewProgrammingAssessmentModule>)) and created a new assessment module called ThemisML utilizing machine learning to generate feedback suggestions for programming exercises (#frlink(<frFeedbackSuggestionsByThemisML>)), learning from past feedback (#frlink(<frLearnFromPastFeedback>)).
+
+Administrators can inspect the health of Athena (#frlink(<frCommunicateModuleHealthStatus>)) and select the assessment module to use (#frlink(<frSelectAssessmentModule>)), with the only limitation in this regard being that there is no UI for the latter yet.
+
+Researchers can test the suggestion generation independently of the LMS (#frlink(<frTestSuggestionGeneration>)) using the Athena Playground.
 
 === Open Goals
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Summarize the open goals by repeating the open requirements or use cases and explaining why you were not able to achieve them. Important: It might be suspicious, if you do not have open goals. This usually indicates that you did not thoroughly analyze your problems.
-]
+// Note: Summarize the open goals by repeating the open requirements or use cases and explaining why you were not able to achieve them. Important: It might be suspicious, if you do not have open goals. This usually indicates that you did not thoroughly analyze your problems.
+Due to the limitations outlined in @requirementsAnalysisOverview, we faced challenges in implementing specific use cases, which we discuss here for clarity and future consideration:
+
+- *Inability to Recover Discarded Suggestions* (#frlink(<frRestoreDiscardedFeedbackSuggestions>)): Tutors do not have the option to restore feedback suggestions that they have previously discarded. Consequently, if a tutor inadvertently dismisses a valuable suggestion, the only recourse is to manually reproduce it.
+- *Absence of Usage Metrics for Researchers* (#frlink(<frInspectUsageStatistics>)): The system currently lacks a feature allowing researchers to analyze usage statistics. As a result, researchers are unable to ascertain the number of generated suggestions, nor can they track how many of these suggestions have been accepted, modified, or discarded by tutors.
+
+These unimplemented use cases highlight areas for future development and also have implications for the efficacy and usability of the Athena feedback suggestion system as it integrates into the Artemis learning management system.
+
+We also recognize that Artemis offers various exercise types beyond text and programming. Although Athena doesn't currently support these, we designed it to be easily extendable to include them in future versions.
 
 == Conclusion
 #rect(

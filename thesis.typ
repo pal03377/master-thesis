@@ -1478,14 +1478,11 @@ These unimplemented use cases highlight areas for future development and also ha
 We also recognize that Artemis offers various exercise types beyond text and programming. Although Athena doesn't currently support these, we designed it to be easily extendable to include them in future versions.
 
 == Conclusion
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Recap shortly which problem you solved in your thesis and discuss your *contributions* here.
-]
+// Note: Recap shortly which problem you solved in your thesis and discuss your *contributions* here.
+This thesis successfully tackles Athena's initial limitations regarding extensibility and adaptability. We've restructured its architecture to support multiple feedback generation approaches, expanding beyond just the CoFee method for text submissions.
+Athena now also supports programming exercises, aligning its capabilities with Artemis and providing a more comprehensive tool for tutors.
+These changes facilitate easier adaptation by researchers and improve compatibility with various Learning Management Systems.
+Overall, the thesis transforms Athena into a more flexible and effective automated feedback suggestion system.
 
 == Future Work
 #rect(

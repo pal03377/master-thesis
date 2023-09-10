@@ -1352,28 +1352,111 @@ We decided on a high value to aim for a high precision of the suggestions, accep
 ]
 
 = Summary
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: This chapter includes the status of your thesis, a conclusion and an outlook about future work.
-]
+// Note: This chapter includes the status of your thesis, a conclusion and an outlook about future work.
+In this section, we offer a condensed recap of the thesis content, focusing on both the objectives we've met and those still in progress.
+To wrap up, we highlight our contributions and explore potential directions for future research in the field.
 
 == Status
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Describe honestly the achieved goals (e.g. the well implemented and tested use cases) and the open goals here. if you only have achieved goals, you did something wrong in your analysis.
-]
+// Note: Describe honestly the achieved goals (e.g. the well implemented and tested use cases) and the open goals here. if you only have achieved goals, you did something wrong in your analysis.
+@statusTable presents the current status of all use cases associated with functional requirements, indicating which are fully realized (#sym.circle.filled), partially implemented (◐), or still open (#sym.circle.stroked.small).
 
-- #sym.circle.stroked.small
-- ◐
-- #sym.circle.filled
+#figure(
+  table(
+    columns: (5em, auto, auto, 8em),
+    inset: 10pt,
+    align: left,
+    [*Status*], [*Actor*], [*Use Case*], [*FRs*],
+
+    // Review Suggestions
+    sym.circle.filled,
+    [Tutor],
+    [Review Suggestions],
+    [
+      #frlink(<frSuggestNextSubmission>),
+      #frlink(<frReceiveSubmissions>),
+      #frlink(<frProvideFeedbackSuggestions>),
+      #frlink(<frViewFeedbackSuggestionsUI>),
+      #frlink(<frMoreGeneralSubmissionsAndFeedbackReceive>),
+      #frlink(<frIncludeNewProgrammingAssessmentModule>),
+      #frlink(<frFeedbackSuggestionsByThemisML>)
+    ],
+
+    // Accept Suggestions
+    sym.circle.filled,
+    [Tutor],
+    [Accept Suggestions],
+    [
+      #frlink(<frAcceptFeedbackSuggestions>)
+    ],
+
+    // Modify Suggestions
+    sym.circle.filled,
+    [Tutor],
+    [Modify Suggestions],
+    [
+      #frlink(<frModifyFeedbackSuggestions>)
+    ],
+
+    // Discard Suggestions
+    sym.circle.filled,
+    [Tutor],
+    [Discard Suggestions],
+    [
+      #frlink(<frDiscardFeedbackSuggestions>)
+    ],
+
+    // Restore Discarded Suggestions
+    sym.circle.small,
+    [Tutor],
+    [Restore Discarded Suggestions],
+    [
+      #frlink(<frRestoreDiscardedFeedbackSuggestions>)
+    ],
+
+    // Learn From Past Feedback
+    sym.circle.filled,
+    [Athena],
+    [Learn From Past Feedback],
+    [
+      #frlink(<frLearnFromPastFeedback>),
+      #frlink(<frSendSubmissionsAndFeedback>)
+    ],
+
+    // Inspect Athena Health
+    sym.circle.filled,
+    [Administrator],
+    [Inspect Athena Health],
+    [
+      #frlink(<frCommunicateModuleHealthStatus>)
+    ],
+
+    // Select Assessment Module
+    [◐],
+    [Administrator],
+    [Select Assessment Module],
+    [
+      #frlink(<frSelectAssessmentModule>)
+    ],
+
+    // Inspect Usage Statistics
+    sym.circle.small,
+    [Researcher],
+    [Inspect Usage Statistics],
+    [
+      #frlink(<frInspectUsageStatistics>)
+    ],
+
+    // Test Suggestion Generation Independently of LMS
+    sym.circle.filled,
+    [Researcher],
+    [Test Suggestion Generation Independently of LMS],
+    [
+      #frlink(<frTestSuggestionGeneration>)
+    ],
+    
+  ),
+  caption: [Status of the use cases associated with functional requirements.],
+) <statusTable>
 
 === Realized Goals
 #rect(

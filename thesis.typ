@@ -621,7 +621,7 @@ Athena uses that feedback to _learn from it_ (#frlink(<frLearnFromPastFeedback>)
 
 #figure(
   image("figures/use-case-athena.svg", width: 60%),
-  caption: [Use Case Diagram for the Athena System],
+  caption: [Use Case Diagram for the Athena system],
 ) <useCaseModelAthena>
 
 // - The researcher can _inspect usage statistics_ about the acceptance rate of feedback suggestions and more. This enables them to evaluate the effectiveness of the system under evaluation.
@@ -1531,13 +1531,14 @@ While we understand that our observations might lean toward our own experiences 
 === Limitations
 // Note: Describe limitations and threats to validity of your evaluation, e.g. reliability, generalizability, selection bias, researcher bias
 The subjective evaluation presented here is limited by the following factors:
-1. *Scope of Data*: The evaluation draws from exercises at the Technical University of Munich, which could limit data diversity. Although chosen exercises vary, they might not encompass all potential programming challenges.
+1. *Diversity of Data*: The evaluation draws from exercises at the Technical University of Munich, which could limit data diversity. Although chosen exercises vary, they might not encompass all potential programming challenges.
 2. *Researcher's Investment*: As the developer of Athena, aiming to integrate it into Artemis, we hold a vested interest in ThemisML's success. This could inadvertently lead to a positive bias in interpreting results.
 3. *Evolution Over Time*: This evaluation captures ThemisML at a single developmental stage. With feedback suggestions improving over time, our evaluation might not represent its long-term efficiency.
 4. *Technical Constraints*: Our evaluation might not have captured every technical nuance. There could be challenges with more advanced programming concepts not covered here.
 5. *Subjective Assessment*: Manually reviewing and comparing feedback suggestions is prone to subjectivity. The perspective on 'good' feedback might be different for different evaluators, potentially influencing our assessment.
+6. *Expertise Limitation*: The depth of proficiency in all the exercises used for evaluation is not exhaustive. This may impact the ability to accurately judge the quality of tutor feedback and the subsequent relevance of ThemisML's suggestions as compared to an expert in that specific domain.
 
-While there are a lot of biases involved in this subjective evaluation, we still believe there to be value in our findings for continued development and improvement of ThemisML.
+While there are a lot of biases involved in this subjective evaluation, we still believe there to be value in our findings for the continued development and improvement of ThemisML.
 
 = Summary
 // Note: This chapter includes the status of your thesis, a conclusion and an outlook about future work.
@@ -1654,7 +1655,7 @@ Administrators can inspect the health of Athena (#frlink(<frCommunicateModuleHea
 
 Researchers can test the suggestion generation independently of the LMS (#frlink(<frTestSuggestionGeneration>)) using the Athena Playground.
 
-=== Open Goals
+=== Open Goals <openGoals>
 // Note: Summarize the open goals by repeating the open requirements or use cases and explaining why you were not able to achieve them. Important: It might be suspicious, if you do not have open goals. This usually indicates that you did not thoroughly analyze your problems.
 Due to the limitations outlined in @requirementsAnalysisOverview, we faced challenges in implementing specific use cases, which we discuss here for clarity and future consideration:
 
@@ -1673,14 +1674,47 @@ These changes facilitate easier adaptation by researchers and improve compatibil
 Overall, the thesis transforms Athena into a more flexible and effective automated feedback suggestion system.
 
 == Future Work
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Tell us the next steps (that you would do if you have more time). Be creative, visionary and open-minded here.
-]
+// Note: Tell us the next steps (that you would do if you had more time). Be creative, visionary and open-minded here.
+In addition to the open goals outlined in @openGoals, we see potential in examining the following additional subjects.
+
+=== Modeling Exercise Support
+// - Artemis already includes an integrated semi-automatic feedback suggestion system called Compass.
+// - Compass had an automatic feedback rate between 65% and 80% in a quantitative analysis by Krusche.
+// - We could put Compass in an Athena assessment module and run it independently, supporting feedback suggestions through Athena and enabling us to compare it to other approaches.
+// - We would unify the UI for feedback suggestions on programming + text exercises and the one for modeling exercises.
+// - We could also try using LLMs to generate feedback suggestions for modeling exercises this way.
+The Artemis system has effectively integrated Compass, achieving an impressive automatic feedback rate between 65% and 80%~@compass. By incorporating Compass within Athena's assessment framework, we can enhance Athena's feedback capabilities and simultaneously compare its efficiency with other methods. This integration would also create a uniform interface for feedback across text, programming, and modeling exercises.
+//
+Moreover, this integration provides a foundation for the initial testing and deployment of Large Language Models (LLMs) for modeling exercises. LLMs can offer context-aware feedback, adapting continuously from past feedback insights.
+
+=== Fully Automatic Feedback
+// - Currently, programming exercises are mostly graded fully automatically using tests (~690 programming exercises are not automatic, 1998 programming exercises are automatically assessed on the Artemis production instance of Technical University of Munich as of March 2023)
+// - Writing detailed tests for programming exercises is very time-consuming.
+// - If the feedback suggestion generation approaches for programming exercises get good enough, we could use them to automatically generate feedback for programming exercises.
+// - This also applies to other types of exercises.
+// - As an intermediate step, Athena could provide feedback as a "first correction round", and tutors could then review and modify the feedback in the second correction round. Artemis already supports having multiple correction rounds, so this would be a natural extension.
+// - Fully automatic feedback on text and modeling exercises would save a lot of time for tutors, but it would have to be good enough.
+// - Approaches like ThemisML and CoFee would not work for fully automatic feedback, because they require manual feedback to learn from.
+As of March 2023, the Artemis production instance at the Technical University of Munich shows that a majority of programming exercises, 1,998 out of 2,688, are assessed automatically. However, creating detailed tests for these exercises is a labor-intensive process.
+
+There is room to improve the feedback suggestion generation, not only for programming exercises but for other exercise types as well. If the overall system becomes advanced enough, it could autonomously generate feedback across various exercises. A logical intermediate strategy would be for Athena to offer feedback in a preliminary correction round. With Artemis's existing framework that supports multiple correction rounds, tutors can subsequently review and adjust this feedback as needed.
+
+The prospect of fully automatic feedback for text and modeling exercises would be a significant time-saver for tutors. However, the quality and relevance of the feedback must remain at the forefront. It is important to recognize that approaches like CoFee and ThemisML, while valuable, depend on manual feedback for learning and might not be ideal for a completely automated system.
+
+=== Live Feedback for Students
+// - Currently, students have to wait for tutors to correct their submissions and provide feedback.
+// - If the feedback suggestion generation approaches for programming exercises get good enough, we could use them to provide feedback to students immediately after they submit their solution.
+// - Using the existing integration of Artemis into Jetbrains IDEs with the Orion plugin (https://github.com/ls1intum/Orion), we could provide feedback directly in the IDE.
+// - This way, students could learn quickly and improve their solutions before submitting them.
+// - This would support them and also save time for tutors.
+Students currently wait for tutors to review their work before receiving feedback. With advancements in feedback suggestion systems for programming exercises, there's the potential to offer students feedback right after they submit their solutions. Thanks to the existing integration of Artemis with JetBrains IDEs through the Orion plugin#footnote[https://github.com/ls1intum/Orion, last visited September 14th, 2023], this immediate feedback could be delivered directly within the IDE, like shown in @programmingFeedbackSuggestionsInIntelliJ. This not only allows students to quickly understand and address any issues but also streamlines the process before final submission.
+
+#figure(
+  image("figures/ui-mockups/programming-feedback-suggestions-in-intellij.png", width: 100%),
+  caption: [Feedback suggestions for a programming exercise in IntelliJ IDEA (UI mockup)],
+) <programmingFeedbackSuggestionsInIntelliJ>
+
+Such a feature benefits both students and tutors. Students can learn and adjust in real time, and tutors may find a reduced need for extensive corrections, making the learning process more efficient and interactive.
 
 #pagebreak()
 #outline(

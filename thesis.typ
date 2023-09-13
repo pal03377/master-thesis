@@ -1359,8 +1359,9 @@ We will gain insights into the quality of the suggestions by manually reviewing 
 == Results
 // Note: Summarize the most interesting results of your evaluation (without interpretation). Additional results can be put into the appendix.
 === Scalability
-// TODO: Add note that submission giving always took under half a second and that because of that, we only show the feedback processing time (suggestion generation would be subject to too much noise)
-// TODO: explain everything here
+The suggestion generation was consistently completed in less than 0.5 seconds, with submission and feedback numbers of all tested sizes (up to 1000). Given its rapid response time, we decided not to delve deeper into the performance analysis of the suggestion generation endpoint, and the current speed already meets the operational requirements.
+
+We recorded the processing times for the feedback processing endpoint in @evaluationScalability1a, @evaluationScalability1b and @evaluationScalability2.
 #figure(
   image("figures/scalability-1a.png", width: 90%),
   caption: [Required processing time for one feedback item on a single submission, given $n$ previous submissions],
@@ -1373,10 +1374,13 @@ We will gain insights into the quality of the suggestions by manually reviewing 
   image("figures/scalability-2.png", width: 90%),
   caption: [Required processing time for processing a feedback item on each of the methods in the first 49/50 submissions, with $m$ methods present in each of the submissions],
 ) <evaluationScalability2>
-// #figure(
-//   image("figures/scalability-3.png", width: 90%),
-//   caption: [Required processing time for processing a single feedback item in the first 49/50 submissions, with $l$ lines of code in the main method of each submission],
-// ) <evaluationScalability3>
+
+#figure(
+  image("figures/scalability-3.png", width: 90%),
+  caption: [Required processing time for processing a single feedback item in the first 49/50 submissions, with $l$ lines of code in the main method of each submission],
+) <evaluationScalability3>
+
+During our test with varying method lengths in the submission, we could only test up to five lines of code. After that, the server's memory usage was too high, causing the Out Of Memory Killer process to shut down ThemisML.
 
 === Code Similarity Quality
 When using submissions that all include the same code, or change the name for one variable, ThemisML reliably suggests feedback from one of the submissions on all the others.
@@ -1447,14 +1451,26 @@ We will share our subjective findings in @findings.
 ) <feedbackOverviewTable>
 
 == Findings <findings>
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Interpret the results and conclude interesting findings
-]
+// Note: Interpret the results and conclude interesting findings
+In this section, we will interpret the results of our evaluation.
+
+=== Scalability
+
+Certainly! Here's an improved version based on your specifications:
+
+Conducting experiments on the Apple M1 Pro chip yielded results significantly faster — between three to six times quicker — than those on the Intel Xeon CPU. This outcome aligns with expectations, given the M1 Pro chip's optimization for machine learning tasks and its ability to harness its internal GPU for accelerated processing. Furthermore, the M1 Pro chip provides a larger pool of free memory, which appears crucial for ThemisML's performance.
+
+The time it takes to process a single feedback item demonstrates a direct proportional increase with the number of submissions and feedback items. However, outliers observed on the M1 Pro might be attributed to simultaneous unrelated processes running on the laptop, as referenced in @evaluationScalability1a and @evaluationScalability1b.
+//
+In the study of feedback items across all methods $m in {2, 3, ..., 10}$, the processing time showed a linear increment in 49 out of 50 submissions as the number of methods increased, as seen in @evaluationScalability2.
+Furthermore, when observing the first 49 out of 50 submissions on progressively longer methods, the processing time again increased linearly. Starting from an elevated base time, the processing approximately doubled as methods expanded from two lines of code to ten, as detailed in @evaluationScalability3.
+
+A prominent challenge in scaling ThemisML is its memory consumption. Previous efforts to mitigate this involved processing similarity comparisons in batches, but these adaptations proved inadequate for the current needs.
+
+=== Code Similarity Quality
+
+
+=== Real-world Data
 
 == Discussion
 #rect(
@@ -1466,6 +1482,8 @@ We will share our subjective findings in @findings.
   Note: Discuss the findings in more detail and also review possible disadvantages that you found
 ]
 // Main problem seems to be memory consumption (from looking at system metrics)
+
+// Scalability: Is it good enough?
 
 == Limitations
 #rect(

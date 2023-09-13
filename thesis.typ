@@ -1392,7 +1392,6 @@ ThemisML's primary goal is to provide quality feedback. We conducted a series of
 - *Whitespace Variations*: We introduced minor modifications, such as changing whitespace, to ensure that trivial differences didn't affect ThemisML's feedback accuracy.
 - *Variable Name Changes*: We changed variable names in our submissions to test ThemisML's ability to recognize underlying logic despite these variations.
 - *Different Code Structures*: We tested using different code structures that include different subtle mistakes to determine how ThemisML would respond to these variations. // TODO: Generated with GPT-4, see appendix for prompt and generated code
-- *Randomized Testing*: We executed multiple runs on the test for Different Code Structures to determine any randomness in feedback suggestions provided by ThemisML.
 
 To test these scenarios, we had to temporarily disable a feature in ThemisML that detects feedback that affects too many other submissions. // TODO: Describe more about why
 
@@ -1400,9 +1399,7 @@ To test these scenarios, we had to temporarily disable a feature in ThemisML tha
 // Note: Derive concrete objectives / hypotheses for this evaluation from the general ones in the introduction.
 We anticipate that ThemisML will provide feedback suggestions for submissions that match the reference, even with minor differences such as whitespace or variable names. By doing so, we can validate the accuracy of the similarity computation, ensuring that the suggestions are relevant to the appropriate submissions.
 
-Only when submissions have diverse code structures but share the same underlying error should they receive suggestions. This safeguards against ThemisML providing feedback for errors not evident in the submission.
-
-Consistency in ThemisML's suggestions across repeated tests of the same scenario is important. It assesses the dependability of the feedback suggestion mechanism. We expect ThemisML to provide the same suggestions for the same submissions when tested multiple times.
+To avoid making wrong suggestions, ThemisML should not suggest feedback on submissions that solve the same problem as others but use a different approach.
 
 === Results
 // Note: Summarize the most interesting results of your evaluation (without interpretation). Additional results can be put into the appendix.
@@ -1410,16 +1407,22 @@ When using submissions that all include the same code, or change the name for on
 
 In the test with only minor (mainly whitespace) changes, we found two submissions where ThemisML did not suggest feedback from the other submissions. In both cases, there was an inline comment in the submission that was not present in the other submissions.
 
+In the test involving multiple submissions generated using GPT-4, ThemisML did not suggest any feedback.
+
 === Findings
 // Note: Interpret the results and conclude interesting findings
-
+Our tests showed that ThemisML generally performed as we expected, especially with closely matching submissions. The standout observation was that it treated submissions with inline comments differently from those without.
 
 === Discussions
 // Note: Discuss the findings in more detail and also review possible disadvantages that you found
+ThemisML is conservative, offering feedback mainly when submissions are nearly identical. However, the introduction of comments disrupted this pattern. This suggests that while ThemisML is good at spotting close similarities, it may need improvement in handling inline comments.
 
 === Limitations
 // Note: Describe limitations and threats to validity of your evaluation, e.g. reliability, generalizability, selection bias, researcher bias
+In evaluating ThemisML's feedback capability, we identified two primary limitations:
 
+1. *Limited Sample Scope*: Our test codes might not capture the variety of real student submissions, affecting feedback accuracy.
+2. *GPT-4 & Feature Exclusion*: We relied on GPT-4 for code generation and disabled a key ThemisML feature, which may not reflect typical usage scenarios.
 
 
 == Real-world Data

@@ -1346,19 +1346,20 @@ During our test with varying method lengths in the submission, we could only tes
 
 === Findings
 // Note: Interpret the results and conclude interesting findings
-Conducting experiments on the Apple M1 Pro chip yielded results significantly faster — between three to six times quicker — than those on the Intel Xeon CPU. This outcome aligns with expectations, given the M1 Pro chip's optimization for machine learning tasks and its ability to harness its internal GPU for accelerated processing. Furthermore, the laptop provides a larger pool of free memory, which appears crucial for ThemisML's performance.
-//
-The time it takes to process a single feedback item demonstrates a direct proportional increase with the number of submissions and feedback items (see @evaluationScalability1a and @evaluationScalability1b). Two outlier measurements observed on the M1 Pro in @evaluationScalability1a might be attributed to simultaneous unrelated processes running on the laptop.
+Experiments on the Apple M1 Pro chip showed speeds three to six times faster than the Intel Xeon CPU, likely due to the M1's optimization for machine learning tasks and greater memory capacity, vital for ThemisML's performance.
 
-In the experiment of feedback items across all $m in {2, 3, ..., 10}$ methods, the processing time growed linearly as the number of methods increased, as seen in @evaluationScalability2.
-Furthermore, when observing progressively longer methods, the processing time again increased linearly. Starting from an elevated base time, the processing approximately doubled as methods expanded from two lines of code to ten, as detailed in @evaluationScalability3.
+Feedback processing time increases proportionally with submissions and feedback counts. Two outliers on the M1 Pro in @evaluationScalability1a might result from other concurrent processes.
+
+Feedback processing time, in both experiments on methods numbers and method lengths, showed a linear increase, with time roughly doubling from two to ten lines of code as shown in @evaluationScalability2 and @evaluationScalability3.
 
 === Discussions
 // Note: Discuss the findings in more detail and also review possible disadvantages that you found
 The failure to run the experiment beyond five lines of code in length on the test server indicates a need for memory optimization in ThemisML, as well as a potential need for more powerful hardware.
 Previous efforts to mitigate problems involving memory involved processing similarity comparisons in batches, but these adaptations proved inadequate for the used hardware.
 
-Using a test server with more memory available will likely enable ThemisML to process longer methods, and to be used for supporting small courses. 
+Using a test server with more memory available will likely enable ThemisML to process longer methods, and to be used for supporting small courses.
+
+To roughly estimate the processing time for a large course, we extrapolate the results from the experiment with a single feedback item on a single submission, given $n$ previous submissions to $n=2000$ and conclude that processing a single manual feedback item given by a tutor would take approximately 2:30 minutes. Assuming that the total computation time mostly depends on the number of given feedback items (which seems plausible, see @evaluationScalability1b), we can estimate that processing 17,000 feedback items would take approximately 708 hours. This is too long to be useful in practice. Improvements could include using more powerful hardware, optimizing the code, or processing the feedback items on multiple machines at once.
 
 === Limitations
 // Note: Describe limitations and threats to validity of your evaluation, e.g. reliability, generalizability, selection bias, researcher bias
@@ -1370,9 +1371,15 @@ Using a test server with more memory available will likely enable ThemisML to pr
 // Scalability: Laptop overheating after the initial tests, making the later ones seem slower
 // Having tested on specific machines, which might not have the same "dimensions" as the ones used in production -> not representative
 // All tested exercises are from the same semester
+// Calculation with 708 hours is probably wrong because it would come in batches of multiple items at once, which would be processed all at once using vectorization by ThemisML, which we did not consider.
 // Many more...
+In this section, we detail the potential limitations and threats tied to our evaluation of ThemisML's scalability.
+1. *Hardware Selection Bias*: Our hardware choices might not represent its performance across various architectures or brands, implying potential bias.
+2. *Test Parameter Reliability*: The chosen testing parameters, such as submission numbers and feedback counts, might not encompass all real-world scenarios, limiting their reliability. We also adapted our choice of parameters to what was possible in a reasonable amount of time, which might have introduced bias.
+3. *External Performance Factors*: Background processes, especially on the MacBook Pro, might impact performance results, making pinpoint analysis challenging.
+4. *Wrong projection of results*: We presume the processing time for a sizable course correlates with the number of submissions and feedback items. However, memory limitations or ThemisML's vectorization might impact this assumption.
 
-
+To sum up, our findings on ThemisML's scalability offer insights but come with inherent limitations that future work should consider for a holistic understanding.
 
 == Quality of Code Similarity Comparisons
 === Design

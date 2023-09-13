@@ -1514,6 +1514,24 @@ We will share our subjective findings in @realWorldFindings.
 
 === Findings <realWorldFindings>
 // Note: Interpret the results and conclude interesting findings
+In this section, we share our findings from examining real-world data using ThemisML. While we understand that our observations might lean toward our own experiences and may not reflect ThemisML's suggestions broadly, we think these insights highlight areas for further enhancement and also demonstrate the potential of ThemisML.
+
+1. *Variability in Tutor Grading & Feedback*:
+  - Differences in how tutors grade can sometimes influence ThemisML's feedback, leading to variations in point assignments (Exercise 1, Exercise 3).
+  - ThemisML's feedback can not grasp the full context of a student's submission. This can result in imbalances in how points are distributed across various methods (Exercise 2).
+  - ThemisML often identifies feedback that some tutors might miss, emphasizing its potential value (Exercise 3).
+
+2. *Technical Hurdles*:
+  - Some of the technical issues faced include challenges in identifying absent methods, differentiating between `synchronized` and non-synchronized methods (Exercise 2), and navigating complexities associated with generics, interfaces, and class attributes.
+  - While feedback for class declarations presents obstacles because ThemisML can only suggest feedback on methods, suggestions on constructors can sometimes resolve this issue.
+  - ThemisML faces difficulty in specific scenarios, like when students forget the `.java` file extensions, submit incomplete exercises, or files that include several classes (Exercise 1, Exercise 2).
+  - ThemisML currently cannot create unreferenced feedback suggestions.
+
+3. *Issues with Context & References*:
+  - Sometimes, suggestions might point to more than one method or refer to other feedback, complicating the feedback process (Exercise 1, Exercise 3).
+  - When tutors employ varied grading approaches, such as starting with full marks and subtracting versus starting with none and adding, the feedback suggestions' point values can be misaligned (Exercise 3).
+
+Overall, ThemisML holds promise in automating feedback for students. Yet, its present version highlights the need to refine its approach to resonate with a range of human grading styles and to more adeptly manage particular coding intricacies.
 
 
 === Discussions

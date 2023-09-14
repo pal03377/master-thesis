@@ -26,6 +26,7 @@
     lang: "en"
   )
   show math.equation: set text(weight: 400)
+  show heading: set block(below: 0.85em, above: 1em)
   show heading: set text(font: body-font)
   show heading: it => {
     v(0.5em)
@@ -46,7 +47,11 @@
       it
     }
   }
+  // --- Paragraphs ---
   set par(leading: 1em)
+
+  // --- Figures ---
+  show figure: set text(size: 0.85em)
 
   
 

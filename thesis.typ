@@ -95,7 +95,7 @@
   }
 }
 
-= Introduction
+= Introduction <intro>
 What is the best way to provide feedback on online exercises?
 Written feedback can have many forms, including simple corrections, marks, comments, questions and targets~@morris2021formative.
 Feedback is information provided by an agent, such as a teacher, to a learner, such as a student, regarding aspects of the learner's performance or understanding~@hattie2007feedback. It can effectively guide students toward the correct solution and help them learn from their mistakes, depending on the quality and impact of the feedback~@hattie2007feedback.
@@ -164,19 +164,20 @@ This module will leverage the pre-trained model CodeBERT~@codeBERT, developed by
 Furthermore, we will seamlessly integrate these suggestions into the assessment user interface of Artemis.
 
 == Outline
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Describe the outline of your thesis
-]
+// Note: Describe the outline of your thesis
+This thesis progresses as outlined below:
+In @background, we provide an in-depth look into Artemis, the CoFee approach by Bernius et al.~@cofee, and ThemisML.
+@relatedWork introduces a review of contemporary feedback generation systems, positioning them within the larger academic landscape.
+@requirementsAnalysis offers insights into the workings of the existing Athena-CoFee system, after which we present our new system proposal, detailing both functional and nonfunctional aspects along with comprehensive system models.
+With these foundational elements in place, @systemDesign delves into the overall system design.
+@objectDesign then takes a closer look at the object design and translates our ideas into practical implementation.
+An evaluation of the ThemisML assessment module is the focus of @evaluation.
+We conclude with @summary, reflecting on our completed and ongoing objectives, wrapping up our exploration, and highlighting avenues for future research.
 
-= Background
+= Background <background>
 // Note: Describe each proven technology/concept shortly that is important to understand your thesis. Point out why it is interesting for your thesis. Make sure to incorporate references to important literature here.
 In this chapter, the key concepts and technologies essential to this thesis are presented. First, the Artemis learning management system is introduced, which serves as the integration point for Athena.
-Next, the CoFee framework is discussed; this is the current method employed by Athena to generate feedback suggestions for textual exercises.
+Next, we discuss the CoFee framework; this is the current method employed by Athena to generate feedback suggestions for textual exercises.
 This is followed by an overview of the ThemisML approach, the proposed strategy for Athena to generate feedback suggestions for programming exercises.
 Finally, we give an overview of the microservice architecture, which Athena leverages to structure its components.
 
@@ -213,7 +214,7 @@ While these advantages are enticing, microservices are also generally seen as mo
 they can be more difficult to test in combination with other services~@hossain2023microservice,
 and can even be worse in performance in specific cases~@aldebagy2018comparative.
 
-= Related Work
+= Related Work <relatedWork>
 // Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches/concepts/workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was already solved by XYZ.” If you have multiple related works, use subsections to separate them.
 
 _Atenea_#footnote[Not to be confused with *Athena*, the name of the system we are developing.] is a system that provides automatic scores for short textual answers in English and Spanish computer science exercises using Latent Semantic Analysis and other natural language processing techniques~@atenea2005.
@@ -244,7 +245,7 @@ Athena can provide feedback suggestions for programming exercises, but it is not
 Athena has been designed with adaptability in mind. In the future, findings from other research or methodologies can be incorporated into it if they are shown to be useful for providing feedback suggestions in our specific context.
 
 
-= Requirements Analysis
+= Requirements Analysis <requirementsAnalysis>
 // Note: This chapter follows the Requirements Analysis Document Template in @bruegge2004object. Important: Make sure that the whole chapter is independent of the chosen technology and development platform. The idea is that you illustrate concepts, taxonomies and relationships of the application domain independent of the solution domain! Cite @bruegge2004object several times in this chapter.
 
 == Overview <requirementsAnalysisOverview>
@@ -1047,7 +1048,7 @@ The Assessment Module Manager is the entry point to Athena. It provides an endpo
 
 If the Assessment Module Manager or a module is not running, the logs of the respective Docker container contain all available information about potential errors. A failure of one of the modules does not affect the other modules or the Assessment Module Manager.
 
-= Object Design
+= Object Design <objectDesign>
 // Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
 
 // == Local Setup // Skip for now
@@ -1282,7 +1283,7 @@ We decided on a high value to aim for a high precision of the suggestions, accep
 //     "again", "consequential error", "previous", "later", "earlier", "above", "below" and German equivalents of these words.
 // TODO: describe this (?)
 
-= Evaluation of ThemisML
+= Evaluation of ThemisML <evaluation>
 // Note: If you did an evaluation / case study, describe it here.
 In deploying and validating any software system, a rigorous evaluation is crucial. It ensures our proposed solution aligns with our goals and meets expected standards. In Athena's context, we broke down our evaluation of the newly developed ThemisML module into two main segments: // TODO: two or three?
 
@@ -1540,7 +1541,7 @@ The subjective evaluation presented here is limited by the following factors:
 
 While there are a lot of biases involved in this subjective evaluation, we still believe there to be value in our findings for the continued development and improvement of ThemisML.
 
-= Summary
+= Summary <summary>
 // Note: This chapter includes the status of your thesis, a conclusion and an outlook about future work.
 In this section, we offer a condensed recap of the thesis content, focusing on both the objectives we've met and those still in progress.
 To wrap up, we highlight our contributions and explore potential directions for future research in the field.

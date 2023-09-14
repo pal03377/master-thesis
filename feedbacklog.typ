@@ -85,7 +85,7 @@
 ]
 
 #feedback[
-    Please add a warning to the tutor if they try to submit an assessment without having explicitly accepted or rejected all suggestions.
+    Please show a warning to the tutor if they try to submit an assessment without having explicitly accepted or rejected all suggestions.
 ]
 #response[
     TODO: Do this

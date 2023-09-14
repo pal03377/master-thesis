@@ -468,6 +468,7 @@ Functional requirements are independent of implementation details. They solely d
 //  The replacement should not affect the functionality of the Themis grading app. // constraint of action
 //] <frReplaceThemisGradingAppIntegration>
 
+#v(1em) // For better layout
 #v(1em)
 *Research on Athena*
 #fr[
@@ -526,6 +527,7 @@ Functional requirements are independent of implementation details. They solely d
   Configuration changes to the system, like changing authentication secrets or external API tokens for some assessment modules, should be possible within 30 minutes.
 ] <nfrEasyConfiguration>
 
+#v(3em) // For better layout
 *Scalability*
 #nfr[
   *System Scalability*
@@ -685,14 +687,14 @@ In this section, we present the user interface mockups that illustrate how Athen
 
 In Artemis, when a tutor starts a new assessment for a text or manually graded programming exercise, the system automatically selects a student's submission using Athena. The tutor receives the submission right away and can begin grading immediately. This design choice aims to prevent interruptions in the grading workflow that could arise from Athena's asynchronous generation of feedback suggestions. As the tutor evaluates the work, Athena-generated feedback suggestions become available in the user interface.
 
-In the assessment interface seen in @userInterfaceTextFull, tutors can view student submissions and feedback suggestions on the left side. These suggestions resemble existing feedback but feature an additional badge labeled "Suggestion." By default, these are pre-accepted but can be discarded by the tutor. This design is consistent with the existing manual feedback system, as cited in @cofee.
-
-We've made minor modifications to this design: the badge text has been changed from "Automatic" to "Suggestion" for clarity, and we've adopted a unique purple color for these badges, replacing the previous blue background.
-
 #figure(
   image("figures/ui-mockups/text-full.png", width: 100%),
   caption: [The text assessment interface for tutors, showcasing a referenced feedback suggestion],
 ) <userInterfaceTextFull>
+
+In the assessment interface seen in @userInterfaceTextFull, tutors can view student submissions and feedback suggestions on the left side. These suggestions resemble existing feedback but feature an additional badge labeled "Suggestion." By default, these are pre-accepted but can be discarded by the tutor. This design is consistent with the existing manual feedback system, as cited in @cofee.
+
+We've made minor modifications to this design: the badge text has been changed from "Automatic" to "Suggestion" for clarity, and we've adopted a unique purple color for these badges, replacing the previous blue background.
 
 When a tutor opens the programming assessment interface, they are presented with a submission and available feedback suggestions. The interface is shown in @userInterfaceProgrammingFull. Feedback suggestions are displayed in a manner consistent with the text exercise interface, featuring a purple "Suggestion" badge for easy identification (see @userInterfaceProgrammingFull, A).
 
@@ -821,7 +823,7 @@ The CoFee modules are highly dependent on orchestration by the load balancer, wh
 Both the existing CoFee module, called "Athena-CoFee", and the new CoFee Adapter are based on the FastAPI framework.
 
 #figure(
-  image("figures/subsystem-decomposition-cofee-module.svg", width: 80%),
+  image("figures/subsystem-decomposition-cofee-module.svg", width: 70%),
   caption: [Subsystem decomposition of the CoFee Module, inspired by similar diagrams in @cofee and @atheneLoadBalancer. The source code of the Athena-CoFee subsystem is available at https://github.com/ls1intum/Athena-CoFee.], 
 ) <subsystemDecompositionCoFee>
 
@@ -878,7 +880,7 @@ Additionally, the _Text Block Repository_ serves a specific function in the repr
 The Artemis Web Client, developed using Angular, is divided into two primary layers: the UI layer, consisting of Angular components, and the service layer, primarily responsible for interfacing with the Artemis API.
 
 #figure(
-  image("figures/subsystem-decomposition-artemis-client.svg", width: 75%),
+  image("figures/subsystem-decomposition-artemis-client.svg", width: 65%),
   caption: [Subsystem decomposition of the Artemis Client],
 ) <subsystemDecompositionArtemisClient>
 
@@ -902,7 +904,7 @@ Both the Athena and Artemis Servers are housed in the University Datacenter and 
 We have intentionally omitted the load-balancing aspect of the Artemis system as it is not relevant to the research focus of this thesis.
 
 #figure(
-  image("figures/deployment-diagram.svg", width: 80%),
+  image("figures/deployment-diagram.svg", width: 70%),
   caption: [Deployment diagram of the Artemis and Athena systems, inspired by the deployment diagram from the Artemis documentation page#footnote[https://ls1intum.github.io/Artemis/dev/system-design/#deployment, last visited September 6th, 2023]],
 ) <deploymentDiagram>
 
@@ -963,7 +965,7 @@ Initially, Artemis hosted the TextBlock and TextCluster tables. However, to make
 This approach reduces the interdependence between Athena and Artemis, simplifying future updates and scalability efforts.
 
 #figure(
-  image("figures/db-class-diagram-athena-cofee.svg", width: 100%),
+  image("figures/db-class-diagram-athena-cofee.svg", width: 85%),
   caption: [Class diagram of the CoFee module part of the Athena database],
 ) <classDiagramAthenaCoFee>
 
@@ -1540,9 +1542,9 @@ The subjective evaluation presented here is limited by the following factors:
 1. *Diversity of Data*: The evaluation draws from exercises at the Technical University of Munich, which could limit data diversity. Although chosen exercises vary, they might not encompass all potential programming challenges.
 2. *Researcher's Investment*: As the developer of Athena, aiming to integrate it into Artemis, we hold a vested interest in ThemisML's success. This could inadvertently lead to a positive bias in interpreting results.
 3. *Evolution Over Time*: This evaluation captures ThemisML at a single developmental stage. With feedback suggestions improving over time, our evaluation might not represent its long-term efficiency.
-4. *Technical Constraints*: Our evaluation might not have captured every technical nuance. There could be challenges with more advanced programming concepts not covered here.
-5. *Expertise Limitation*: The depth of proficiency in all the exercises used for evaluation is not exhaustive. This may impact the ability to accurately judge the quality of tutor feedback and the subsequent relevance of ThemisML's suggestions as compared to an expert in that specific domain.
-6. *Subjective Assessment*: Manually reviewing and comparing feedback suggestions is prone to subjectivity. The perspective on "good" feedback might be different for different evaluators, potentially influencing our assessment.
+//<omitted>. *Technical Constraints*: Our evaluation might not have captured every technical nuance. There could be challenges with more advanced programming concepts not covered here.
+4. *Expertise Limitation*: The depth of proficiency in all the exercises used for evaluation is not exhaustive. This may impact the ability to accurately judge the quality of tutor feedback and the subsequent relevance of ThemisML's suggestions as compared to an expert in that specific domain.
+5. *Subjective Assessment*: Manually reviewing and comparing feedback suggestions is prone to subjectivity. The perspective on "good" feedback might be different for different evaluators, potentially influencing our assessment.
 
 While there are a lot of biases involved in this subjective evaluation, we believe there to be value in our findings for the continued development and improvement of ThemisML.
 
@@ -1723,7 +1725,7 @@ Students currently wait for tutors to review their work before receiving feedbac
 Such a feature benefits both students and tutors. Students can learn and adjust in real time, and tutors may find a reduced need for extensive corrections, making the learning process more efficient and interactive.
 
 #appendices[
-  = Templates for Evaluation Submissions <evaluationSubmissions>
+  = Evaluation Submission Templates <evaluationSubmissions>
   We provide the templates we used to evaluate the scalability of ThemisML in @evaluation. We generated the submissions using the following templates:
 
   #figure(

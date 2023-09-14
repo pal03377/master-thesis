@@ -751,7 +751,7 @@ The security of Athena is very important, and strict measures are in place to en
 *Maintenance Criteria*
 Focusing on developer extensibility, Athena is architected to allow effortless integration of new modules and functionalities, fulfilling the goal of~#nfrlink(<nfrNewModuleDevelopment>). Complementing this, Athena is built to be easy to maintain and update, with comprehensive and clear documentation on system architecture and code as per~#nfrlink(<nfrUserDocumentation>).
 
-To ensure that Athena is user-friendly and maintainable, extensive documentation is prepared. Detailed user documentation, as specified in ~#nfrlink(<nfrUserDocumentation>), will enable tutors and administrators to effectively utilize the system. For future development and maintenance needs, a comprehensive developer's guide is made available, detailing the system architecture, database schemas, and module development process, supporting~#nfrlink(<nfrUserDocumentation>).
+To ensure that Athena is user-friendly and maintainable, we prepare extensive documentation. Detailed user documentation, as specified in ~#nfrlink(<nfrUserDocumentation>), will enable tutors and administrators to effectively utilize the system. For future development and maintenance needs, we make available a comprehensive developer's guide, detailing the system architecture, database schemas, and module development process, supporting~#nfrlink(<nfrUserDocumentation>).
 
 *End User Criteria*
 User experience is deeply considered in our design. Tutors using Artemis should be able to effortlessly view and interpret all feedback suggestions, aligning with~#nfrlink(<nfrFeedbackAccessibility>). Moreover, the system is developed to be easily configurable, aiming to encourage widespread adoption among educators and institutions, as highlighted in~#nfrlink(<nfrEasyConfiguration>).
@@ -931,6 +931,7 @@ The described strategy aligns with previous extensions to Artemis, such as its s
 
 In managing Athena's persistent data, the system embraces versatility by supporting any relational database compatible with SQLAlchemy.
 SQLite served as the choice for local development, while we used Postgres on the main test server.
+Only the assessment modules have access to the Athena database. The Assessment Module Manager acts as a proxy for the modules and therefore does not need to store any data in the database. We designed the system to also enable setting up different databases for each assessment module, but this is not required.
 
 The class diagram labeled @classDiagramArtemis illustrates Athena's general assessment module data structure, which includes six main tables. There are separate tables for _Exercise_, _Submission_, and _Feedback_ tailored to both text and programming exercises. 
 Unlike Artemis, Athena discards the concept of "participation." Instead, in Athena, _Submission_ table specifically includes students' most recently submitted work for an exercise.
@@ -949,7 +950,7 @@ The TextBlock table contains text segments that the CoFee Segmentation Service e
 The TextCluster table holds clusters of this text, containing added information crucial for generating feedback suggestions.
 The algorithms and techniques behind this feature find their basis in the research conducted by Bernius et al.~#cite("cofee", "cofee2").
 
-Initially, Artemis hosted the TextBlock and TextCluster tables. However, to make Athena more self-reliant and easier to manage, we moved these tables to Athena's own database.
+Initially, Artemis hosted the TextBlock and TextCluster tables. However, to make Athena more self-reliant and easier to manage, we moved these tables to Athena's database.
 This approach reduces the interdependence between Athena and Artemis, simplifying future updates and scalability efforts.
 
 #figure(

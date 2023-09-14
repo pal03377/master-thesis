@@ -141,7 +141,7 @@ On a more practical level, Athena does not support programming exercises, which 
 // Support for automatic assessments of modeling exercises in Athena would also be beneficial. These are already possible using _Compass_~@compass, which is currently integrated with Artemis and is not a focus of this thesis.
 
 Three types of actors could have problems with the current status of Athena:
-- *Tutors* in courses with manually graded programming exercises: They cannot profit from Athena's assessment generation capabilities, because Athena does not support programming exercises. This means that they won't get any automatically generated suggestions for programming exercises, which would save them a lot of time.
+- *Tutors* in courses with manually graded programming exercises: They cannot profit from Athena's assessment generation capabilities, because Athena does not support programming exercises. This means that they will not get any automatically generated suggestions for programming exercises, which would save them a lot of time.
   For text exercises, Athena currently provides suggestions for around 45\% of the submissions~@cofee2.
 - It is difficult for *developers* to extend Athena because the system is currently bound using text exercise segments and clusters to generate feedback suggestions in Artemis.
 - Also, it is difficult for *researchers* to integrate additional approaches and features into Athena, as the system is currently bound to one approach for each step in the generation process. 
@@ -1040,7 +1040,7 @@ To maintain streamlined configurations, we store this secret within the Assessme
 //   * Feedback suggestion generation is initiated after a tutor requests a submission
 // - There could be synchronization issues for example if the submission selection takes too long and another tutor starts the assessment in the meantime, getting the response from Athena faster and therefore two tutors would assess the same submission. We prevented that by introducing an additional check in the Artemis server that checks if the submission is already being assessed by another tutor. If that is the case, the tutor gets a new random submission to assess.
 The integration of Athena into Artemis demands a robust global software control mechanism to ensure a smooth operation between the two systems.
-By choosing to keep Athena independent, we ensure that changes or updates to Athena don't inadvertently impact Artemis's core functions.
+By choosing to keep Athena independent, we ensure that changes or updates to Athena do not inadvertently impact Artemis's core functions.
 
 We adopt an event-driven design where events in Artemis trigger activities in Athena.
 For instance, when an exercise's due date arrives, Athena's submission processing is initiated, ensuring timely feedback later on.
@@ -1134,10 +1134,75 @@ Additionally, existing APIs in Artemis already utilize JSON. This uniformity in 
 // Why not use an existing endpoint in Artemis?
 // - Authentication needs to be separate because it has to work with the Athena API secret (We don't want a separate admin user or something like that)
 // - The Athena Repository Export Service in Artemis should be turned off if Athena is not used, i.e., the `athena` Spring profile is not active
-// Performance Considerations
 Athena is designed to access the content of programming submissions from the LMS as needed, offering greater flexibility in data transfers and caching options. This approach makes Athena adaptable for future integration with other LMSs than Artemis, which can provide a URL for data access instead of embedding the data in the request payload.
 
 We intend the usage of Athena to be optional within Artemis. Therefore, we have implemented a separate endpoint for the Athena Repository Export Service in Artemis. This endpoint is only accessible if the `athena` Spring profile is active in Artemis.
+
+== Athena Module Endpoints
+We identified four main events for assessment modules in Athena and designed the corresponding endpoints for them. These events are:
+*Due Date Reached*,
+*Assessment Started*,
+*Assessment Opened*, and
+*Assessment Submitted*.
+
+Triggered by these events, assessment modules can perform the following actions:
+*Submission Processing*,
+*Submission Selection*,
+*Feedback Suggestion Generation*, and
+*Feedback Sending*.
+Each of these tasks requires different data from the LMS and can work differently depending on the assessment module. For example, the CoFee module performs the processing-heavy task of clustering the submissions in the Submission Processing step, while the ThemisML module performs its computationally intensive similarity comparisons in the Feedback Selection step. We give an overview of the typical endpoints of an assessment module in @moduleEndpoints.
+
+#figure(
+  table(
+    columns: (7em, 7em, 12em, auto),
+    inset: 10pt,
+    align: left,
+    [*Event*], [*Action*], [*Endpoint*], [*Data*],
+
+    // /submissions
+    [Due Date#linebreak() Reached],
+    [Submission#linebreak() Processing],
+    [`/submissions`],
+    [exercise, list of submissions],
+
+    // /select_submission
+    [Assessment#linebreak() Started],
+    [Submission#linebreak() Selection],
+    [`/select_submission`],
+    [exercise, list of submission IDs],
+
+    // /feedback_suggestions
+    [Assessment#linebreak() Opened],
+    [Feedback#linebreak() Suggestion#linebreak() Generation],
+    [`/feedback_suggestions`],
+    [exercise, submission],
+
+    // /feedback
+    [Assessment#linebreak() Submitted],
+    [Feedback#linebreak() Sending],
+    [`/feedback`],
+    [exercise, submission, list of feedback items],
+  ),
+  caption: [Overview of the available endpoints of an assessment module],
+) <moduleEndpoints>
+
+// Why are all endpoints POST endpoints?
+// - We want to be able to send large amounts of data to Athena. This is not possible with GET requests. Because: https://stackoverflow.com/questions/2659952/maximum-length-of-http-get-request
+// - Each of the endpoints is potentially processing-heavy and can have side-effects depending on the module. GET endpoints are usually expected to be fast and not have side effects.
+We decided to use POST endpoints for all endpoints in Athena. There are two reasons for this.
+First, we need to send a lot of data to Athena, which is not possible with GET requests. Second, each endpoint can require a lot of processing and might change things in the module. This behavior does not fit the usual idea of GET requests, which are expected to be quick and not change anything.
+
+To enable strict validation of the data sent by the LMS, we have different endpoint prefixes for the different types of exercises. For example, the endpoints for the text assessment module CoFee start with `/modules/text/module_text_cofee`, while the endpoints for the programming assessment module ThemisML start with `/modules/programming/module_programming_themisml`.
+When Artemis requests feedback suggestions from Athena, it will therefore send a request to#linebreak() `/modules/text/module_text_cofee/feedback_suggestions`.
+
+== Performance Considerations
+// - Improvement: For submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way. The submission selection request needs to be fast because it is blocking the tutor from assessing a submission.
+The efficiency of the "Submission Selection" process is crucial for Athena, especially to minimize tutor wait times. Rather than transferring complete submissions, the LMS sends only the submission IDs to Athena. This approach speeds up the process by reducing data transfer, making it both server-efficient and user-friendly. As a developer convenience feature within Athena, the submission IDs are automatically converted into submissions using the stored submissions in the database.
+
+#linebreak()
+// - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
+We also implemented a batching mechanism in Artemis.
+This splits the outgoing submissions into smaller batches of 100 each, effectively reducing payload size and minimizing the risk of data transfer timeouts.
 
 == Playground
 === Structure and Features of the Playground
@@ -1182,15 +1247,6 @@ The "Send Feedback" section is special in that it allows the researcher to choos
 
 #v(1em)
 With the Playground, Athena provides an effective and user-friendly means for researchers and developers to engage in real-time testing and evaluation, aligning with #frlink(<frTestSuggestionGeneration>).
-
-== Performance Considerations
-// - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
-To optimize performance, we implemented a batching mechanism in Artemis.
-This splits the outgoing submissions into smaller batches of 100 each, effectively reducing payload size and minimizing the risk of data transfer timeouts.
-
-#linebreak()
-// - Improvement: For submission selection, we only send the submission IDs because Athena already has the submissions and less data has to be transferred that way. The submission selection request needs to be fast because it is blocking the tutor from assessing a submission.
-The efficiency of the "Submission Selection" process is crucial for Athena, especially to minimize tutor wait times. Rather than transferring complete submissions, the LMS sends only the submission IDs to Athena. This approach speeds up the process by reducing data transfer, making it both server-efficient and user-friendly.
 
 == Athena Package for Assessment Modules
 // Why do we have an `athena` Python package? Why is the Assessment Module Manager designed as it is? Why do we use Decorators in assessment modules?
@@ -1419,7 +1475,7 @@ ThemisML's primary goal is to provide quality feedback. We conducted a series of
 
 // ?? Explain the detailed submissions in the appendix
 - *Exact Match Submissions*: As a baseline test, we used identical submissions and expected consistent feedback suggestions across all of them.
-- *Whitespace Variations*: We introduced minor modifications, such as changing whitespace, to ensure that trivial differences didn't affect ThemisML's feedback accuracy.
+- *Whitespace Variations*: We introduced minor modifications, such as changing whitespace, to ensure that trivial differences did not affect ThemisML's feedback accuracy.
 - *Variable Name Changes*: We changed variable names in our submissions to test ThemisML's ability to recognize underlying logic despite these variations.
 - *Different Code Structures*: We tested using different code structures that include different subtle mistakes to determine how ThemisML would respond to these variations. // ?? Generated with GPT-4, see appendix for prompt and generated code
 
@@ -1538,7 +1594,7 @@ We will discuss our subjective findings in detail in @realWorldDiscussions.
     [28.99],
     [29],
   ),
-  caption: [Overview of feedback suggestions provided by ThemisML and feedback by tutors for different exercises.],
+  caption: [Overview of feedback suggestions provided by ThemisML and feedback by tutors for different exercises],
 ) <feedbackOverviewTable>
 
 === Findings <realWorldFindings>
@@ -1681,7 +1737,7 @@ To wrap up, we highlight our contributions and explore potential directions for 
       #frlink(<frTestSuggestionGeneration>)
     ],
   ),
-  caption: [Status of the use cases associated with functional requirements.],
+  caption: [Status of the use cases associated with functional requirements],
 ) <statusTable>
 
 === Realized Goals
@@ -1702,7 +1758,7 @@ Due to the limitations outlined in @requirementsAnalysisOverview, we faced chall
 
 These unimplemented use cases highlight areas for future development and also have implications for the efficacy and usability of the Athena feedback suggestion system as it integrates into Artemis.
 
-We also recognize that Artemis offers various exercise types beyond text and programming. Although Athena doesn't currently support these, we designed it to be easily extendable to include them in future versions.
+We also recognize that Artemis offers various exercise types beyond text and programming. Although Athena does not currently support these, we designed it to be easily extendable to include them in future versions.
 
 == Conclusion
 // Note: Recap shortly which problem you solved in your thesis and discuss your *contributions* here.
@@ -1812,4 +1868,9 @@ public class LongMethod{{l}} {
 #outline(
   title: [List of Figures],
   target: figure.where(kind: image),
+)
+#pagebreak()
+#outline(
+  title: [List of Tables],
+  target: figure.where(kind: table),
 )

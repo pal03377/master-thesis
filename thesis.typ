@@ -1248,7 +1248,7 @@ The "Send Feedback" section is special in that it allows the researcher to choos
 #v(1em)
 With the Playground, Athena provides an effective and user-friendly means for researchers and developers to engage in real-time testing and evaluation, aligning with #frlink(<frTestSuggestionGeneration>).
 
-== Athena Package for Assessment Modules
+== Athena Package for Assessment Modules <athenaPackage>
 // Why do we have an `athena` Python package? Why is the Assessment Module Manager designed as it is? Why do we use Decorators in assessment modules?
 // - We want to make it as easy as possible to write assessment modules for Athena.
 // - We also recognized that a lot of the communication logic between the assessment module manager and the assessment modules is the same for all assessment modules. We wanted to avoid code duplication and make it easy to change the communication logic in the future.
@@ -1258,7 +1258,7 @@ With the Playground, Athena provides an effective and user-friendly means for re
 // - It also provides helper functions to store and load data from the Athena database, and to download programming submissions from Artemis.
 We created a Python package called `athena` to simplify the development of assessment modules for Athena. We maintain the package within the Athena repository and do not distribute it through platforms like PyPI, since its utility is exclusive to Athena's ecosystem.
 
-The package addresses the need for standardized communication between the Assessment Module Manager and the individual assessment modules. By doing so, it reduces code duplication and allows for easy modifications in future communication logic.
+The package addresses the need for standardized communication between the Assessment Module Manager and the individual assessment modules. By doing so, it reduces code duplication and allows for easy modifications in future communication logic. We show a basic example of the package's usage for an assessment module in @athenaPackageExample.
 
 Developers benefit from the package's use of Python decorators#footnote[Decorators in Python can be used to change the behavior of a function.], which annotate functions that will interact with the Assessment Module Manager. These decorators handle the underlying communication logic, enabling developers to focus on the actual assessment module logic.
 Additionally, the package offers utility functions to facilitate data storage in Athena's database and to download programming submissions from Artemis.
@@ -1862,6 +1862,37 @@ public class LongMethod{{l}} {
 ```,
     caption: [Template for the tests with varying numbers of lines of code $l$.],
   )
+
+  = Example of Using the `athena` Package <athenaPackageExample>
+  We provide a basic example of how the basic structure of an assessment module using the `athena` Python package described in @athenaPackage looks like in @athenaPackageExampleListing.
+
+  #figure(
+```python
+@submissions_consumer
+def process_submissions(exercise: Exercise, submissions: List[Submission]):
+    # Do something with the submissions...
+    # If you updated some data, you can store it with the store_* functions:
+    store_exercise(exercise)
+    store_submissions(submissions)
+
+@submission_selector
+def select_submission(exercise: Exercise, submissions: List[Submission]) -> Submission:
+    # Do something with the submissions and
+    # return the one that should be assessed next
+    return submissions[0]
+
+@feedback_provider
+def generate_suggestions(exercise: Exercise, submission: Submission) -> List[Feedback]:
+    # Do something with the submission and return a list of feedback
+    return [...]
+
+@feedback_consumer
+def p_feedback(exercise: Exercise, submission: Submission, feedbacks: List[Feedback]):
+    # Do something with the feedback items to learn from it
+ 
+```,
+  caption: [Basic structure of an assessment module using the `athena` Python package.],
+  ) <athenaPackageExampleListing>
 ]
 
 #pagebreak()

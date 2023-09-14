@@ -1265,11 +1265,29 @@ We will describe the two main endpoints for feedback processing and feedback sug
 // 3. Using vectorization, ThemisML uses CodeBERT~@codeBERT to compute the similarity scores between the feedback methods and the methods in other submissions. These scores are on a scale from 0 to 1. After initial evaluations, we added the optimization to automatically give a similarity score of 1 to code comparisons that are identical ignoring whitespace. This allows us to save a lot of processing power with CodeBERT.
 // 4. ThemisML creates a suggestion for each method in another submission where the similarity score to a given feedback item is above a certain threshold. The suggestion has the same text as the given feedback and includes additional information about the similarity score and the method it was generated for.
 === Feedback Processing
-To generate new feedback suggestions based on incoming manual feedback, ThemisML goes through these steps:
+@themisMLFeedbackProcessingPseudoCode shows pseudocode detailing the steps ThemisML takes to generate new feedback suggestions based on a single incoming manual feedback item. These include:
   1. *Parsing*: Using an Abstract Syntax Tree parser, specifically the `antlr4` Python package#footnote[https://www.antlr.org, last visited September 9th, 2023]~@antlr4, ThemisML parses the source code of the submission to identify methods that received feedback. Feedback given within a method is associated with that entire method.
-  2. *Method Matching*: ThemisML identifies the same method across all other submissions for the exercise by reading the code from files with the same relative file path from the root of the submission and extracting the method with the same name. If no such method exists, ThemisML skips the submission.
+  2. *Method Matching*: ThemisML tries to find the same method across all the other students' submissions. It does this by reading the code from files with the same relative file path from the root of the submission and extracting the method with the same name. If no such method exists, ThemisML skips the submission.
   3. *Similarity Scoring*: ThemisML utilizes CodeBERT~@codeBERT to compute similarity scores between the methods that received feedback and methods in other submissions. The resulting similarity scores range from 0 to 1. We vectorize the input of CodeBERT to improve performance. Another processing optimization we apply is to assign an automatic score of 1 to identical code comparisons, excluding whitespace differences, and to cache code comparison results in memory.
-  4. *Suggestion Generation*: For each method in other submissions that has a similarity score above a set threshold when compared to a given feedback item, ThemisML generates a suggestion. This suggestion retains the original feedback text and adds information about the similarity score and the specific method for which it was created.
+  4. *Suggestion Generation*: For each method from other submissions that has a similarity score above a set threshold when compared to a given feedback item, ThemisML generates a suggestion. This suggestion retains the original feedback text and adds information about the similarity score and the specific method for which it was created.
+
+#figure(
+  ```
+ProcessFeedbackItem(feedback):
+    f = File that the feedback was given on
+    m = Method in f that the feedback was given on
+    For all other submissions s:
+        g = File within s that has the same file path as f
+        n = Method in g that has the same name as m
+        If both g and n exist:
+            Compute the similarity score between the code of m and the code of n
+            If score > threshold:
+                Create a suggestion for n, based on feedback
+ 
+  ```,
+  caption: [Pseudocode for the feedback processing in ThemisML],
+) <themisMLFeedbackProcessingPseudoCode>
+#v(1em)
 
 Based on insights from initial evaluations, we chose the threshold in step 4 to be 95%, meaning that only almost identical methods can result in feedback suggestions.
 We decided on a high value to aim for a high precision of the suggestions, accepting that this might lead to a lower number of suggestions.

@@ -34,7 +34,7 @@
     v(0.5em)
   }
   set heading(numbering: "1.1")
-  // Reference to first-level headings as "chapters"
+  // Reference first-level headings as "chapters"
   show ref: it => {
     let el = it.element
     if el != none and el.func() == heading and el.level == 1 {

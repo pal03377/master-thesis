@@ -56,16 +56,51 @@
 // ===========================================
 
 // Content
-#feedback[ // Example
-    Since the attention span of the audience is rather short, try getting to the problem as fast as possible. Several slides in the presentation display redundant or repetitive information and could be deleted
+#feedback[
+    Change the wording from "high coupling" to "extensibility", because this is the real problem that is solved from the developer's perspective. The real problem with the current system is hard to understand.
 ]
-#response[ // Example
-    To get to the problem earlier in the presentation as well as to present only relevant information, some of the slides are removed (Agenda) and some of them are merged (Context, Motivation and Objectives). Therefore the "Problem" slide is now at slide 4. 
+#response[
+    We changed this in the slides and the thesis and additionally added the subsystem decomposition diagram of Athena-CoFee taken from https://github.com/ls1intum/Athena-CoFee to show the old architecture.
 ]
 
-#feedback[ // Example
-    The structure of the presentation is rather unique; it would be great if you could help the audience to follow it easier.
+#feedback[
+    Please double-check the type of arrow in the subsystem decomposition diagram. It probably should use a dashed line.
 ]
-#response[ // Example
-    To help the audience to follow the presentation easier, a progress-bar was added at the bottom of the slides to show the milestones of the presentation and highlight the one that indicates the current slide.
+#response[
+    We double-checked this in "Object-Oriented Software Engineering" by Bruegge and Dutoit and found indeed, "Dependencies among components can be depicted with dashed stick arrows". We changed this in the presentation and in the thesis.
+]
+
+#feedback[
+    Please think about whether the assessment should be blocked for tutors until feedback suggestions are available.
+]
+#response[
+    TODO: Think about it. // !!!
+]
+
+#feedback[
+    The wording "Accepted Suggestion" for the suggestion badge in text exercises is not clear. Please change it to "Suggestion", since the tutor did never accept it.
+]
+#response[
+    TODO: Do this
+]
+
+#feedback[
+    Please add a warning to the tutor if they try to submit an assessment without having explicitly accepted or rejected all suggestions.
+]
+#response[
+    TODO: Do this
+]
+
+#feedback[
+    In the component diagram where the Playground can be seen, it is a component within Athena. In reality, it is a component outside of Athena. Please change this.
+]
+#response[
+    We changed this in the presentation and in the thesis.
+]
+
+#feedback[
+    We should arrange a meeting to talk about the technologies involved in Athena in more detail.
+]
+#response[
+    TODO: Schedule meeting
 ]

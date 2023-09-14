@@ -119,7 +119,7 @@
 
 = Introduction <intro>
 What is the best way to provide feedback on online exercises?
-Written feedback can have many forms, including simple corrections, marks, comments, questions and targets~@morris2021formative.
+Written feedback can have many forms, including simple corrections, marks, comments, questions, and targets~@morris2021formative.
 Feedback is information provided by an agent, such as a teacher, to a learner, such as a student, regarding aspects of the learner's performance or understanding~@hattie2007feedback. It can effectively guide students toward the correct solution and help them learn from their mistakes, depending on the quality and impact of the feedback~@hattie2007feedback.
 Feedback is an essential part of the learning process, and it is especially important in the context of online learning. In this context, feedback can be provided by a teacher or a computer system. The latter is called automatic feedback.
 Automatic feedback can be especially helpful in courses with a large number of students, where it is not feasible for a teacher to provide feedback to each student individually~@ArTEMiS.

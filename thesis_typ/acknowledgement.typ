@@ -27,6 +27,6 @@
   #v(5mm)
   Special recognition goes to M.Sc. Maximilian Sölch, whose valuable insights have greatly enriched this thesis as my advisor.
   #v(5mm)
-  Finally, my gratitude extends to Prof. Dr. Stephan Krusche, not only for his dedication to enhancing university education but also for offering me the chance to be a part of this mission.
+  Finally, my gratitude extends to Prof. Dr. Stephan Krusche for his dedication to enhancing university education and for offering me the chance to be a part of this mission.
   ]
 }

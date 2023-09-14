@@ -467,7 +467,6 @@ Functional requirements are independent of implementation details. They solely d
 //  The replacement should not affect the functionality of the Themis grading app. // constraint of action
 //] <frReplaceThemisGradingAppIntegration>
 
-#v(1em) // For better layout
 #v(1em)
 *Research on Athena*
 #fr[
@@ -526,7 +525,6 @@ Functional requirements are independent of implementation details. They solely d
   Configuration changes to the system, like changing authentication secrets or external API tokens for some assessment modules, should be possible within 30 minutes.
 ] <nfrEasyConfiguration>
 
-#v(3em) // For better layout
 *Scalability*
 #nfr[
   *System Scalability*
@@ -1252,7 +1250,7 @@ While currently focused on programming exercises in Java, ThemisML is designed t
 // - The Feedback Processing endpoint directly generates new feedback suggestions for all submissions of an exercise.
 // - The Feedback Suggestions endpoint finds the stored suggestions, applies an additional filter to the list of suggestions and returns them.
 // - The Submission Selection endpoint is currently not supported.
-Compared to other modules that need to process submissions first, ThemisML generates new feedback suggestions whenever new manual feedback is added to the database. When queried for feedback suggestions, it consults its database, applies additional filters to pre-existing suggestions, and returns the refined list. Currently, ThemisML does not support the submission selection endpoint.
+Compared to other modules that need to process submissions first, ThemisML generates new feedback suggestions whenever new manual feedback is added to the database. When queried for feedback suggestions, it consults its database, applies additional filters to pre-existing suggestions, and returns the refined list. Currently, ThemisML does not support the submission selection endpoint because there is no mechanism to find the "best" submission to assess next. This might be a useful addition to ThemisML in the future.
 We will describe the two main endpoints for feedback processing and feedback suggestions in more detail in the following sections.
 
 // Feedback Processing in Detail: ThemisML performs the following steps to generate new feedback suggestions based on incoming manual feedback:
@@ -1263,8 +1261,8 @@ We will describe the two main endpoints for feedback processing and feedback sug
 === Feedback Processing
 To generate new feedback suggestions based on incoming manual feedback, ThemisML goes through these steps:
   1. *Parsing*: Using an Abstract Syntax Tree parser, specifically the `antlr4` Python package#footnote[https://www.antlr.org, last visited September 9th, 2023]~@antlr4, ThemisML parses the source code of the submission to identify methods that received feedback. Feedback given within a method is associated with that entire method.
-  2. *Method Matching*: ThemisML identifies the same method across all other submissions for the exercise. It skips any submission that lacks the method in a file with the same name.
-  3. *Similarity Scoring*: ThemisML utilizes CodeBERT to compute similarity scores between the methods that received feedback and methods in other submissions. The resulting similarity scores range from 0 to 1. We vectorize the input of CodeBERT to improve performance. Another processing optimization we apply is to assign an automatic score of 1 to identical code comparisons, excluding whitespace differences, and to cache code comparison results in memory.
+  2. *Method Matching*: ThemisML identifies the same method across all other submissions for the exercise by reading the code from files with the same relative file path from the root of the submission and extracting the method with the same name. If no such method exists, ThemisML skips the submission.
+  3. *Similarity Scoring*: ThemisML utilizes CodeBERT~@codeBERT to compute similarity scores between the methods that received feedback and methods in other submissions. The resulting similarity scores range from 0 to 1. We vectorize the input of CodeBERT to improve performance. Another processing optimization we apply is to assign an automatic score of 1 to identical code comparisons, excluding whitespace differences, and to cache code comparison results in memory.
   4. *Suggestion Generation*: For each method in other submissions that has a similarity score above a set threshold when compared to a given feedback item, ThemisML generates a suggestion. This suggestion retains the original feedback text and adds information about the similarity score and the specific method for which it was created.
 
 Based on insights from initial evaluations, we chose the threshold in step 4 to be 95%, meaning that only almost identical methods can result in feedback suggestions.
@@ -1276,8 +1274,8 @@ We decided on a high value to aim for a high precision of the suggestions, accep
 // 2. ThemisML removes "suspicious" suggestions (explanation follows below)
 // 3. ThemisML removes overlapping suggestions, to make sure that in such a case the suggestion that ThemisML is more "sure" about (higher similarity score) is kept.
 ThemisML's approach to creating feedback suggestions essentially follows three steps:
-1. *Data Access*: ThemisML accesses prior feedback stored in its database, leveraging historical insights to inform current submissions.
-2. *Eliminating Suspicious Feedback*: Some stored suggestions might not fit the current context. This way ThemisML filters out "suspicious" feedback, with the criteria detailed further below. We added this step after initial observations on real-world data.
+1. *Data Access*: ThemisML accesses prior feedback suggestions that were generated in the feedback processing step from the database.
+2. *Eliminating Suspicious Feedback*: Some stored suggestions might not fit the current context. For example, some tutors added feedback to the getters in a class, noting that the returned attribute was not initialized. To avoid giving such feedback, ThemisML filters out "suspicious" feedback, with the criteria detailed further below. We added this step after initial observations on real-world data.
 3. *Resolving Overlapping Suggestions*: In cases where multiple feedback items could apply to the same line range within a file, ThemisML selects the one with the highest similarity score.
 #v(1em)
 
@@ -1528,7 +1526,7 @@ While we understand that our observations might lean toward our own experiences 
 
 2. *Technical Hurdles*:
   - Some of the technical issues faced include challenges in identifying absent methods, differentiating between `synchronized` and non-synchronized methods (Exercise 2), and navigating complexities associated with generics, interfaces, and class attributes.
-  - While feedback for class declarations presents obstacles because ThemisML can only suggest feedback on methods, suggestions on constructors can sometimes resolve this issue because some tutors give general feedback for the whole class on the constructor, which ThemisML can then suggest on all other submissions. Still, this behavior is not consistent across all tutors and might also not always yield correct results.
+  - Feedback for class declarations presents obstacles because ThemisML can only suggest feedback on methods. Suggestions on constructors can sometimes resolve this issue because some tutors give general feedback to the whole class on the constructor. ThemisML can then detect the feedback on the constructor and suggest it on other submissions. Still, this behavior is not consistent across all tutors and might also yield incorrect results.
   - ThemisML faces difficulty in specific scenarios, like when students forget the `.java` file extensions, submit incomplete exercises, or files that include several classes (Exercise 1, Exercise 2).
   - ThemisML currently cannot create unreferenced feedback suggestions.
 

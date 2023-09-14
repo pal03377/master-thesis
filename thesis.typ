@@ -212,6 +212,7 @@ At the time of writing, Artemis supports exercises in the following formats: pro
 CoFee is "a machine learning approach designed to suggest computer-aided feedback in open-ended text exercises"~@cofee.
 We will describe the CoFee approach and its current implementation in more detail in @currentSystem.
 
+#v(1em) // For better layout
 == ThemisML
 ThemisML is a "system for automated feedback suggestions of programming exercises"#footnote[https://github.com/ls1intum/Themis-ML, last visited September 5th, 2023] developed by a group of students in the practical course "iPraktikum" in the winter semester of 2022/23 at the Technical University of Munich. It is based on the CodeBERT model~@codeBERT, which is a pre-trained model for programming language processing by Microsoft.
 Its source code is openly available on #link("https://github.com/ls1intum/Themis-ML")[GitHub]. The following description is based on the documentation of the system, available at https://ls1intum.github.io/Themis.
@@ -512,6 +513,7 @@ Functional requirements are independent of implementation details. They solely d
   The system should allow for the creation of the basic structure of a new module within two developer-hours, without requiring changes to existing modules.
 ] <nfrNewModuleDevelopment>
 
+#v(1em) // For better layout
 *Documentation*
 #nfr[
   *User Documentation*
@@ -670,16 +672,17 @@ A collection of feedback creates an *Assessment*, which is the result of assessi
 When the submission due date of the exercise is reached, Artemis starts to prepare the exercise assessment. One step of this preparation is to send all submissions to Athena for processing.
 Artemis then enables the assessment of the exercise for the tutors.
 Depending on whether the feature is supported or not given the exercise, Artemis then either sends a list of submission IDs to Athena or chooses a random submission to assess. This way, Athena can select the best submission, i.e., the submission with the highest information gain, for the tutor to assess.
-The selected submission is then sent to the tutor, who can request suggestions from Athena right after getting the submission. The tutor can also directly start the manual review in case Athena takes unusually long to respond to the request.
-Athena then generates and sends the feedback suggestions to the tutor for review.
-After the tutor has finished the assessment, they can submit the assessment to Artemis.
-Artemis saves the assessment in its database and also sends the assessment to Athena for learning.
-After this step, the assessment workflow is finished, and the tutor can start assessing the next submission until all submissions are assessed.
 
 #figure(
   image("figures/activity-diagram.svg", width: 100%),
   caption: [Activity Diagram showing the assessment workflow with Athena],
 ) <activityDiagram>
+
+The selected submission is then sent to the tutor, who can request suggestions from Athena right after getting the submission. The tutor can also directly start the manual review in case Athena takes unusually long to respond to the request.
+Athena then generates and sends the feedback suggestions to the tutor for review.
+After the tutor has finished the assessment, they can submit the assessment to Artemis.
+Artemis saves the assessment in its database and also sends the assessment to Athena for learning.
+After this step, the assessment workflow is finished, and the tutor can start assessing the next submission until all submissions are assessed.
 
 === User Interface <userInterface>
 // Note: Show mockups of the user interface of the software you develop and their connections/transitions. You can also create a storyboard. *Important:* Describe the mockups and their rationale in the text.
@@ -694,7 +697,7 @@ In Artemis, when a tutor starts a new assessment for a text or manually graded p
 
 In the assessment interface seen in @userInterfaceTextFull, tutors can view student submissions and feedback suggestions on the left side. These suggestions resemble existing feedback but feature an additional badge labeled "Suggestion." By default, these are pre-accepted but can be discarded by the tutor. This design is consistent with the existing manual feedback system, as cited in @cofee.
 
-We've made minor modifications to this design: the badge text has been changed from "Automatic" to "Suggestion" for clarity, and we've adopted a unique purple color for these badges, replacing the previous blue background.
+We have made minor modifications to this design: the badge text has been changed from "Automatic" to "Suggestion" for clarity, and we've adopted a unique purple color for these badges, replacing the previous blue background.
 
 When a tutor opens the programming assessment interface, they are presented with a submission and available feedback suggestions. The interface is shown in @userInterfaceProgrammingFull. Feedback suggestions are displayed in a manner consistent with the text exercise interface, featuring a purple "Suggestion" badge for easy identification (see @userInterfaceProgrammingFull, A).
 
@@ -1313,6 +1316,7 @@ ThemisML's approach to creating feedback suggestions essentially follows three s
 //     This makes a mistake like described above unlikely.
 //   (3) Suggestions are also suspicious if they include words that hint at other parts of the code, like
 //     "again", "consequential error", "previous", "later", "earlier", "above", "below" and German equivalents of these words.
+#v(3em) // For better layout
 The label "suspicious" in feedback is determined by the following criteria:
 - *Affecting too many submissions*: Feedback that is overly generic or misdirected often finds its way across a wide range of submissions. For instance, a piece of feedback for one specific getter method might be inappropriately applied to other unrelated methods. ThemisML marks feedback as "suspicious" if it appears in more than 10% of submissions.
 - *Ensuring Accuracy*: ThemisML's filtering can sometimes be a bit too rigorous, potentially sidelining valuable feedback. To counter this, if three similar suggestions relate to the same method, ThemisML reinstates that feedback, considering it valid.
@@ -1570,7 +1574,7 @@ The subjective evaluation presented here is limited by the following factors:
 4. *Expertise Limitation*: The depth of proficiency in all the exercises used for evaluation is not exhaustive. This may impact the ability to accurately judge the quality of tutor feedback and the subsequent relevance of ThemisML's suggestions as compared to an expert in that specific domain.
 5. *Subjective Assessment*: Manually reviewing and comparing feedback suggestions is prone to subjectivity. The perspective on "good" feedback might be different for different evaluators, potentially influencing our assessment.
 
-While there are a lot of biases involved in this subjective evaluation, we believe there to be value in our findings for the continued development and improvement of ThemisML.
+While there are a lot of potential biases involved in this subjective evaluation, we believe there to be value in our findings for the continued development and improvement of ThemisML.
 
 
 #pagebreak()

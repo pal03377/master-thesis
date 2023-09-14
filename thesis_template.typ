@@ -53,6 +53,9 @@
   // --- Figures ---
   show figure: set text(size: 0.85em)
 
+  // Cite like this: [Kru23] instead of this: [1]
+  set cite(style: "alphanumerical")
+
   
 
   

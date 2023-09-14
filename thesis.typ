@@ -717,14 +717,15 @@ Feedback suggestions are loaded once the assessment interface is opened. If ther
 In the following sections, we present our system design, which is informed by the requirements and system models specified earlier. We start by identifying design goals based on our non-functional requirements and then move on to discuss our approach to subsystem decomposition, hardware-software mapping, data management strategies, and access control policies~@bruegge2004object.
 
 == Overview
-#rect(
-  width: 100%,
-  radius: 10%,
-  stroke: 0.5pt,
-  fill: yellow,
-)[
-  Note: Provide a brief overview of the software architecture and references to other chapters (e.g. requirements analysis), references to existing systems, constraints impacting the software architecture.
-]
+// Note: Provide a brief overview of the software architecture and references to other chapters (e.g. requirements analysis), references to existing systems, constraints impacting the software architecture.
+// - We have to ensure that Athena-CoFee described in @currentSystem will still work.
+// - As described in @nfr, we need the system to be easily extensible.
+// - Like Athena-CoFee, we will develop Athena as a system independent from Artemis.
+// - We will still integrate feedback suggestions into Artemis, by connecting it to Athena again.
+
+Taking into account the extensibility requirements mentioned in @nfr, we will design the new Athena as an autonomous system, separate from Artemis, yet seamlessly integrated to provide feedback suggestions. 
+Building on the foundation highlighted in @currentSystem, this design choice ensures both adaptability for future expansions and preservation of its core functionality.
+This approach combines the inherent benefits of Athena-CoFee with enhanced flexibility and robust integration capabilities.
 
 == Design Goals <designGoals>
 // Note: Derive design goals from your nonfunctional requirements, prioritize them (as they might conflict with each other) and describe the rationale of your prioritization. Any trade-offs between design goals (e.g., build vs. buy, memory space vs. response time), and the rationale behind the specific solution should be described in this section

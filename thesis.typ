@@ -144,7 +144,7 @@ This thesis aims to address the issues outlined in @problem by advocating for a 
 To achieve this overarching objective, we have identified the following specific sub-goals:
 
 === Shift in System Responsibilities
-We want to shift the responsibility of computing feedback suggestions from the Artemis system to Athena. This will allow us to decouple the two systems and make Athena more flexible and extensible.
+We want to shift the responsibility of computing feedback suggestions from the Artemis system to Athena. This will allow us to make Athena more flexible and extensible.
 The Athena system will be independently deployable and will be able to provide feedback suggestions for any learning management system (LMS) like Artemis. Further development will also be accelerated, as Athena can be developed and tested independently of Artemis.
 
 === Modularized Architecture
@@ -210,9 +210,7 @@ Newman highlights several notable advantages of adopting a microservice architec
 - *Resilience:* The isolated nature of microservices ensures that the failure of one service does not directly impact the functionality of others, contributing to the overall system's robustness.
 - *Scaling:* Microservices facilitate more straightforward and efficient scaling of individual services, as opposed to the often cumbersome scaling of a monolithic application.
 
-While these advantages are enticing, microservices are also generally seen as more complex to manage and deploy compared to monolithic architectures~@hossain2023microservice,
-they can be more difficult to test in combination with other services~@hossain2023microservice,
-and can even be worse in performance in specific cases~@aldebagy2018comparative.
+While these advantages are enticing, microservices are also generally seen as more complex to manage and deploy compared to monolithic architectures~@hossain2023microservice, they can be more difficult to test in combination with other services~@hossain2023microservice, and can even be worse in performance in specific cases~@aldebagy2018comparative.
 
 = Related Work <relatedWork>
 // Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches/concepts/workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was already solved by XYZ.” If you have multiple related works, use subsections to separate them.
@@ -805,7 +803,7 @@ Lastly, the _Playground_ is a web application created using the Next.js framewor
 
 === CoFee Module
 We largely keep the architecture of the CoFee module as proposed by Bernius et al.~#cite("cofee", "cofee2") and Michel~@atheneLoadBalancer. Notably, Michel contributed a _Load Balancer_ that efficiently distributes incoming requests among the CoFee modules for _Segmentation_, _Embedding_, and _Clustering_~@atheneLoadBalancer.
-The load balancer is highly coupled with the CoFee modules, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _CoFee Adapter_ that provides a unified interface for the CoFee module to the Athena system.
+The CoFee modules are highly dependent on orchestration by the load balancer, which is why we cannot use it in Athena directly. To enhance compatibility, we introduce a _CoFee Adapter_ that provides a unified interface for the CoFee module to the Athena system.
 
 Both the existing CoFee module, called "Athena-CoFee", and the new CoFee Adapter are based on the FastAPI framework.
 

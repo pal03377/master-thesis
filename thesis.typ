@@ -264,11 +264,14 @@ Despite our intentions to plan and detail it meticulously, we anticipate that we
 // * The *Clustering Service* uses the Hierarchical Density-Based Spatial Clustering (HDBSCAN) clustering algorithm to create clusters of the embedded segments.
 // * The Load Balancer sends the segments and clusters to Artemis using the callback URL, where they are stored in the database
 // - When a tutor starts assessing a student's submission, the Athena-CoFee subsystem within Artemis will suggest feedback on segments close to other ones in the same cluster based on feedback given on the other segments within the cluster.
+The current system under investigation is named Athena but is occasionally referred to as Athene outside of this work. This system acts as a "reference implementation" for a distinctive approach to dispensing automatic feedback, known as CoFee (@cofee). We will call this system _Athena-CoFee_ to avoid confusion with the newly proposed Athena system.
+Athena-CoFee is integrated into the existing Learning Management System (LMS) Artemis, functioning as a service dedicated to segmenting and clustering test exercise submissions. As shown in @athenaCoFeeArchitecture, the current system provides three services to Artemis (Segmentation, Embedding, and Clustering). It currently does not create feedback suggestions itself, but only provides the data required for the generation. The feedback suggestions are created directly in Artemis.
+This approach limits the extensibility of Athena.
 
-// TODO: add more detail
-
-The current system under investigation is named Athena but is occasionally referred to as Athene outside of this work. This system acts as a "reference implementation" for a distinctive approach to dispensing automatic feedback, known as CoFee (@cofee). We will call this system Athena-CoFee to avoid confusion with the newly proposed Athena system.
-Athena-CoFee is integrated into the existing Learning Management System (LMS) Artemis, functioning as a service dedicated to segmenting and clustering test exercise submissions.
+#figure(
+  image("figures/subsystem-decomposition-cofee-old.svg", width: 60%),
+  caption: [Architecture of Athena-CoFee, taken from~@cofee],
+) <athenaCoFeeArchitecture>
 
 When a predetermined exercise deadline arrives, a sequence of events unfolds. Artemis LMS sends a list of submissions to the Load Balancer within Athena-CoFee, including a callback URL for subsequent use (@atheneLoadBalancer). This Load Balancer distributes the tasks among several different services.
 

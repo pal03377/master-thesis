@@ -1268,10 +1268,16 @@ To generate new feedback suggestions based on incoming manual feedback, ThemisML
 Based on insights from initial evaluations, we chose the threshold in step 4 to be 95%, meaning that only almost identical methods can result in feedback suggestions.
 We decided on a high value to aim for a high precision of the suggestions, accepting that this might lead to a lower number of suggestions.
 
+=== Feedback Suggestions Provider
 // Feedback Suggestion Generation in Detail: ThemisML performs the following steps to find feedback suggestions for a submission:
 // 1. ThemisML loads the previously generated feedback suggestions from its database.
 // 2. ThemisML removes "suspicious" suggestions (explanation follows below)
 // 3. ThemisML removes overlapping suggestions, to make sure that in such a case the suggestion that ThemisML is more "sure" about (higher similarity score) is kept.
+ThemisML's approach to creating feedback suggestions essentially follows three steps:
+1. *Data Access*: ThemisML accesses prior feedback stored in its database, leveraging historical insights to inform current submissions.
+2. *Eliminating Suspicious Feedback*: Some stored suggestions might not fit the current context. This way ThemisML filters out "suspicious" feedback, with the criteria detailed further below. We added this step after initial observations on real-world data.
+3. *Resolving Overlapping Suggestions*: In cases where multiple feedback items could apply to the same line range within a file, ThemisML selects the one with the highest similarity score.
+#v(1em)
 
 // "Suspicious" feedback suggestions:
 // When evaluating ThemisML, we found the following problems with the suggestions:
@@ -1283,7 +1289,10 @@ We decided on a high value to aim for a high precision of the suggestions, accep
 //     This makes a mistake like described above unlikely.
 //   (3) Suggestions are also suspicious if they include words that hint at other parts of the code, like
 //     "again", "consequential error", "previous", "later", "earlier", "above", "below" and German equivalents of these words.
-// TODO: describe this (?)
+The label "suspicious" in feedback is determined by the following criteria:
+- *Affecting too many submissions*: Feedback that is overly generic or misdirected often finds its way across a wide range of submissions. For instance, a piece of feedback for one specific getter method might be inappropriately applied to other unrelated methods. ThemisML marks feedback as "suspicious" if it appears in more than 10% of submissions.
+- *Ensuring Accuracy*: ThemisML's filtering can sometimes be a bit too rigorous, potentially sidelining valuable feedback. To counter this, if three similar suggestions relate to the same method, ThemisML reinstates that feedback, considering it valid.
+- *Relevance of Context*: Feedback referring to unrelated parts of the code can be problematic. ThemisML searches for terms like "again", "previous", "later", and their German counterparts. Such feedback is always tagged as "suspicious."
 
 = Evaluation of ThemisML <evaluation>
 // Note: If you did an evaluation / case study, describe it here.

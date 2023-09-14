@@ -12,7 +12,7 @@
 ) = {
   set document(title: title, author: author)
   set page(
-    margin: (left: 34mm, right: 34mm, top: 40mm, bottom: 40mm),
+    margin: (left: 30mm, right: 30mm, top: 40mm, bottom: 40mm),
     numbering: "1",
     number-align: center,
   )

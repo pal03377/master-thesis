@@ -1268,7 +1268,7 @@ To generate new feedback suggestions based on incoming manual feedback, ThemisML
 Based on insights from initial evaluations, we chose the threshold in step 4 to be 95%, meaning that only almost identical methods can result in feedback suggestions.
 We decided on a high value to aim for a high precision of the suggestions, accepting that this might lead to a lower number of suggestions.
 
-=== Feedback Suggestions Provider
+=== Feedback Suggestions Provider <themisMlFeedbackSuggestionsProvider>
 // Feedback Suggestion Generation in Detail: ThemisML performs the following steps to find feedback suggestions for a submission:
 // 1. ThemisML loads the previously generated feedback suggestions from its database.
 // 2. ThemisML removes "suspicious" suggestions (explanation follows below)
@@ -1296,9 +1296,9 @@ The label "suspicious" in feedback is determined by the following criteria:
 
 = Evaluation of ThemisML <evaluation>
 // Note: If you did an evaluation / case study, describe it here.
-In deploying and validating any software system, a rigorous evaluation is crucial. It ensures our proposed solution aligns with our goals and meets expected standards. In Athena's context, we broke down our evaluation of the newly developed ThemisML module into two main segments:
+In deploying and validating any software system, a rigorous evaluation is crucial. It ensures our proposed solution aligns with our goals and meets expected standards. In Athena's context, we broke down our evaluation of the newly developed ThemisML module into two parts:
 
-1. *Scalability Evaluation*: Here, we assessed how ThemisML behaves under varying loads, especially in terms of the number of submissions and their complexity.
+1. *Scalability Evaluation*: We assessed how ThemisML behaves under varying loads, especially in terms of the number of submissions and their complexity.
 // <removed>. *Code Similarity Evaluation*: In this phase, we focused on the accuracy of ThemisML's code similarity computation using CodeBERT, especially when faced with submissions with nuanced differences.
 2. *Real-world Data Evaluation*: We tested ThemisML using real-world data from past courses, assessing its feedback suggestions manually.
 
@@ -1309,13 +1309,13 @@ We will discuss each of these evaluations in detail in the following sections.
 === Design
 // Note: Describe the design / methodology of the evaluation and why you did it like that. E.g. what kind of evaluation have you done (e.g. questionnaire, personal interviews, simulation, quantitative analysis of metrics, what kind of participants, what kind of questions, what was the procedure?)
 The effectiveness of ThemisML is intrinsically tied to its scalability.
-We tested the scalability ThemisML on two devices that were available to us: An Apple MacBook Pro (2021) with an `Apple M1 Pro` chip and 16GB of RAM, and a test server with an `Intel(R) Xeon(R) CPU E5-2697A v4 @ 2.60GHz`, two cores and 1.9GiB of RAM.
+We tested this metric on two devices that were available to us: An Apple MacBook Pro (2021) with an `Apple M1 Pro` chip and 16GB of RAM, and a test server with an `Intel(R) Xeon(R) CPU E5-2697A v4 @ 2.60GHz`, two cores and 1.9GiB of RAM.
 ThemisML is optimized to run on an Apple M1 chip and can utilize the GPU for faster processing.
 We used the same data for both devices.
 
 We tested in four dimensions. For each dimension, we manually chose the other parameters to provide as high a load as possible while still being able to finish the test in a reasonable amount of time. We provide the templates used for generating example submissions in @evaluationSubmissions. 
 
-- *Varying Numbers of Existing Submissions*: We generated different numbers $n in {25, 50, 75, ..., 975, 1000}$ of submissions and provided a single feedback item on each of them.
+- *Varying Numbers of Existing Submissions*: We generated different numbers $n in {25, 50, 75, ..., 975, 1000}$ of submissions and provided a single feedback item on each of them to ThemisML for processing.
 - *Varying Numbers of Feedback on Submissions*: We generated a fixed amount of $100$ submissions and provided a single feedback item on the first $f in {10, 20, ..., 90, 100}$ of them. 
 - *Different Method Counts in Submissions*: We tested ThemisML's performance against submissions with different method counts $m in {2, 3, 4, ..., 10}$ per submission on $n=50$ submissions, giving feedback on every method of the first $f=49$ of them (leaving one submission without feedback as a sanity check, if required).
 - *Different Method Lengths*: We used $n=50$ submissions with a single method of varying lengths $l in {2, 3, 4,..., 10}$ in lines of code and added a single feedback item on the first $f=49$ of them.
@@ -1326,7 +1326,7 @@ To avoid caching effects leaking between experiments, we cleared ThemisML's cach
 
 Given time constraints on this work, we were only able to test ThemisML on a limited number of submissions and feedback items of up to 1,000 in one experiment. However, we believe that the results are still representative of ThemisML's overall performance.
 
-=== Objectives
+=== Objectives <scalabilityObjectives>
 // Note: Derive concrete objectives / hypotheses for this evaluation from the general ones in the introduction.
 While we expect the processing times to increase with the number of submissions and feedback items, we expect ThemisML to be able to handle a large number of submissions (1,000-2,000) and feedback items (10,000-50,000) in a reasonable amount of time of less than six hours.
 
@@ -1368,9 +1368,9 @@ Feedback processing time, in both experiments on methods numbers and method leng
 The failure to run the experiment beyond five lines of code in length on the test server indicates a need for memory optimization in ThemisML, as well as a potential need for more powerful hardware.
 Previous efforts to mitigate problems involving memory involved processing similarity comparisons in batches, but these adaptations proved inadequate for the used hardware.
 
-Using a test server with more memory available will likely enable ThemisML to process longer methods, and to be used for supporting small courses.
+To roughly estimate the processing time for a large course, we extrapolate the results from the experiment with a single feedback item on a single submission, given $n$ previous submissions to $n=2000$ and conclude that processing a single manual feedback item given by a tutor would take approximately 2:30 minutes. Assuming that the total computation time mostly depends on the number of given feedback items (which seems plausible, see @evaluationScalability1b), we can estimate that processing 17,000 feedback items would take approximately 708 hours. This is too long to be useful in practice. We therefore conclude that our expectations stated in @scalabilityObjectives were not fully fulfilled. Improvements could include using more powerful hardware, optimizing the code, or processing the feedback items on multiple machines at once.
 
-To roughly estimate the processing time for a large course, we extrapolate the results from the experiment with a single feedback item on a single submission, given $n$ previous submissions to $n=2000$ and conclude that processing a single manual feedback item given by a tutor would take approximately 2:30 minutes. Assuming that the total computation time mostly depends on the number of given feedback items (which seems plausible, see @evaluationScalability1b), we can estimate that processing 17,000 feedback items would take approximately 708 hours. This is too long to be useful in practice. Improvements could include using more powerful hardware, optimizing the code, or processing the feedback items on multiple machines at once.
+Using a test server with more memory available will likely enable ThemisML to process longer methods, and to be used for supporting small courses.
 
 === Limitations
 // Note: Describe limitations and threats to validity of your evaluation, e.g. reliability, generalizability, selection bias, researcher bias
@@ -1378,9 +1378,7 @@ In this section, we detail the potential limitations and threats tied to our eva
 1. *Hardware Selection Bias*: Our hardware choices might not represent its performance across various architectures or brands, implying potential bias.
 2. *Test Parameter Reliability*: The chosen testing parameters, such as submission numbers and feedback counts, might not encompass all real-world scenarios, limiting their reliability. We also adapted our choice of parameters to what was possible in a reasonable amount of time, which might have introduced bias.
 3. *External Performance Factors*: Background processes, especially on the MacBook Pro, might impact performance results, making pinpoint analysis challenging.
-4. *Wrong projection of results*: We presume the processing time for a sizable course correlates with the number of submissions and feedback items. However, memory limitations or ThemisML's vectorization might impact this assumption.
-
-To sum up, our findings on ThemisML's scalability offer insights but come with inherent limitations that future work should consider for a holistic understanding.
+4. *Wrong projection of results*: We presume the processing time for a sizeable course correlates with the number of submissions and feedback items. However, memory limitations or ThemisML's vectorization might impact this assumption.
 
 /* We omitted this because it does not add much value
 == Quality of Code Similarity Comparisons
@@ -1430,7 +1428,7 @@ In evaluating ThemisML's feedback capability, we identified two primary limitati
 == Real-world Data
 === Design
 // Note: Describe the design / methodology of the evaluation and why you did it like that. E.g. what kind of evaluation have you done (e.g. questionnaire, personal interviews, simulation, quantitative analysis of metrics, what kind of participants, what kind of questions, what was the procedure?)
-We tested ThemisML using actual programming exercises from the Technical University of Munich's database.
+We tested ThemisML using actual programming exercises from a dump of the Technical University of Munich's Artemis production database.
 For three exercises, we trained ThemisML on one set of submissions and then tested it on a different set of the same size. We aimed to qualitatively determine if the feedback suggestions generated by ThemisML aligned with the manual feedback provided by tutors.
 
 After our initial tests, we made adjustments to ThemisML. This included raising the similarity threshold and introducing a mechanism to avoid overly general feedback. After these changes, we conducted our experiments again to measure the impacts of these modifications.
@@ -1515,7 +1513,7 @@ We will share our subjective findings in @realWorldFindings.
 
 === Findings <realWorldFindings>
 // Note: Interpret the results and conclude interesting findings
-ThemisML typically provided fewer feedback suggestions than human tutors. However, when it did offer feedback, the advice was often valuable. In the next section, we'll explore the reasons behind the limited feedback suggestions from ThemisML and discuss additional observations.
+ThemisML typically provided fewer feedback suggestions than human tutors provided manual feedback. However, when it did offer feedback, the advice was often valuable. In the next section, we'll explore the reasons behind the limited feedback suggestions from ThemisML and discuss additional observations.
 
 === Discussions
 // Note: Discuss the findings in more detail and also review possible disadvantages that you found
@@ -1523,12 +1521,12 @@ While we understand that our observations might lean toward our own experiences 
 
 1. *Variability in Tutor Grading & Feedback*:
   - Differences in how tutors grade can sometimes influence ThemisML's feedback, leading to variations in point assignments (Exercise 1, Exercise 3).
-  - ThemisML's feedback can not grasp the full context of a student's submission. This can result in imbalances in how points are distributed across various methods (Exercise 2).
-  - ThemisML often identifies feedback that some tutors might miss, emphasizing its potential value (Exercise 3).
+  - ThemisML's feedback can not grasp the full context of a student's submission. This can result in imbalances in how points are distributed across various methods (Exercise 2). We already tackled this problem using a "suspiciousness" check as described in @themisMlFeedbackSuggestionsProvider, but this check seems to not cover all cases yet. One example we found was a tutor calling a method "redundant", which ThemisML did not detect and therefore suggested feedback on all other submissions.
+  - As a positive finding, ThemisML often identifies feedback that some tutors might miss, emphasizing its potential value (Exercise 3).
 
 2. *Technical Hurdles*:
   - Some of the technical issues faced include challenges in identifying absent methods, differentiating between `synchronized` and non-synchronized methods (Exercise 2), and navigating complexities associated with generics, interfaces, and class attributes.
-  - While feedback for class declarations presents obstacles because ThemisML can only suggest feedback on methods, suggestions on constructors can sometimes resolve this issue.
+  - While feedback for class declarations presents obstacles because ThemisML can only suggest feedback on methods, suggestions on constructors can sometimes resolve this issue because some tutors give general feedback for the whole class on the constructor, which ThemisML can then suggest on all other submissions. Still, this behavior is not consistent across all tutors and might also not always yield correct results.
   - ThemisML faces difficulty in specific scenarios, like when students forget the `.java` file extensions, submit incomplete exercises, or files that include several classes (Exercise 1, Exercise 2).
   - ThemisML currently cannot create unreferenced feedback suggestions.
 
@@ -1543,10 +1541,10 @@ The subjective evaluation presented here is limited by the following factors:
 2. *Researcher's Investment*: As the developer of Athena, aiming to integrate it into Artemis, we hold a vested interest in ThemisML's success. This could inadvertently lead to a positive bias in interpreting results.
 3. *Evolution Over Time*: This evaluation captures ThemisML at a single developmental stage. With feedback suggestions improving over time, our evaluation might not represent its long-term efficiency.
 4. *Technical Constraints*: Our evaluation might not have captured every technical nuance. There could be challenges with more advanced programming concepts not covered here.
-5. *Subjective Assessment*: Manually reviewing and comparing feedback suggestions is prone to subjectivity. The perspective on 'good' feedback might be different for different evaluators, potentially influencing our assessment.
-6. *Expertise Limitation*: The depth of proficiency in all the exercises used for evaluation is not exhaustive. This may impact the ability to accurately judge the quality of tutor feedback and the subsequent relevance of ThemisML's suggestions as compared to an expert in that specific domain.
+5. *Expertise Limitation*: The depth of proficiency in all the exercises used for evaluation is not exhaustive. This may impact the ability to accurately judge the quality of tutor feedback and the subsequent relevance of ThemisML's suggestions as compared to an expert in that specific domain.
+6. *Subjective Assessment*: Manually reviewing and comparing feedback suggestions is prone to subjectivity. The perspective on "good" feedback might be different for different evaluators, potentially influencing our assessment.
 
-While there are a lot of biases involved in this subjective evaluation, we still believe there to be value in our findings for the continued development and improvement of ThemisML.
+While there are a lot of biases involved in this subjective evaluation, we believe there to be value in our findings for the continued development and improvement of ThemisML.
 
 = Summary <summary>
 // Note: This chapter includes the status of your thesis, a conclusion and an outlook about future work.

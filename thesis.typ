@@ -194,6 +194,7 @@ With these foundational elements in place, @systemDesign delves into the overall
 An evaluation of the ThemisML assessment module is the focus of @evaluation.
 We conclude with @summary, reflecting on our completed and ongoing objectives, wrapping up our exploration, and highlighting avenues for future research.
 
+#pagebreak()
 = Background <background>
 // Note: Describe each proven technology/concept shortly that is important to understand your thesis. Point out why it is interesting for your thesis. Make sure to incorporate references to important literature here.
 In this chapter, we present the key concepts and technologies essential to this thesis. First, we introduce the Artemis learning management system, which serves as the integration point for Athena.
@@ -229,6 +230,7 @@ Newman highlights several notable advantages of adopting a microservice architec
 
 While these advantages are enticing, microservices are also generally seen as more complex to manage and deploy compared to monolithic architectures~@hossain2023microservice, they can be more difficult to test in combination with other services~@hossain2023microservice, and can even be worse in performance in specific cases~@aldebagy2018comparative.
 
+#pagebreak()
 = Related Work <relatedWork>
 // Note: Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches/concepts/workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was already solved by XYZ.” If you have multiple related works, use subsections to separate them.
 
@@ -254,6 +256,7 @@ Athena can provide feedback suggestions for programming exercises, but it is not
 Athena has been designed with adaptability in mind. In the future, findings from other research or methodologies can be incorporated into it if they are shown to be useful for providing feedback suggestions in our specific context.
 
 
+#pagebreak()
 = Requirements Analysis <requirementsAnalysis>
 // Note: This chapter follows the Requirements Analysis Document Template in @bruegge2004object. Important: Make sure that the whole chapter is independent of the chosen technology and development platform. The idea is that you illustrate concepts, taxonomies and relationships of the application domain independent of the solution domain! Cite @bruegge2004object several times in this chapter.
 
@@ -722,6 +725,7 @@ To simplify navigation within the assessment, files containing feedback suggesti
 Feedback suggestions are loaded once the assessment interface is opened. If there is a conflict between pre-existing tutor feedback and suggestions (e.g. because the assessment was saved before and is being continued now), the system prioritizes the tutor's feedback. This ensures that tutors can always see and build upon their feedback while grading.
 
 
+#pagebreak()
 = System Design <systemDesign>
 // Note: This chapter follows the System Design Document Template in @bruegge2004object. You describe in this chapter how you map the concepts of the application domain to the solution domain. Some sections are optional if they do not apply to your problem. Cite @bruegge2004object several times in this chapter.
 In the following sections, we present our system design, which is informed by the requirements and system models specified earlier. We start by identifying design goals based on our non-functional requirements and then move on to discuss our approach to subsystem decomposition, hardware-software mapping, data management strategies, and access control policies~@bruegge2004object.
@@ -1059,6 +1063,8 @@ The Assessment Module Manager is the entry point to Athena. It provides an endpo
 
 If the Assessment Module Manager or a module is not running, the logs of the respective Docker container contain all available information about potential errors. A failure of one of the modules does not affect the other modules or the Assessment Module Manager.
 
+
+#pagebreak()
 = Object Design <objectDesign>
 // Note: Answer the questions "How did you design the system?", "How do the algorithms work?", "How to extend your system?" and more.
 
@@ -1294,6 +1300,8 @@ The label "suspicious" in feedback is determined by the following criteria:
 - *Ensuring Accuracy*: ThemisML's filtering can sometimes be a bit too rigorous, potentially sidelining valuable feedback. To counter this, if three similar suggestions relate to the same method, ThemisML reinstates that feedback, considering it valid.
 - *Relevance of Context*: Feedback referring to other parts of the code can be problematic because ThemisML treats each feedback suggestion independently from all other suggestions. ThemisML searches for terms like "again", "previous", "later", and their German counterparts. Such feedback is always tagged as "suspicious."
 
+
+#pagebreak()
 = Evaluation of ThemisML <evaluation>
 // Note: If you did an evaluation / case study, describe it here.
 A rigorous evaluation of ThemisML ensures our proposed solution aligns with our goals and meets expected standards. We broke down our evaluation of the newly developed ThemisML module into two parts:
@@ -1546,6 +1554,8 @@ The subjective evaluation presented here is limited by the following factors:
 
 While there are a lot of biases involved in this subjective evaluation, we believe there to be value in our findings for the continued development and improvement of ThemisML.
 
+
+#pagebreak()
 = Summary <summary>
 // Note: This chapter includes the status of your thesis, a conclusion and an outlook about future work.
 In this section, we offer a condensed recap of the thesis content, focusing on both the objectives we've met and those still in progress.
@@ -1655,7 +1665,7 @@ To wrap up, we highlight our contributions and explore potential directions for 
 === Realized Goals
 // Note: Summarize the achieved goals by repeating the realized requirements or use cases stating how you realized them.
 We successfully implemented Athena, a system that receives submissions and existing feedback on both programming and text exercises from an LMS (specifically, Artemis) (#frlink(<frReceiveSubmissions>), #frlink(<frMoreGeneralSubmissionsAndFeedbackReceive>)), suggests the next submission to assess (#frlink(<frSuggestNextSubmission>)), and then provides feedback suggestions to the LMS on the assessment (#frlink(<frProvideFeedbackSuggestions>)). These suggestions are shown in Artemis (#frlink(<frViewFeedbackSuggestionsUI>)) and can be accepted, modified, or discarded by the tutor (#frlink(<frAcceptFeedbackSuggestions>), #frlink(<frModifyFeedbackSuggestions>), #frlink(<frDiscardFeedbackSuggestions>)). 
-We added the general capability to suggest feedback on programming exercises to Athena (#frlink(<frIncludeNewProgrammingAssessmentModule>)) and created a new assessment module called ThemisML utilizing machine learning to generate feedback suggestions for programming exercises (#frlink(<frFeedbackSuggestionsByThemisML>)), learning from past feedback (#frlink(<frLearnFromPastFeedback>)).
+We added the general capability to suggest feedback on programming exercises to Athena (#frlink(<frIncludeNewProgrammingAssessmentModule>)) and created a new assessment module called ThemisML utilizing machine learning to generate feedback suggestions for programming exercises (#frlink(<frFeedbackSuggestionsByThemisML>)) by learning from past feedback (#frlink(<frLearnFromPastFeedback>)).
 
 Administrators can inspect the health of Athena (#frlink(<frCommunicateModuleHealthStatus>)) and select the assessment module to use (#frlink(<frSelectAssessmentModule>)), with the only limitation in this regard being that there is no UI for the latter yet.
 
@@ -1668,7 +1678,7 @@ Due to the limitations outlined in @requirementsAnalysisOverview, we faced chall
 - *Inability to Recover Discarded Suggestions* (#frlink(<frRestoreDiscardedFeedbackSuggestions>)): Tutors do not have the option to restore feedback suggestions that they have previously discarded. Consequently, if a tutor inadvertently dismisses a valuable suggestion, the only recourse is to manually reproduce it.
 - *Absence of Usage Metrics for Researchers* (#frlink(<frInspectUsageStatistics>)): The system currently lacks a feature allowing researchers to analyze usage statistics. As a result, researchers are unable to ascertain the number of generated suggestions, nor can they track how many of these suggestions have been accepted, modified, or discarded by tutors.
 
-These unimplemented use cases highlight areas for future development and also have implications for the efficacy and usability of the Athena feedback suggestion system as it integrates into the Artemis learning management system.
+These unimplemented use cases highlight areas for future development and also have implications for the efficacy and usability of the Athena feedback suggestion system as it integrates into Artemis.
 
 We also recognize that Artemis offers various exercise types beyond text and programming. Although Athena doesn't currently support these, we designed it to be easily extendable to include them in future versions.
 
@@ -1676,7 +1686,7 @@ We also recognize that Artemis offers various exercise types beyond text and pro
 // Note: Recap shortly which problem you solved in your thesis and discuss your *contributions* here.
 This thesis successfully tackles Athena's initial limitations regarding extensibility and adaptability. We've restructured its architecture to support multiple feedback generation approaches, expanding beyond just the CoFee method for text submissions.
 Athena now also supports programming exercises, aligning its capabilities with Artemis and providing a more comprehensive tool for tutors.
-These changes facilitate easier adaptation by researchers and improve compatibility with various Learning Management Systems.
+These changes facilitate easier adaptation by researchers and improve compatibility with various LMS.
 Overall, the thesis transforms Athena into a more flexible and effective automated feedback suggestion system.
 
 == Future Work

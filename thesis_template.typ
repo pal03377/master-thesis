@@ -29,11 +29,7 @@
   show heading: set block(below: 0.85em, above: 1em)
   show heading: set text(font: body-font)
   show heading: it => {
-    if it.level == 1 {
-      pagebreak()
-    } else {
-      v(0.5em)
-    }
+    v(0.5em)
     it
     v(0.5em)
   }

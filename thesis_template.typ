@@ -34,15 +34,21 @@
     v(0.5em)
   }
   set heading(numbering: "1.1")
-  // Reference first-level headings as "chapters"
+  // Reference first-level headings as "chapters" - modified to also support appendices
   show ref: it => {
     let el = it.element
     if el != none and el.func() == heading and el.level == 1 {
-      [Chapter ]
-      numbering(
+      let n = numbering(
         el.numbering,
         ..counter(heading).at(el.location())
       )
+      // Chapter detection
+      if n.starts-with("Appendix") {
+        // Remove ": " from the end
+        n.slice(0, n.len() - 2)
+      } else {
+        [Chapter #n]
+      }
     } else {
       it
     }
@@ -58,7 +64,6 @@
 
   
 
-  
   // --- Table of Contents ---
   set page(numbering: "(i)")
   counter(page).update(1)

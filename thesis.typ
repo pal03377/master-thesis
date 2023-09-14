@@ -95,6 +95,28 @@
   }
 }
 
+// Definition for appendices
+// Source: https://github.com/typst/typst/issues/806#issuecomment-1509872977
+#let appendices(body) = {
+  pagebreak()
+  counter(heading).update(0)
+  counter("appendices").update(1)
+
+  set heading(
+    numbering: (..nums) => {
+      let vals = nums.pos()
+      let value = "ABCDEFGHIJ".at(vals.at(0) - 1)
+      if vals.len() == 1 {
+        "Appendix " + value + ": "
+      }
+      else {
+        it
+      }
+    }
+  )
+  [#body]
+}
+
 = Introduction <intro>
 What is the best way to provide feedback on online exercises?
 Written feedback can have many forms, including simple corrections, marks, comments, questions and targets~@morris2021formative.
@@ -198,10 +220,7 @@ Similar to CoFee, ThemisML analyzes student code submissions and compares them w
 ThemisML employs ANTLR4#footnote[https://www.antlr.org, last visited August 17th, 2023] for method extraction from code and utilizes CodeBERTScore~@zhou2023codebertscore#footnote[Source code available at https://github.com/neulab/code-bert-score, last visited August 17th, 2023. At the time of initial development, the source code was already available, but the complementary paper was not released yet.], a wrapper for the CodeBERT machine learning model~@codeBERT, to compare code submissions and assess their similarity.
 Thus, ThemisML is a tool that helps tutors who use the Themis app give clearer and more focused feedback on student programming assignments.
 
-// == FastAPI // TODO: Do I want this here?
-
 == Microservice Architecture
-// TODO: Also talk about Docker?
 Microservices are small, autonomous services that communicate through well-defined APIs, allowing them to be independently deployed and evolved without tight coupling to other services~@newman2015building.
 
 Newman highlights several notable advantages of adopting a microservice architecture in the book "Building Microservices"~@newman2015building, including:
@@ -218,26 +237,20 @@ _Atenea_#footnote[Not to be confused with *Athena*, the name of the system we ar
 It scores submissions based on the similarity of the student's answer to a set of reference answers provided by the teacher. This approach has the problem of requiring the teacher to provide a set of reference answers for each exercise, which can be time-consuming and error-prone. Also, the range of possible answers is limited to the ones provided by the teacher and answers similar to them. This means that the system is not able to recognize answers that are correct but different from the given ones.
 Atenea, like Athena, is a modularized system to allow for the integration of different scoring methods, but this remains within the scope of different ways to grade free-text answers.
 
-#linebreak()
 Alikaniotis et al. propose a system for Automated Text Scoring that uses a deep learning approach to score the quality of a text~@alikaniotis2016. The system makes its results more interpretable by providing the locations of the text that are most relevant to the score. This is done by using Long-Short Term Memory networks trained on the Kaggle dataset containing almost 13,000 essays, marked by two raters.
 The system is different from Athena in that it is not focused on providing feedback to the student but on scoring the quality of the text. It also only generally works on essays, while Athena is designed to work on a broader range of exercises.
 
-#linebreak()
 Bernius et al. introduce _CoFee_, a machine-learning methodology developed to provide computer-assisted feedback for open-ended textual assignments~@cofee. While CoFee addresses a specific subset of our broader objective, our goal is to support different types of exercises, including text-based ones. We integrated CoFee into Athena as an assessment module for text exercises. The name "Athena"#footnote[Also sometimes referred to as "Athene"] was previously used for the integrated system, but we will use it to refer to the new system in this work.
 CoFee is integrated into Athena as an assessment module for text exercises. Alongside it, there are other assessment modules, some of which support programming exercises.
 
-// TODO: This seems a bit out of place...
-#linebreak()
 Chow et al. integrated an automatic programming feedback system into the _Grok Learning platform_ to provide direct feedback to students~@chow2017automated.
 They utilize different methods to create hints for students, including clustering, pattern mining and filtering. These hints include potential failing inputs, suggested code changes and concept explanations. The system exclusively works for exercises in the programming language Python.
 It is different from Athena in that it is not focused on providing feedback suggestions to tutors but on providing hints to students while they solve the exercise. Also, Athena is not limited to Python but can be used for programming exercises using any programming language, as well as text exercises.
 
-#linebreak()
 Sing et al. propose an automated feedback generation for introductory programming assignments that uses a sample solution written in a subset of Python to give feedback in the form of a list of changes necessary to transform the student's submission into a solution with the same behavior~@singh2013automated. The system can detect common mistakes and provide feedback on them, but its feedback is limited to suggestions on how to fix the mistakes in the code. It does not provide any feedback on the quality of the code or the design of the solution. Neither does it provide any feedback on the student's approach to solving the problem or deeper insight into the underlying misunderstanding that led to the mistake.
 Athena can provide feedback suggestions for programming exercises, but it is not limited to providing suggestions on how to fix mistakes in the code. Depending on the chosen assessment module, Athena can provide feedback on the quality of the code, the design of the solution, and the student's approach to solving the problem. Furthermore, the assessment modules in Athena generally do not require a sample solution to work.
 
 // Note that generally, one could include related work that proves to be useful as an assessment module in Athena:
-// TODO: Does this make sense here?
 #linebreak()
 Athena has been designed with adaptability in mind. In the future, findings from other research or methodologies can be incorporated into it if they are shown to be useful for providing feedback suggestions in our specific context.
 
@@ -247,8 +260,7 @@ Athena has been designed with adaptability in mind. In the future, findings from
 
 == Overview <requirementsAnalysisOverview>
 // Note: Provide a short overview about the purpose, scope, objectives and success criteria of the system that you like to develop.
-// TODO: Make it sound less like two people are working on the specific thesis topic, just on the whole system in general
-Despite our intentions to plan and detail it meticulously, we anticipate that we will only be able to fulfill some specifications for the new semi-automatic grading system. With the limitation of only two people working on this project for only six months in mind, our strategy leans toward the progressive delivery of a scaled-down system. Prioritizing high-quality code and thorough documentation, we opt for this approach over rushing the development of an expansive yet potentially flawed prototype.
+Despite our intentions to plan and detail it meticulously, we anticipate that we will only be able to fulfill some specifications for the new semi-automatic grading system. With the limitation of only two people working on Athena for only six months in mind, our strategy leans toward the progressive delivery of a scaled-down system. Prioritizing high-quality code and thorough documentation, we opt for this approach over rushing the development of an expansive yet potentially flawed prototype.
 
 == Current System <currentSystem>
 // Note: This section is only required if the proposed system (i.e. the system that you develop in the thesis) should replace an existing system.
@@ -400,7 +412,7 @@ Functional requirements are independent of implementation details. They solely d
   which assessment module // object
   to use for each type of exercise (e.g., text or programming).
   Only assessment modules that are compatible with the exercise type can be selected. // constraint of action
-] <frSelectAssessmentModule> // TODO: Say that this one is not fulfilled / half-fulfilled with the Spring config (in the status section)
+] <frSelectAssessmentModule>
 
 #v(1em)
 *More Exercise Types*
@@ -492,7 +504,6 @@ Functional requirements are independent of implementation details. They solely d
 // user documentation
 // developer documentation
 
-// TODO: write some introductory sentence here about NFRs
 *Maintainability*
 #nfr[
   *Extensibility*
@@ -899,7 +910,6 @@ Tutors access the Artemis Server via the Artemis Web Client, while researchers u
 
 == Persistent Data Management
 // Note: Optional section that describes how data is saved over the lifetime of the system and which data. Usually this is either done by saving data in structured files or in databases. If this is applicable for the thesis, describe the approach for persisting data here and show a UML class diagram how the entity objects are mapped to persistent storage. It contains a rationale of the selected storage scheme, file system or database, a description of the selected database and database administration issues.
-// TODO: Add some introductory text
 
 === Artemis
 // - Reason for MySQL/Postgres as the database: The existing Artemis system already uses it.
@@ -1062,8 +1072,6 @@ If the Assessment Module Manager or a module is not running, the logs of the res
 // We do not recommend using the CoFee module on Mac with M1, see Obsidian page "Why is CoFee so slow on my Mac with an M1 processor?"
 In this chapter, we explain how our system design from @systemDesign fits into the Artemis learning platform and the Athena feedback suggestion provider within the solution domain.
 
-// TODO: Make sure to use lots of UML diagrams
-
 == Artemis Client: Feedback Suggestions
 // Feedback Suggestions UI in Artemis
 // - For text exercises, we kept the existing UI as-is, but changed the "Automatic" badge showing a robot icon to a "Suggestion" badge showing a lightbulb icon. This way, the UI is clearer and consistent with the programming exercise UI.
@@ -1072,12 +1080,11 @@ In this chapter, we explain how our system design from @systemDesign fits into t
 // - We also included tooltips for all badges to explain what they mean. (-> screenshot)
 
 // Feedback Suggestions UI
-For text exercises in Artemis, we made minor adjustments. We replaced the previous "Automatic" badge with a "Suggestion" badge featuring a lightbulb icon. This keeps the UI consistent with the programming exercise UI. // TODO: screenshot
+For text exercises in Artemis, we made minor adjustments. We replaced the previous "Automatic" badge with a "Suggestion" badge featuring a lightbulb icon. This keeps the UI consistent with the programming exercise UI. The result looks exactly like already shown in @userInterfaceTextFull.
 
-In the context of programming exercises, the design closely follows the UI mockups from @userInterface.
-To assist tutors, we added tooltips explaining each badge. // TODO: screenshot
+In the context of programming exercises, the design also closely follows the UI mockups from @userInterface.
 
-/* TODO: Do we even want to have this section? vvvv
+/* We left out the following section because we felt that it wasn't relevant:
 // TextBlock Conflict Resolution Algorithm
 // - A list of TextBlocks in Artemis is a partition of a text submission in Artemis. The concept of TextBlocks does not fundamentally exist in the context of Athena and there is no contract for assessment modules to only provide non-overlapping feedback suggestions. However, because TextBlocks cannot overlap in Artemis, we need to resolve conflicts when adding new TextBlocks for a range of text given by a feedback suggestion. The corresponding algorithm runs on the client after the feedback suggestions are received from Athena.
 // - It adds the feedback suggestions one after another, following the rules shown in @textBlockConflictResolutionAlgorithm.
@@ -1168,12 +1175,6 @@ The "Send Feedback" section is special in that it allows the researcher to choos
 #v(1em)
 With the Playground, Athena provides an effective and user-friendly means for researchers and developers to engage in real-time testing and evaluation, aligning with #frlink(<frTestSuggestionGeneration>).
 
-// TODO: Screenshots of the Playground
-
-// == API Interface of Athena // skip for now => TODO: add this section or remove it completely
-// Why did we choose to have it like that?
-// -> Obsidian page "New Athena API"
-
 == Performance Considerations
 // - In Artemis, we split the submission sending into batches of 100 submissions each to avoid too large payloads and timeouts
 To further optimize performance, we implemented a batching mechanism in Artemis.
@@ -1212,7 +1213,8 @@ We have elaborated on the specific process in Athena's official documentation#fo
 // - We wanted to keep the existing load balancer by Michel~@atheneLoadBalancer as-is in order not to break existing functionality.
 // - Athena-CoFee by itself is "only" a segmentation and clustering service for text submissions. The actual feedback suggestion generation as well as the submission selection were previously done directly in Artemis.
 // - Because of this, we had to keep the existing Athena-CoFee server running and integrate it into the new Athena system, using the adapter pattern.
-The CoFee Adapter is a key part that connects Athena-CoFee's specialized services for text submissions to the broader Athena system. We designed this to keep the existing load balancer and Athena-CoFee functions running smoothly without any interruptions.
+The CoFee Adapter is a key part that connects Athena-CoFee's specialized services for text submissions to the broader Athena system. We already showed it in @subsystemDecompositionCoFee.
+//
 The CoFee Adapter operates separately from the Athena-CoFee server, each initiated individually. 
 
 // How does it work?
@@ -1235,8 +1237,6 @@ Moreover, an additional validation step has been transferred from Artemis to Ath
 Language detection continues to be managed by Artemis using the `franc-min` package.
 
 In summary, the CoFee Adapter successfully integrates Athena and Athena-CoFee while preserving the unique functionalities of both, thereby making the unified system more robust and extensible.
-
-// TODO: Class diagram for CoFee adapter?
 
 // (Maybe the Obsidian page "How Submission Selection by Information Gain worked (also now works) in Athena" is helpful )
 
@@ -1296,11 +1296,10 @@ The label "suspicious" in feedback is determined by the following criteria:
 
 = Evaluation of ThemisML <evaluation>
 // Note: If you did an evaluation / case study, describe it here.
-In deploying and validating any software system, a rigorous evaluation is crucial. It ensures our proposed solution aligns with our goals and meets expected standards. In Athena's context, we broke down our evaluation of the newly developed ThemisML module into two main segments: // TODO: two or three?
+In deploying and validating any software system, a rigorous evaluation is crucial. It ensures our proposed solution aligns with our goals and meets expected standards. In Athena's context, we broke down our evaluation of the newly developed ThemisML module into two main segments:
 
 1. *Scalability Evaluation*: Here, we assessed how ThemisML behaves under varying loads, especially in terms of the number of submissions and their complexity.
-// TODO: Do we need this at all?
-// 2. *Code Similarity Evaluation*: In this phase, we focused on the accuracy of ThemisML's code similarity computation using CodeBERT, especially when faced with submissions with nuanced differences.
+// <removed>. *Code Similarity Evaluation*: In this phase, we focused on the accuracy of ThemisML's code similarity computation using CodeBERT, especially when faced with submissions with nuanced differences.
 2. *Real-world Data Evaluation*: We tested ThemisML using real-world data from past courses, assessing its feedback suggestions manually.
 
 We will discuss each of these evaluations in detail in the following sections.
@@ -1309,13 +1308,12 @@ We will discuss each of these evaluations in detail in the following sections.
 == Scalability
 === Design
 // Note: Describe the design / methodology of the evaluation and why you did it like that. E.g. what kind of evaluation have you done (e.g. questionnaire, personal interviews, simulation, quantitative analysis of metrics, what kind of participants, what kind of questions, what was the procedure?)
-// TODO: Add more detail and why I did it like that!
 The effectiveness of ThemisML is intrinsically tied to its scalability.
-We tested the scalability ThemisML on two devices: An Apple MacBook Pro (2021) with an `Apple M1 Pro` chip and 16GB of RAM, and a test server with an `Intel(R) Xeon(R) CPU E5-2697A v4 @ 2.60GHz`, two cores and 1.9GiB of RAM.
+We tested the scalability ThemisML on two devices that were available to us: An Apple MacBook Pro (2021) with an `Apple M1 Pro` chip and 16GB of RAM, and a test server with an `Intel(R) Xeon(R) CPU E5-2697A v4 @ 2.60GHz`, two cores and 1.9GiB of RAM.
 ThemisML is optimized to run on an Apple M1 chip and can utilize the GPU for faster processing.
 We used the same data for both devices.
 
-We tested in four dimensions. For each dimension, we manually chose the other parameters to provide as high a load as possible while still being able to finish the test in a reasonable amount of time.
+We tested in four dimensions. For each dimension, we manually chose the other parameters to provide as high a load as possible while still being able to finish the test in a reasonable amount of time. We provide the templates used for generating example submissions in @evaluationSubmissions. 
 
 - *Varying Numbers of Existing Submissions*: We generated different numbers $n in {25, 50, 75, ..., 975, 1000}$ of submissions and provided a single feedback item on each of them.
 - *Varying Numbers of Feedback on Submissions*: We generated a fixed amount of $100$ submissions and provided a single feedback item on the first $f in {10, 20, ..., 90, 100}$ of them. 
@@ -1727,6 +1725,60 @@ Students currently wait for tutors to review their work before receiving feedbac
 ) <programmingFeedbackSuggestionsInIntelliJ>
 
 Such a feature benefits both students and tutors. Students can learn and adjust in real time, and tutors may find a reduced need for extensive corrections, making the learning process more efficient and interactive.
+
+#appendices[
+  = Templates for Evaluation Submissions <evaluationSubmissions>
+  We provide the templates we used to evaluate the scalability of ThemisML in @evaluation. We generated the submissions using the following templates:
+
+  #figure(
+    ```java
+public class SimplePrint {
+    public static void main(String[] args) {
+        System.out.println("Hello, World! Submission number {{submission number}}");
+    }
+}
+```,
+    caption: [Template for the tests with varying numbers of submissions $n$ and varying number of feedback items $f$.],
+  )
+
+  #figure(
+    ```java
+public class Methods{{m}} {
+    public static void main(String[] args) {
+        method1();
+        method2();
+        ...
+        method{{m}}();
+    }
+    public static void method1() {
+        System.out.println("This is method 1 in submission {{submission number}}!");
+    }
+    public static void method2() {
+        System.out.println("This is method 2 in submission {{submission number}}!");
+    }
+    ...
+    public static void method{{m}}() {
+        System.out.println("This is method {{m}} in submission {{submission number}}!");
+    }
+}
+```,
+    caption: [Template for the tests with varying numbers methods $m$.],
+  )
+
+  #figure(
+    ```java
+public class LongMethod{{l}} {
+    public static void main(String[] args) {
+        System.out.println("submission {{submission number}}, length {l}, line 1");
+        System.out.println("submission {{submission number}}, length {l}, line 2");
+        ...
+        System.out.println("submission {{submission number}}, length {l}, line {{l}}");
+    }
+}
+```,
+    caption: [Template for the tests with varying numbers of lines of code $l$.],
+  )
+]
 
 #pagebreak()
 #outline(

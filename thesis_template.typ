@@ -33,6 +33,19 @@
     v(0.5em)
   }
   set heading(numbering: "1.1")
+  // Reference to first-level headings as "chapters"
+  show ref: it => {
+    let el = it.element
+    if el != none and el.func() == heading and el.level == 1 {
+      [Chapter ]
+      numbering(
+        el.numbering,
+        ..counter(heading).at(el.location())
+      )
+    } else {
+      it
+    }
+  }
   set par(leading: 1em)
 
   

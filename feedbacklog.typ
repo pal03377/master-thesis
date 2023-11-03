@@ -74,21 +74,21 @@
     Please think about whether the assessment should be blocked for tutors until feedback suggestions are available.
 ]
 #response[
-    TODO: Think about it. // !!!
+    We thought about this and believe it not to be necessary. The tutor can still give feedback without suggestions. The suggestions are just a nice-to-have feature.
 ]
 
 #feedback[
     The wording "Accepted Suggestion" for the suggestion badge in text exercises is not clear. Please change it to "Suggestion", since the tutor did never accept it.
 ]
 #response[
-    TODO: Do this
+    We changed it in the PR #7136\.
 ]
 
 #feedback[
     Please show a warning to the tutor if they try to submit an assessment without having explicitly accepted or rejected all suggestions.
 ]
 #response[
-    TODO: Do this
+    We added this in PR #7136\.
 ]
 
 #feedback[
@@ -96,11 +96,4 @@
 ]
 #response[
     We changed this in the presentation and in the thesis.
-]
-
-#feedback[
-    We should arrange a meeting to talk about the technologies involved in Athena in more detail.
-]
-#response[
-    TODO: Schedule meeting
 ]
